@@ -1,1 +1,0 @@
-// Открой JavaScript в MakeCode.

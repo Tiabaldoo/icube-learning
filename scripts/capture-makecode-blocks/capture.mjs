@@ -27,7 +27,7 @@ function workspace() {
     return window.E?.getEditor()?.blocksEditor?.editor;
 }
 
-export async function capture(browser, file, outputFile) {
+export async function capture(browser, file, outputFile, variableNames = []) {
     const source = await readFile(file, 'utf8');
     if (!source.trim()) throw new Error('The TypeScript file is empty');
     const destination = outputFile || path.join(path.dirname(path.dirname(file)), 'images', `${path.basename(file, '.ts')}.png`);
@@ -97,6 +97,20 @@ export async function capture(browser, file, outputFile) {
         if (!language.locale.startsWith('ru') || !/[а-яё]/i.test(language.labels)) {
             throw new Error('MakeCode blocks are not in Russian');
         }
+
+        // The decompiler suffixes a variable when a kind has the same name.
+        // Restore explicitly requested lesson names, as in a manually built project.
+        if (variableNames.length) await page.evaluate(names => {
+            const ws = window.E.getEditor().blocksEditor.editor;
+            for (const variable of ws.getVariableMap().getAllVariables()) {
+                const name = names.find(name => variable.name.startsWith(name) && /^\d+$/.test(variable.name.slice(name.length)));
+                if (name) ws.getVariableMap().renameVariable(variable, name);
+            }
+            const assignments = ws.getAllBlocks(false).filter(block => block.type === 'variables_set');
+            if (assignments.some(block => !names.includes(block.getField('VAR').getVariable().name))) {
+                throw new Error('Unexpected lesson variable name after decompilation');
+            }
+        }, variableNames);
 
         await page.evaluate(() => {
             const ws = window.E.getEditor().blocksEditor.editor;

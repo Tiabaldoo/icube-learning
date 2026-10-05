@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { codeProtection } from './codeProtection';
 
 const sources = import.meta.glob<string>('../lessons/*/steps/javascript-micro/*.ts', {
   eager: true, query: '?raw', import: 'default',
@@ -41,9 +42,7 @@ export default function JavaScriptCode({ lessonId, codeFile, newLines, changedLi
       <div><button title="Уменьшить текст" aria-label="Уменьшить текст" disabled={fontSize === 14} onClick={() => setFontSize(size => size - 1)}>A−</button>
         <button title="Увеличить текст" aria-label="Увеличить текст" disabled={fontSize === 20} onClick={() => setFontSize(size => size + 1)}>A+</button></div>
     </div>
-    <pre ref={viewer} className="code-viewer" tabIndex={0} aria-label="Полный код шага. Добавляй только указанные строки; рисунки вставляет MakeCode." style={{ fontSize }}
-      onCopy={event => event.preventDefault()} onContextMenu={event => event.preventDefault()}
-      onKeyDown={event => { if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'c') event.preventDefault(); }}>
+    <pre ref={viewer} className="code-viewer protected-code" tabIndex={0} aria-label="Полный код шага. Добавляй или изменяй только указанные строки; рисунки вставляет MakeCode." style={{ fontSize }} {...codeProtection}>
       <code>{highlight(source).map((line, index) => <span className={`code-line ${newLines.some(([start, end]) => index + 1 >= start && index + 1 <= end) ? 'new-code' : ''} ${changedLines.some(([start, end]) => index + 1 >= start && index + 1 <= end) ? 'changed-code' : ''}`} key={index}>
         <span className="line-number" aria-hidden="true">{index + 1}</span><span className="line-source">{line.map((token, i) => <span className={`syntax-${token.kind}`} key={i}>{token.text}</span>)}</span>
       </span>)}</code>

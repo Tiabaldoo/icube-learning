@@ -1,26 +1,26 @@
 namespace SpriteKind {
-    export const Star = SpriteKind.create()
+    export const Звезда = SpriteKind.create()
 }
 
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Star, function (sprite, otherSprite) {
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Звезда, function (sprite, otherSprite) {
     info.changeScoreBy(1)
-    star.setPosition(randint(10, 150), randint(10, 110))
+    Звезда.setPosition(randint(10, 150), randint(10, 110))
 
     if (info.score() >= 10) {
     }
 })
 
-let star: Sprite = null
+let Звезда: Sprite = null
 
-let player = sprites.create(
+let Игрок = sprites.create(
     sprites.castle.heroWalkFront1,
     SpriteKind.Player
 )
 
-controller.moveSprite(player, 100, 100)
-player.setStayInScreen(true)
+controller.moveSprite(Игрок, 100, 100)
+Игрок.setStayInScreen(true)
 
-star = sprites.create(img`
+Звезда = sprites.create(img`
     . . . . . . . . . . . . . . . .
     . . . . . . . . . . . . . . . .
     . . . . . . . . . . . . . . . .
@@ -37,7 +37,7 @@ star = sprites.create(img`
     . . . . . . . . . . . . . . . .
     . . . . . . . . . . . . . . . .
     . . . . . . . . . . . . . . . .
-`, SpriteKind.Star)
+`, SpriteKind.Звезда)
 
-star.setPosition(randint(10, 150), randint(10, 110))
+Звезда.setPosition(randint(10, 150), randint(10, 110))
 info.setScore(0)

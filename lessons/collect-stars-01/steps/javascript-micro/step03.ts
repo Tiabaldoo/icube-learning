@@ -1,1 +1,1 @@
-let player = sprites.create(img``, SpriteKind.Player)
+let Игрок = sprites.create(img``, SpriteKind.Player)

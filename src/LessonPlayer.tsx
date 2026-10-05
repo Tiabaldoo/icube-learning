@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { Lesson, LessonMode } from './games';
 import BlocksImage from './BlocksImage';
 import JavaScriptCode from './JavaScriptCode';
+import { codeProtection } from './codeProtection';
 
 const images = import.meta.glob<string>(['../lessons/*/images/blocks/*.png', '../lessons/*/images/ui/*.png'], {
   eager: true, query: '?url', import: 'default',
@@ -96,14 +97,14 @@ export default function LessonPlayer({ lesson, mode, onBack }: { lesson: Lesson;
               </section>}
               {step.actionType === 'type-code' && step.commands.length > 0 && <section className="command-guide" aria-labelledby="command-guide-title">
                 <h3 id="command-guide-title">Что написать</h3>
-                <ul>{step.commands.map((command, index) => <li key={index}><code>{command.code}</code><p>{command.purpose}</p></li>)}</ul>
+                <ul>{step.commands.map((command, index) => <li key={index}><code className="protected-code" tabIndex={0} {...codeProtection}>{command.code}</code><p>{command.purpose}</p></li>)}</ul>
               </section>}
-              {step.change.before && <section className="code-change"><h3>Что изменить</h3><p>Было:</p><code>{step.change.before}</code><p>Стало:</p><code>{step.change.after}</code></section>}
+              {step.change.before && <section className="code-change"><h3>Что изменить</h3><p>Было:</p><code className="protected-code" tabIndex={0} {...codeProtection}>{step.change.before}</code><p>Стало:</p><code className="protected-code" tabIndex={0} {...codeProtection}>{step.change.after}</code></section>}
               <section className="expected"><h3>Проверь</h3><p>{step.check}</p></section>
               {step.challenge && <section className="challenge"><h3>Попробуй сам</h3><p>{step.challenge}</p></section>}
               <details className="step-theory" key={step.id}>
                 <summary>Почему это работает?</summary>
-                <p>{step.theory}</p>
+                {step.theory.split('\n\n').map((paragraph, index) => <p key={index}>{paragraph}</p>)}
               </details>
             </div>
           </section>

@@ -1,4 +1,4 @@
-let player = sprites.create(
+let Игрок = sprites.create(
     img`
     . . . . . . f f f f . . . . . .
     . . . . f f f 2 2 f f f . . . .

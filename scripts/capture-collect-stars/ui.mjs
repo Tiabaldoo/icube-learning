@@ -3,9 +3,10 @@ import { mkdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 // Real MakeCode UI screenshots for this lesson, not drawings of its interface.
-export async function captureUI(browser, directory) {
+export async function captureUI(browser, directory, selected = []) {
     let context;
     let page;
+    let captured = 0;
     const output = path.join(directory, 'images/ui');
     await mkdir(output, { recursive: true });
     async function project() {
@@ -23,12 +24,14 @@ export async function captureUI(browser, directory) {
         await page.evaluate(() => window.E.getEditor().closeTour());
     }
     async function frame(name, clip) {
+        if (selected.length && !selected.includes(name)) return;
         await page.evaluate(async () => {
             await document.fonts.ready;
             await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
         });
         await expect(page.locator('.teaching-bubble-container:visible')).toHaveCount(0);
         await page.screenshot({ path: path.join(output, `${name}.png`), clip, animations: 'disabled' });
+        captured++;
         console.log(`UI: ${name}.png`);
     }
     async function mark(locator) {
@@ -57,7 +60,7 @@ export async function captureUI(browser, directory) {
             ws.cleanUp(); ws.setScale(1); ws.scrollCenter();
         });
     }
-    async function variable(name) {
+    async function variable(name, filename) {
         if (!await page.getByText('Создать переменную...', { exact: true }).isVisible()) {
             await page.getByRole('treeitem', { name: 'Переменные', exact: true }).click();
         }
@@ -67,7 +70,7 @@ export async function captureUI(browser, directory) {
         await mark(dialog.locator('input'));
         await mark(dialog.getByRole('button', { name: 'OK', exact: true }));
         const box = await dialog.boundingBox();
-        await frame(`create-variable-${name}`, { x: box.x - 16, y: box.y - 16, width: box.width + 32, height: box.height + 32 });
+        await frame(`create-variable-${filename}`, { x: box.x - 16, y: box.y - 16, width: box.width + 32, height: box.height + 32 });
         await dialog.getByRole('button', { name: 'OK', exact: true }).click();
         await dialog.waitFor({ state: 'hidden' });
     }
@@ -75,8 +78,31 @@ export async function captureUI(browser, directory) {
         await page.locator('[title="Галерея"]:visible').click();
         const tile = page.locator(`.image-editor-gallery.visible [title="${asset}"]`);
         await tile.scrollIntoViewIfNeeded();
-        await mark(tile.locator('..'));
+        // A viewport overlay avoids the gallery's overflow clipping the frame.
+        const spotlight = await tile.locator('..').evaluate((element, label) => {
+            const box = element.getBoundingClientRect();
+            const frame = document.createElement('div');
+            frame.id = 'lesson-gallery-highlight';
+            Object.assign(frame.style, {
+                position: 'fixed', left: `${box.left - 6}px`, top: `${box.top - 6}px`,
+                width: `${box.width + 12}px`, height: `${box.height + 12}px`,
+                border: '6px solid #ff7900', borderRadius: '8px', boxSizing: 'border-box',
+                boxShadow: '0 0 0 9999px rgba(0, 0, 0, .28)', zIndex: '2147483647',
+                pointerEvents: 'none',
+            });
+            const caption = document.createElement('div');
+            caption.textContent = label;
+            Object.assign(caption.style, {
+                position: 'absolute', bottom: 'calc(100% + 8px)', left: '-6px',
+                background: '#ff7900', color: '#241600', font: 'bold 16px sans-serif',
+                padding: '7px 10px', borderRadius: '6px', whiteSpace: 'nowrap',
+            });
+            frame.append(caption);
+            document.body.append(frame);
+            return frame.id;
+        }, asset.includes('hero') ? 'Выбери этого героя' : 'Выбери эту звезду');
         await frame(name, { x: 24, y: 24, width: 1318, height: 852 });
+        await page.locator(`#${spotlight}`).evaluate(el => el.remove());
         await tile.click();
         await page.locator('[title="Готово"]:visible').click();
         await page.locator('.image-editor-region:visible').waitFor({ state: 'hidden' });
@@ -98,7 +124,7 @@ export async function captureUI(browser, directory) {
             editor.setPosition({ lineNumber, column: 1 });
             editor.revealLineInCenter(lineNumber, window.monaco.editor.ScrollType.Immediate);
             return lineNumber;
-        }, step === 8 ? 'star' : 'player');
+        }, step === 8 ? 'Звезда' : 'Игрок');
         await page.waitForFunction(lineNumber => {
             const editor = window.E.getEditor().editor.editor;
             const top = editor.getDomNode().getBoundingClientRect().top + editor.getScrolledVisiblePosition({ lineNumber, column: 1 }).top;
@@ -119,35 +145,33 @@ export async function captureUI(browser, directory) {
     }
     try {
         await project();
-        await variable('player');
-        await variable('star');
+        await variable('Игрок', 'player');
+        await variable('Звезда', 'star');
         await blocks(2);
-        const playerField = await imageField('player');
-        await mark(playerField);
-        const playerBox = await playerField.boundingBox();
-        await frame('open-player-image-blocks', { x: Math.max(553, playerBox.x - 365), y: Math.max(65, playerBox.y - 55), width: 780, height: 210 });
+        const playerField = await imageField('Игрок');
         await playerField.click();
         await gallery('choose-player-image-blocks', 'sprites.castle.heroWalkFront1');
-        await blocks(6);
-        await page.locator('g[aria-label="выпадающий список: Player"]').click();
-        // Capture the actual new-kind menu; the instructions supply the name Star.
+        await blocks(9);
+        // Open the type dropdown of the new item, never the hero's dropdown.
+        const kindFieldId = await page.evaluate(() => {
+            const ws = window.E.getEditor().blocksEditor.editor;
+            const assignment = ws.getAllBlocks(false).find(b => b.type === 'variables_set' && b.getField('VAR').getVariable().name === 'Звезда');
+            return assignment.getDescendants(false).find(b => b.type === 'spritekind').getField('MEMBER').getSvgRoot().id;
+        });
+        await page.locator(`[id=${JSON.stringify(kindFieldId)}]`).click();
         const createKind = page.getByText('Создать kind...', { exact: true });
         await mark(createKind);
         const kindBox = await createKind.boundingBox();
         await frame('create-kind-star', { x: Math.max(552, kindBox.x - 260), y: Math.max(65, kindBox.y - 180), width: 700, height: 390 });
         await createKind.click();
         const kindDialog = page.locator('.coredialog:visible');
-        await kindDialog.locator('input').fill('Star');
+        await kindDialog.locator('input').fill('Звезда');
         await kindDialog.getByRole('button', { name: 'OK', exact: true }).click();
         await kindDialog.waitFor({ state: 'hidden' });
-        await blocks(9);
-        await (await imageField('star')).click();
+        // Keep the star block we just edited: reimporting a same-named kind can
+        // make MakeCode's decompiler append a number to the variable name.
+        await (await imageField('Звезда')).click();
         await gallery('choose-star-image-blocks', 'sprites.projectile.star3');
-        // Compile every JS snapshot, including intermediate editable image literals.
-        for (let step = 1; step <= 20; step++) await load(step);
-        await load(1);
-        await mark(page.locator('.javascript-menuitem:visible').first());
-        await frame('js-open-editor', { x: 420, y: 0, width: 946, height: 240 });
         await palette('js-empty-img-literal-and-palette', 2);
         await gallery('js-choose-player-image', 'sprites.castle.heroWalkFront1');
         await palette('js-star-palette', 8);
@@ -155,7 +179,7 @@ export async function captureUI(browser, directory) {
         const example = await readFile(path.join(directory, 'steps/javascript-micro/step10.ts'), 'utf8');
         const pixels = code => code.match(/img`([^`]*)`/g)?.map(image => image.replace(/\s/g, ''));
         await expect.poll(async () => pixels(await page.evaluate(() => window.E.getEditor().editor.getCurrentSource())), { timeout: 120_000 }).toEqual(pixels(example));
-        console.log('Captured 11 UI screenshots; all 20 JS snapshots compile.');
+        console.log(`Captured ${captured} required UI screenshots.`);
     } finally {
         await context.close();
     }

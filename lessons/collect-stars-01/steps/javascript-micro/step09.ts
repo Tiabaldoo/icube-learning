@@ -1,8 +1,8 @@
 namespace SpriteKind {
-    export const Star = SpriteKind.create()
+    export const Звезда = SpriteKind.create()
 }
 
-let player = sprites.create(
+let Игрок = sprites.create(
     img`
     . . . . . . f f f f . . . . . .
     . . . . f f f 2 2 f f f . . . .
@@ -24,7 +24,7 @@ let player = sprites.create(
     SpriteKind.Player
 )
 
-controller.moveSprite(player, 100, 100)
-player.setStayInScreen(true)
+controller.moveSprite(Игрок, 100, 100)
+Игрок.setStayInScreen(true)
 
-let star = sprites.create(img``, SpriteKind.Star)
+let Звезда = sprites.create(img``, SpriteKind.Звезда)
