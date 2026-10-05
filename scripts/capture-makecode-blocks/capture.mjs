@@ -49,16 +49,16 @@ async function capture(browser, file) {
         // The onboarding tour is fetched asynchronously and can appear at any point.
         await page.addLocatorHandler(page.locator('.teaching-bubble-close'), async close => close.click());
         console.log(`Loading MakeCode for ${path.basename(file)}...`);
-        await page.goto('https://arcade.makecode.com/?lang=en', { waitUntil: 'domcontentloaded' });
-        await page.getByRole('button', { name: 'New Project', exact: true }).last().click();
+        await page.goto('https://arcade.makecode.com/?lang=ru', { waitUntil: 'domcontentloaded' });
+        await page.locator('.newprojectcard').click();
         await page.getByRole('textbox').fill(path.basename(file, '.ts'));
-        await page.getByRole('button', { name: 'Create', exact: true }).click();
+        await page.getByRole('button', { name: /^(Создать|Create)$/ }).click();
         await page.locator('.blocklySvg:visible').first().waitFor();
-        await page.getByText('creating new project...', { exact: true }).waitFor({ state: 'hidden' });
+        await page.locator('.ReactModal__Overlay:visible').waitFor({ state: 'hidden' });
         // closeTour handles the first-run teaching bubble even if it is still mounting.
         await page.waitForFunction(() => typeof window.E?.getEditor()?.closeTour === 'function');
         await page.evaluate(() => window.E.getEditor().closeTour());
-        await page.getByLabel('Convert code to JavaScript', { exact: true }).first().click();
+        await page.locator('.javascript-menuitem:visible').first().click();
         await page.waitForFunction(() => !!window.monaco?.editor.getModels().find(model => model.uri.path.endsWith('/main.ts')));
         await page.waitForFunction(() => !window.E.getEditor().updatingEditorFile);
         await page.evaluate(code => {
@@ -77,7 +77,7 @@ async function capture(browser, file) {
         if (!compilation.success || compilation.diagnostics?.some(diagnostic => diagnostic.category === 1)) {
             throw new Error(`TypeScript compile error: ${JSON.stringify(compilation.diagnostics)}`);
         }
-        await page.getByLabel('Convert code to Blocks', { exact: true }).first().click();
+        await page.locator('.blocks-menuitem:visible').first().click();
         console.log('Waiting for Blocks conversion...');
         await page.locator('.blocklySvg:visible').first().waitFor();
         await page.waitForFunction(() => window.E.getEditor().editor === window.E.getEditor().blocksEditor);
@@ -88,6 +88,13 @@ async function capture(browser, file) {
         const types = await page.evaluate(() => window.E.getEditor().blocksEditor.editor.getAllBlocks(false).map(block => block.type));
         if (types.some(type => /^(typescript|ts)_(statement|expression)$/.test(type))) {
             throw new Error('MakeCode left unconverted JavaScript blocks');
+        }
+        const language = await page.evaluate(() => ({
+            locale: window.pxt.Util.userLanguage(),
+            labels: window.E.getEditor().blocksEditor.editor.getAllBlocks(false).map(block => block.toString()).join(' ')
+        }));
+        if (!language.locale.startsWith('ru') || !/[а-яё]/i.test(language.labels)) {
+            throw new Error('MakeCode blocks are not in Russian');
         }
 
         await page.evaluate(() => {

@@ -1,6 +1,17 @@
 # icube-learning
 
-Для генерации блоков нужен Node.js 20+ и доступ к интернету:
+Нужен Node.js 20.19+ или 22.12+.
+
+Учебный плеер использует существующий `lessons/collect-stars-01/lesson.json`.
+Прогресс и результат теста сохраняются в браузере через localStorage.
+
+```bash
+npm install
+npm run dev
+npm run build
+```
+
+Для генерации русских блоков нужен доступ к интернету:
 
 ```bash
 npm install
