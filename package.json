@@ -1,0 +1,10 @@
+{
+  "name": "icube-learning",
+  "private": true,
+  "scripts": {
+    "capture:blocks": "node scripts/capture-makecode-blocks/capture.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.58.2"
+  }
+}
