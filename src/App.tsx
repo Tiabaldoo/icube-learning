@@ -112,6 +112,16 @@ export default function App() {
                 : <img src={images[imageKey]} alt={`Блоки MakeCode: ${step.title}`} onError={() => setImageFailed(true)} />}
               <figcaption>Собери эти блоки в MakeCode Arcade</figcaption>
             </figure>
+            <section className="block-guide" aria-labelledby="block-guide-title">
+              <h3 id="block-guide-title">Где искать</h3>
+              <ul>
+                {step.blocks.map((block, index) => <li key={index}>
+                  <span className="block-category">{block.category}</span>
+                  <strong>«{block.name}»</strong>
+                  <p>{block.purpose}</p>
+                </li>)}
+              </ul>
+            </section>
             <div className="step-notes">
               <section className="challenge"><h3><span aria-hidden="true">✦</span> Попробуй сам</h3><p>{step.challenge}</p></section>
               <section className="expected"><h3><span aria-hidden="true">✓</span> Что получится</h3><p>{step.expectedResult}</p></section>
