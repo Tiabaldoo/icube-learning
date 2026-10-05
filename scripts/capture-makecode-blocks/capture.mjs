@@ -1,6 +1,7 @@
 import { chromium, expect as playwrightExpect } from '@playwright/test';
 import { mkdir, readFile, readdir, stat, unlink, rename } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const timeout = 120_000;
 const expect = playwrightExpect.configure({ timeout });
@@ -26,11 +27,11 @@ function workspace() {
     return window.E?.getEditor()?.blocksEditor?.editor;
 }
 
-async function capture(browser, file) {
+export async function capture(browser, file, outputFile) {
     const source = await readFile(file, 'utf8');
     if (!source.trim()) throw new Error('The TypeScript file is empty');
-    const directory = path.join(path.dirname(path.dirname(file)), 'images');
-    const destination = path.join(directory, `${path.basename(file, '.ts')}.png`);
+    const destination = outputFile || path.join(path.dirname(path.dirname(file)), 'images', `${path.basename(file, '.ts')}.png`);
+    const directory = path.dirname(destination);
     const temporary = `${destination}.tmp`;
     await mkdir(directory, { recursive: true });
     // A failed recapture must not leave an old image looking like a success.
@@ -157,18 +158,20 @@ async function capture(browser, file) {
     }
 }
 
-let browser;
-try {
-    const files = await inputs(process.argv[2]);
-    browser = await chromium.launch();
-    for (const file of files) {
-        try { await capture(browser, file); }
-        catch (error) { throw new Error(`${file}: ${error.message}`, { cause: error }); }
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+    let browser;
+    try {
+        const files = await inputs(process.argv[2]);
+        browser = await chromium.launch();
+        for (const file of files) {
+            try { await capture(browser, file); }
+            catch (error) { throw new Error(`${file}: ${error.message}`, { cause: error }); }
+        }
+        console.log(`Captured ${files.length} PNG images.`);
+    } catch (error) {
+        console.error(`Capture failed: ${error.message}`);
+        process.exitCode = 1;
+    } finally {
+        await browser?.close();
     }
-    console.log(`Captured ${files.length} PNG images.`);
-} catch (error) {
-    console.error(`Capture failed: ${error.message}`);
-    process.exitCode = 1;
-} finally {
-    await browser?.close();
 }

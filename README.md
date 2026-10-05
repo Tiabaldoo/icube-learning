@@ -2,24 +2,39 @@
 
 Нужен Node.js 20.19+ или 22.12+.
 
-Учебный плеер использует существующий `lessons/collect-stars-01/lesson.json`.
-Прогресс и результат теста сохраняются в браузере через localStorage.
+В игре «Собираем звёзды» по 20 микрошагов в Блоках и JavaScript.
+Уроки: `lessons/collect-stars-01/lesson.json` и `javascript/lesson.json`.
+Прохождение и результат теста живут только в текущей сессии, без localStorage.
 
 ```bash
-npm install
+npm ci
 npm run dev
 npm run build
 ```
 
-Для генерации русских блоков нужен доступ к интернету:
+Для снимков обновлённого урока (14 схем блоков и 11 реальных UI-скриншотов)
+нужен доступ к интернету:
 
 ```bash
-npm install
 npx playwright install chromium
-npm run capture:blocks -- lessons/collect-stars-01
+npm run capture:lesson
+# Можно повторить только одну часть:
+npm run capture:lesson -- --blocks
+npm run capture:lesson -- --ui
 ```
 
-PNG сохраняются в `lessons/collect-stars-01/images/`. Можно передать папку
-`steps/` или один файл `steps/step03.ts`. При ошибке скрипт сообщает файл и
-завершается с ненулевым кодом. Скрипт использует внутренний API редактора
-MakeCode; изменения сайта могут потребовать обновления скрипта.
+Новые снимки сохраняются в `images/blocks/` и `images/ui/`.
+UI-съёмка также проверяет компиляцию JavaScript-микрошагов в MakeCode.
+Скрипт использует внутренний API MakeCode; изменения сайта могут потребовать
+обновления скрипта. При ошибке команда завершается с ненулевым кодом.
+
+Прежняя команда `npm run capture:blocks -- lessons/collect-stars-01` сохранена
+для исходных шести файлов `steps/step*.ts`: её PNG остаются в `images/`.
+Ей также можно передать папку `steps/` или один файл `steps/step03.ts`.
+
+`actionType` описывает действие, `visual.type` выбирает схему блоков,
+скриншот интерфейса или code viewer. У `modify-code` есть `change.before/after`
+и `changedLines`; новые строки задаются в `newLines`.
+Образцы программ находятся в `steps/blocks-micro/` и `steps/javascript-micro/`.
+Код рисунков ребёнок не переписывает: вводит img с двумя обратными кавычками, открывает палитру
+и выбирает изображение в галерее MakeCode.

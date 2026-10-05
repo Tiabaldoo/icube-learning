@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "capture:blocks": "node scripts/capture-makecode-blocks/capture.mjs"
+    "capture:blocks": "node scripts/capture-makecode-blocks/capture.mjs",
+    "capture:lesson": "node scripts/capture-collect-stars/capture.mjs"
   },
   "dependencies": {
     "react": "^19.3.0",

@@ -3,7 +3,7 @@ import type { Lesson, LessonMode } from './games';
 import BlocksImage from './BlocksImage';
 import JavaScriptCode from './JavaScriptCode';
 
-const images = import.meta.glob<string>('../lessons/*/images/*.png', {
+const images = import.meta.glob<string>(['../lessons/*/images/blocks/*.png', '../lessons/*/images/ui/*.png'], {
   eager: true, query: '?url', import: 'default',
 });
 
@@ -34,7 +34,7 @@ export default function LessonPlayer({ lesson, mode, onBack }: { lesson: Lesson;
   const step = lesson.steps[progress.step];
   const question = lesson.quiz[progress.questionIndex];
   const chosen = progress.answers[progress.questionIndex];
-  const imageKey = 'typescriptFile' in step ? `../lessons/${lesson.id}/images/${step.typescriptFile.split('/').pop()!.replace(/\.ts$/, '.png')}` : '';
+  const imageKey = `../lessons/${lesson.id}/${step.visual.src}`;
 
   useEffect(() => {
     setImageFailed(false);
@@ -72,11 +72,11 @@ export default function LessonPlayer({ lesson, mode, onBack }: { lesson: Lesson;
       <main>
         {progress.phase === 'lesson' && <>
           <section className="lesson-card step-card" aria-labelledby="screen-title">
-            {'codeFile' in step ? <JavaScriptCode key={step.id} lessonId={lesson.id} codeFile={step.codeFile} newLines={step.newLines} /> : <figure className="blocks-picture">
+            {step.visual.type === 'code' ? <JavaScriptCode key={step.id} lessonId={lesson.id} codeFile={step.visual.codeFile} newLines={step.newLines} changedLines={step.changedLines} /> : <figure className="blocks-picture">
               {imageFailed || !images[imageKey]
-                ? <p role="alert">Не удалось загрузить картинку блоков. Попробуй обновить страницу.</p>
-                : <BlocksImage key={step.id} src={images[imageKey]} alt={`Блоки MakeCode: ${step.title}`} onError={() => setImageFailed(true)} />}
-              <figcaption>Собери эти блоки в MakeCode Arcade</figcaption>
+                ? <p role="alert">Не удалось загрузить картинку. Попробуй обновить страницу.</p>
+                : <BlocksImage key={step.id} src={images[imageKey]} alt={`${step.visual.type === 'ui' ? 'Интерфейс' : 'Блоки'} MakeCode: ${step.title}`} onError={() => setImageFailed(true)} />}
+              <figcaption>{step.visual.caption}</figcaption>
             </figure>}
             <div className="step-content">
               <div className="card-intro">
@@ -84,7 +84,8 @@ export default function LessonPlayer({ lesson, mode, onBack }: { lesson: Lesson;
                 <h2 id="screen-title" ref={heading} tabIndex={-1}>{step.title}</h2>
               </div>
               <section className="step-goal"><h3>Что делаем</h3><p>{step.goal}</p></section>
-              {'blocks' in step ? <section className="block-guide" aria-labelledby="block-guide-title">
+              <ol className="action-instructions">{step.instructions.map((instruction, index) => <li key={index}>{instruction}</li>)}</ol>
+              {step.blocks.length > 0 && <section className="block-guide" aria-labelledby="block-guide-title">
                 <h3 id="block-guide-title">Где найти</h3>
                 <ul>
                   {step.blocks.map((block, index) => <li key={index}>
@@ -92,12 +93,14 @@ export default function LessonPlayer({ lesson, mode, onBack }: { lesson: Lesson;
                     <strong>«{block.name}»</strong>
                   </li>)}
                 </ul>
-              </section> : <section className="command-guide" aria-labelledby="command-guide-title">
+              </section>}
+              {step.actionType === 'type-code' && step.commands.length > 0 && <section className="command-guide" aria-labelledby="command-guide-title">
                 <h3 id="command-guide-title">Что написать</h3>
                 <ul>{step.commands.map((command, index) => <li key={index}><code>{command.code}</code><p>{command.purpose}</p></li>)}</ul>
               </section>}
+              {step.change.before && <section className="code-change"><h3>Что изменить</h3><p>Было:</p><code>{step.change.before}</code><p>Стало:</p><code>{step.change.after}</code></section>}
               <section className="expected"><h3>Проверь</h3><p>{step.check}</p></section>
-              <section className="challenge"><h3>Попробуй сам</h3><p>{step.challenge}</p></section>
+              {step.challenge && <section className="challenge"><h3>Попробуй сам</h3><p>{step.challenge}</p></section>}
               <details className="step-theory" key={step.id}>
                 <summary>Почему это работает?</summary>
                 <p>{step.theory}</p>
@@ -107,7 +110,6 @@ export default function LessonPlayer({ lesson, mode, onBack }: { lesson: Lesson;
           <nav className="navigation" aria-label="Переход между шагами">
             <button className="button secondary" disabled={progress.step === 0}
               onClick={() => setProgress({ ...progress, step: progress.step - 1 })}>Назад</button>
-            <span className="navigation-note">Маленький шаг — новая возможность</span>
             <button className="button primary" onClick={() => setProgress(progress.step === lesson.steps.length - 1
               ? { ...progress, phase: 'quiz', lessonCompleted: true }
               : { ...progress, step: progress.step + 1 })}>
@@ -148,7 +150,6 @@ export default function LessonPlayer({ lesson, mode, onBack }: { lesson: Lesson;
           <button className="button primary" onClick={() => setProgress(freshProgress(lesson))}>Пройти урок заново</button>
         </section>}
       </main>
-      <footer className="page-footer">Создавай. Пробуй. Смотри, что изменилось.</footer>
     </div>
   );
 }

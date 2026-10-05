@@ -3,166 +3,667 @@
   "title": "Собери 10 звёзд",
   "steps": [
     {
-      "id": "javascript-step-01",
-      "title": "Создаём персонажа",
-      "goal": "Создадим героя и дадим ему имя player.",
-      "check": "Открой JavaScript в MakeCode и набери код слева. Запусти игру: герой появится в центре.",
-      "challenge": "Выбери другую картинку вместо heroWalkFront1 через галерею MakeCode. Как изменился герой?",
-      "theory": "let создаёт переменную — имя, под которым игра запоминает объект. sprites.create создаёт спрайт, то есть видимый объект игры. В скобках указываем картинку и тип SpriteKind.Player — игрок. sprites.castle.heroWalkFront1 выбирает готового героя из галереи. Скобки и запятые помогают игре понять, где команда и её настройки.",
-      "codeFile": "../steps/step01.ts",
+      "id": "javascript-01",
+      "title": "Открой JavaScript",
+      "actionType": "ui-action",
+      "goal": "Переключимся из блоков в текстовый редактор.",
+      "check": "Наверху выбран JavaScript, видно поле с кодом.",
+      "challenge": "",
+      "theory": "Программа будет той же, но команды мы будем писать буквами.",
+      "instructions": [
+        "Нажми JavaScript в верхней панели MakeCode.",
+        "Если в новом проекте есть пустые строки, их можно убрать."
+      ],
+      "visual": {
+        "type": "ui",
+        "src": "images/ui/js-open-editor.png",
+        "codeFile": "steps/javascript-micro/step01.ts",
+        "caption": "Нажми выделенный элемент в MakeCode"
+      },
+      "blocks": [],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "javascript-02",
+      "title": "Создай героя с пустой картинкой",
+      "actionType": "type-code",
+      "goal": "Напишем первую команду для player.",
+      "check": "Строка совпадает с примером. Герой пока пустой — это нормально.",
+      "challenge": "",
+      "theory": "let даёт объекту имя player. sprites.create создаёт его. В скобках указываем картинку img`` и тип игрока SpriteKind.Player.",
+      "instructions": [
+        "Набери строку слева. В img`` две обратные кавычки.",
+        "На Windows это клавиша слева от 1 с Ё / ` / ~; включи английскую раскладку и нажми без Shift."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "steps/javascript-micro/step02.ts",
+        "caption": "Перепиши только выделенные строки"
+      },
+      "blocks": [],
+      "commands": [
+        {
+          "code": "let player = sprites.create(img``, SpriteKind.Player)",
+          "purpose": "Добавь в место, указанное в инструкции."
+        }
+      ],
       "newLines": [
         [
           1,
-          4
+          1
         ]
       ],
-      "commands": [
-        {
-          "code": "let player = sprites.create(…)",
-          "purpose": "Создай героя player с картинкой и типом игрока."
-        }
-      ]
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
     },
     {
-      "id": "javascript-step-02",
-      "title": "Двигаем персонажа",
-      "goal": "Добавим управление героем и границы экрана.",
-      "check": "Нажми стрелки: герой должен двигаться и не уходить за край.",
-      "challenge": "В controller.moveSprite замени первое 100 на 150. Стало ли движение влево-вправо быстрее?",
-      "theory": "controller.moveSprite связывает героя player с кнопками. Первое число задаёт скорость влево-вправо, второе — вверх-вниз. Это аргументы: настройки команды внутри скобок. player.setStayInScreen(true) удерживает героя на экране. true означает «да», то есть эта возможность включена.",
-      "codeFile": "../steps/step02.ts",
-      "newLines": [
-        [
-          6,
-          7
-        ]
+      "id": "javascript-03",
+      "title": "Нажми палитру героя",
+      "actionType": "ui-action",
+      "goal": "Откроем редактор пустого изображения.",
+      "check": "Открылось окно рисунка с цветами.",
+      "challenge": "",
+      "theory": "После ввода img`` MakeCode показывает значок палитры рядом со строкой. Обратные кавычки — не обычные кавычки и не запятые.",
+      "instructions": [
+        "Наведи мышь на строку с img``.",
+        "Нажми палитру рядом с ней, как на скрине."
       ],
+      "visual": {
+        "type": "ui",
+        "src": "images/ui/js-empty-img-literal-and-palette.png",
+        "codeFile": "steps/javascript-micro/step03.ts",
+        "caption": "Нажми выделенный элемент в MakeCode"
+      },
+      "blocks": [],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "javascript-04",
+      "title": "Выбери картинку героя",
+      "actionType": "choose-image",
+      "goal": "Выберем героя через встроенную галерею.",
+      "check": "После «Готово» и запуска герой появился в центре.",
+      "challenge": "",
+      "theory": "MakeCode сам запишет рисунок в код. Не переписывай точки и буквы: оставь то, что вставил редактор. Картинка может быть записана длинным img`` или именем готового рисунка.",
+      "instructions": [
+        "В редакторе открой «Галерея» (Gallery).",
+        "Прокрути галерею до героя в красной шапке, выделенного на скрине. Выбери его и нажми «Готово»."
+      ],
+      "visual": {
+        "type": "ui",
+        "src": "images/ui/js-choose-player-image.png",
+        "codeFile": "steps/javascript-micro/step04.ts",
+        "caption": "Нажми выделенный элемент в MakeCode"
+      },
+      "blocks": [],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "javascript-05",
+      "title": "Добавь движение",
+      "actionType": "type-code",
+      "goal": "Свяжем стрелки с героем.",
+      "check": "Герой двигается стрелками.",
+      "challenge": "Попробуй скорость 150 вместо первого 100. Влево-вправо герой стал быстрее?",
+      "theory": "Первое 100 — скорость влево-вправо; второе — вверх-вниз.",
+      "instructions": [
+        "Под созданием player напиши новую команду слева."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "steps/javascript-micro/step05.ts",
+        "caption": "Перепиши только выделенные строки"
+      },
+      "blocks": [],
       "commands": [
         {
           "code": "controller.moveSprite(player, 100, 100)",
-          "purpose": "Разреши движение героя стрелками."
-        },
-        {
-          "code": "player.setStayInScreen(true)",
-          "purpose": "Включи границу экрана."
+          "purpose": "Добавь в место, указанное в инструкции."
         }
-      ]
+      ],
+      "newLines": [
+        [
+          23,
+          23
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
     },
     {
-      "id": "javascript-step-03",
-      "title": "Создаём звезду",
-      "goal": "Добавим отдельный предмет для сбора — звезду.",
-      "check": "Отведи героя от центра. Под ним должна быть звезда.",
-      "challenge": "В галерее картинки star временно выбери героя. Легко ли отличить предмет? Верни звезду.",
-      "theory": "Звезда хранится в отдельной переменной star, чтобы не путать её с player. В начале программы namespace SpriteKind дополняет список типов объектов. Строка export const Star = SpriteKind.create() добавляет тип Star — предмет для сбора. Рисунок между обратными кавычками после img задаёт пиксели звезды: точка — прозрачный пиксель, цифры и буквы — цвета. В конце создания указываем SpriteKind.Star, чтобы игра отличала звезду от игрока.",
-      "codeFile": "../steps/step03.ts",
+      "id": "javascript-06",
+      "title": "Включи границу экрана",
+      "actionType": "type-code",
+      "goal": "Удержим героя внутри экрана.",
+      "check": "Герой останавливается у края.",
+      "challenge": "",
+      "theory": "true значит «да»: граница включена.",
+      "instructions": [
+        "Под движением добавь player.setStayInScreen(true)."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "steps/javascript-micro/step06.ts",
+        "caption": "Перепиши только выделенные строки"
+      },
+      "blocks": [],
+      "commands": [
+        {
+          "code": "player.setStayInScreen(true)",
+          "purpose": "Добавь в место, указанное в инструкции."
+        }
+      ],
+      "newLines": [
+        [
+          24,
+          24
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "javascript-07",
+      "title": "Добавь тип Star",
+      "actionType": "type-code",
+      "goal": "Создадим отдельный тип для предмета.",
+      "check": "В начале программы есть namespace SpriteKind с типом Star.",
+      "challenge": "",
+      "theory": "namespace SpriteKind дополняет список типов. Новый Star отличает предмет для сбора от игрока.",
+      "instructions": [
+        "В самом начале программы напиши три выделенные строки.",
+        "Старый код не удаляй — он остаётся ниже."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "steps/javascript-micro/step07.ts",
+        "caption": "Перепиши только выделенные строки"
+      },
+      "blocks": [],
+      "commands": [
+        {
+          "code": "namespace SpriteKind {\n    export const Star = SpriteKind.create()\n}",
+          "purpose": "Добавь в место, указанное в инструкции."
+        }
+      ],
       "newLines": [
         [
           1,
           3
-        ],
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "javascript-08",
+      "title": "Создай пустую звезду",
+      "actionType": "type-code",
+      "goal": "Добавим объект star типа Star.",
+      "check": "Под кодом героя есть строка создания star. Картинка пока пустая.",
+      "challenge": "",
+      "theory": "star — имя предмета. SpriteKind.Star — его тип. Рисунок снова зададим через img``.",
+      "instructions": [
+        "Ниже границы героя напиши строку создания star с пустым img``."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "steps/javascript-micro/step08.ts",
+        "caption": "Перепиши только выделенные строки"
+      },
+      "blocks": [],
+      "commands": [
+        {
+          "code": "let star = sprites.create(img``, SpriteKind.Star)",
+          "purpose": "Добавь в место, указанное в инструкции."
+        }
+      ],
+      "newLines": [
         [
-          13,
+          30,
           30
         ]
       ],
-      "commands": [
-        {
-          "code": "export const Star = SpriteKind.create()",
-          "purpose": "Добавь тип Star внутри namespace SpriteKind."
-        },
-        {
-          "code": "let star = sprites.create(img`…`, SpriteKind.Star)",
-          "purpose": "Создай star; рисунок перепиши из кода слева."
-        }
-      ]
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
     },
     {
-      "id": "javascript-step-04",
-      "title": "Ставим звезду случайно",
-      "goal": "Поставим звезду в случайное место.",
-      "check": "Перезапусти игру несколько раз. Место звезды должно меняться.",
-      "challenge": "В первом randint замени 10, 150 на 60, 100. Стала ли звезда появляться ближе к середине?",
-      "theory": "star.setPosition задаёт место звезды. Первый аргумент — x: положение слева направо. Второй — y: сверху вниз. randint выбирает случайное целое число между двумя границами, включая края. Диапазоны 10–150 и 10–110 оставляют отступ от краёв игрового поля.",
-      "codeFile": "../steps/step04.ts",
-      "newLines": [
-        [
-          32,
-          32
-        ]
+      "id": "javascript-09",
+      "title": "Нажми палитру звезды",
+      "actionType": "ui-action",
+      "goal": "Откроем рисунок только для star.",
+      "check": "Редактор относится к звезде, а не к player.",
+      "challenge": "",
+      "theory": "У каждой картинки есть своя палитра рядом со строкой её создания.",
+      "instructions": [
+        "Наведи мышь на img`` в строке star.",
+        "Нажми палитру у этой строки."
       ],
-      "commands": [
-        {
-          "code": "star.setPosition(randint(10, 150), randint(10, 110))",
-          "purpose": "Задай случайные x и y для звезды."
-        }
-      ]
+      "visual": {
+        "type": "ui",
+        "src": "images/ui/js-star-palette.png",
+        "codeFile": "steps/javascript-micro/step09.ts",
+        "caption": "Нажми выделенный элемент в MakeCode"
+      },
+      "blocks": [],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
     },
     {
-      "id": "javascript-step-05",
-      "title": "Собираем звезду",
-      "goal": "Добавим очко за касание звезды и перенесём её.",
-      "check": "Коснись звезды героем. Счёт должен вырасти на 1, а звезда — переместиться.",
-      "challenge": "В info.changeScoreBy(1) замени 1 на 2. Сколько очков теперь даёт звезда?",
-      "theory": "sprites.onOverlap замечает касание объектов типов Player и Star. Команды внутри function выполняются при каждом таком касании: info.changeScoreBy(1) даёт очко, а star.setPosition переносит звезду. Параметры sprite и otherSprite — имена коснувшихся объектов. Объяви let star: Sprite = null перед созданием героя: пока звезды нет, но событие уже знает её имя. В строке создания звезды убери let — теперь заполняем уже объявленную переменную. info.setScore(0) в конце начинает игру с нулевого счёта.",
-      "codeFile": "../steps/step05.ts",
-      "newLines": [
-        [
-          5,
-          8
-        ],
-        [
-          10,
-          10
-        ],
-        [
-          20,
-          20
-        ],
-        [
-          40,
-          40
-        ]
+      "id": "javascript-10",
+      "title": "Выбери звезду в галерее",
+      "actionType": "choose-image",
+      "goal": "Выберем готовую жёлтую звезду.",
+      "check": "Отведи героя от центра — там видна звезда.",
+      "challenge": "",
+      "theory": "Редактор сам вставляет изображение. Точки и буквы изображения вручную печатать не нужно.",
+      "instructions": [
+        "Открой «Галерея» (Gallery), прокрути до выделенной на скрине звезды. Выбери её и нажми «Готово».",
+        "Оставь вставленный MakeCode код рисунка без изменений."
       ],
+      "visual": {
+        "type": "ui",
+        "src": "images/ui/js-choose-star-image.png",
+        "codeFile": "steps/javascript-micro/step10.ts",
+        "caption": "Нажми выделенный элемент в MakeCode"
+      },
+      "blocks": [],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "javascript-11",
+      "title": "Поставь звезду в центр",
+      "actionType": "type-code",
+      "goal": "Зададим звезде понятное место.",
+      "check": "Звезда в центре: x = 80, y = 60.",
+      "challenge": "",
+      "theory": "Первое число — X слева направо. Второе — Y сверху вниз. Эти числа задают центр экрана 160×120.",
+      "instructions": [
+        "После создания star добавь star.setPosition(80, 60)."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "steps/javascript-micro/step11.ts",
+        "caption": "Перепиши только выделенные строки"
+      },
+      "blocks": [],
       "commands": [
         {
-          "code": "sprites.onOverlap(…, function (…) { … })",
-          "purpose": "Внутри события добавь очко и новое место star."
-        },
-        {
-          "code": "let star: Sprite = null",
-          "purpose": "Объяви star заранее; ниже убери let у её создания."
-        },
+          "code": "star.setPosition(80, 60)",
+          "purpose": "Добавь в место, указанное в инструкции."
+        }
+      ],
+      "newLines": [
+        [
+          49,
+          49
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "javascript-12",
+      "title": "Сделай X случайным",
+      "actionType": "modify-code",
+      "goal": "Заменим постоянную координату X.",
+      "check": "При перезапусках меняется место звезды по горизонтали.",
+      "challenge": "",
+      "theory": "Случайное число от 10 до 150 выбирает место звезды слева направо. В коде это randint(10, 150). Y пока остаётся 60.",
+      "instructions": [
+        "В строке позиции замени только первое число 80, как в «Стало». Второе число не трогай."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "steps/javascript-micro/step12.ts",
+        "caption": "Перепиши только выделенные строки"
+      },
+      "blocks": [],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [
+        [
+          49,
+          49
+        ]
+      ],
+      "change": {
+        "before": "star.setPosition(80, 60)",
+        "after": "star.setPosition(randint(10, 150), 60)"
+      }
+    },
+    {
+      "id": "javascript-13",
+      "title": "Сделай Y случайным",
+      "actionType": "modify-code",
+      "goal": "Заменим постоянную высоту звезды.",
+      "check": "При перезапусках звезда меняет и высоту.",
+      "challenge": "Измени диапазон X с 10–150 на 60–100. Где появляются звёзды?",
+      "theory": "Второе случайное число выбирает место звезды сверху вниз. В коде это randint(10, 110). Отступ 10 не даёт звезде появляться на самом краю.",
+      "instructions": [
+        "В той же строке замени только второе число 60, как в «Стало»."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "steps/javascript-micro/step13.ts",
+        "caption": "Перепиши только выделенные строки"
+      },
+      "blocks": [],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [
+        [
+          49,
+          49
+        ]
+      ],
+      "change": {
+        "before": "star.setPosition(randint(10, 150), 60)",
+        "after": "star.setPosition(randint(10, 150), randint(10, 110))"
+      }
+    },
+    {
+      "id": "javascript-14",
+      "title": "Начни счёт с нуля",
+      "actionType": "type-code",
+      "goal": "Добавим счётчик звёзд.",
+      "check": "При запуске виден счёт 0.",
+      "challenge": "",
+      "theory": "info.setScore(0) обнуляет счёт в начале каждой игры.",
+      "instructions": [
+        "После первой позиции звезды добавь info.setScore(0)."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "steps/javascript-micro/step14.ts",
+        "caption": "Перепиши только выделенные строки"
+      },
+      "blocks": [],
+      "commands": [
         {
           "code": "info.setScore(0)",
-          "purpose": "Начни игру с нуля очков."
+          "purpose": "Добавь в место, указанное в инструкции."
         }
-      ]
-    },
-    {
-      "id": "javascript-step-06",
-      "title": "Добавляем победу",
-      "goal": "Завершим игру победой при 10 очках.",
-      "check": "Собери 10 звёзд. Игра должна сообщить о победе.",
-      "challenge": "В if замени порог 10 на 5. Сколько звёзд теперь нужно собрать?",
-      "theory": "if означает «если»: команды в фигурных скобках выполняются только при верном условии. info.score() узнаёт текущий счёт. Знак >= значит «больше или равно». Добавь проверку после переноса звезды внутри события касания. Когда очков 10 или больше, game.over(true) завершает игру победой: true здесь означает, что игрок выиграл.",
-      "codeFile": "../steps/step06.ts",
+      ],
       "newLines": [
         [
-          9,
-          11
+          50,
+          50
         ]
       ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "javascript-15",
+      "title": "Добавь событие касания",
+      "actionType": "type-code",
+      "goal": "Научим игру замечать встречу Player и Star.",
+      "check": "Есть пустое событие; при касании очки ещё не меняются.",
+      "challenge": "",
+      "theory": "sprites.onOverlap запускает function при касании выбранных типов. Имена sprite и otherSprite обозначают коснувшиеся объекты.",
+      "instructions": [
+        "В конце программы добавь событие из примера.",
+        "Оставь его фигурные скобки пустыми."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "steps/javascript-micro/step15.ts",
+        "caption": "Перепиши только выделенные строки"
+      },
+      "blocks": [],
       "commands": [
         {
-          "code": "if (info.score() >= 10) { … }",
-          "purpose": "Проверь счёт внутри события касания."
-        },
-        {
-          "code": "game.over(true)",
-          "purpose": "Помести победу внутрь if."
+          "code": "sprites.onOverlap(SpriteKind.Player, SpriteKind.Star, function (sprite, otherSprite) {\n})",
+          "purpose": "Добавь в место, указанное в инструкции."
         }
-      ]
+      ],
+      "newLines": [
+        [
+          52,
+          53
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "javascript-16",
+      "title": "Дай очко за касание",
+      "actionType": "type-code",
+      "goal": "Добавим одно очко внутри события.",
+      "check": "При касании счёт растёт. Пока стоишь на звезде, он может расти повторно.",
+      "challenge": "Измени info.changeScoreBy(1) на info.changeScoreBy(2). Как растёт счёт?",
+      "theory": "Только код внутри function выполняется при касании; снаружи он выполнился бы при запуске.",
+      "instructions": [
+        "Между фигурными скобками события добавь info.changeScoreBy(1)."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "steps/javascript-micro/step16.ts",
+        "caption": "Перепиши только выделенные строки"
+      },
+      "blocks": [],
+      "commands": [
+        {
+          "code": "    info.changeScoreBy(1)",
+          "purpose": "Добавь в место, указанное в инструкции."
+        }
+      ],
+      "newLines": [
+        [
+          53,
+          53
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "javascript-17",
+      "title": "Перенеси собранную звезду",
+      "actionType": "type-code",
+      "goal": "Отправим звезду в новое случайное место.",
+      "check": "За касание добавляется очко, звезда перемещается.",
+      "challenge": "",
+      "theory": "Новая позиция прекращает пересечение. Иначе событие могло бы начислять очки снова, пока герой стоит на месте.",
+      "instructions": [
+        "Внутри события после прибавки очка добавь такую же позицию star со случайными X и Y."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "steps/javascript-micro/step17.ts",
+        "caption": "Перепиши только выделенные строки"
+      },
+      "blocks": [],
+      "commands": [
+        {
+          "code": "    star.setPosition(randint(10, 150), randint(10, 110))",
+          "purpose": "Добавь в место, указанное в инструкции."
+        }
+      ],
+      "newLines": [
+        [
+          54,
+          54
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "javascript-18",
+      "title": "Подготовь условие победы",
+      "actionType": "type-code",
+      "goal": "Добавим проверку счёта внутри события.",
+      "check": "После переноса звезды есть пустой if. Победы пока нет.",
+      "challenge": "",
+      "theory": "if значит «если». Пока знак > проверяет строго больше 10 — на следующем шаге исправим границу.",
+      "instructions": [
+        "После переноса звезды напиши if с пустыми фигурными скобками."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "steps/javascript-micro/step18.ts",
+        "caption": "Перепиши только выделенные строки"
+      },
+      "blocks": [],
+      "commands": [
+        {
+          "code": "    if (info.score() > 10) {\n    }",
+          "purpose": "Добавь в место, указанное в инструкции."
+        }
+      ],
+      "newLines": [
+        [
+          55,
+          56
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "javascript-19",
+      "title": "Исправь границу победы",
+      "actionType": "modify-code",
+      "goal": "Разрешим победу ровно при 10 очках.",
+      "check": "В условии стоит >= 10.",
+      "challenge": "",
+      "theory": "Сочетание >= означает «больше или равно». Обычный > не подходит: при 10 очках он ещё отвечает «нет».",
+      "instructions": [
+        "В строке if добавь = сразу после >, без пробела между ними."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "steps/javascript-micro/step19.ts",
+        "caption": "Перепиши только выделенные строки"
+      },
+      "blocks": [],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [
+        [
+          55,
+          55
+        ]
+      ],
+      "change": {
+        "before": "if (info.score() > 10) {",
+        "after": "if (info.score() >= 10) {"
+      }
+    },
+    {
+      "id": "javascript-20",
+      "title": "Включи победу",
+      "actionType": "type-code",
+      "goal": "Завершим игру, когда условие верно.",
+      "check": "Собери 10 звёзд — появилась победа.",
+      "challenge": "Измени порог в if с 10 на 5. Сколько звёзд теперь нужно собрать?",
+      "theory": "game.over(true) заканчивает игру победой. true здесь значит, что игрок выиграл. Команда находится внутри if, чтобы не сработать раньше цели.",
+      "instructions": [
+        "Внутрь фигурных скобок if добавь game.over(true)."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "steps/javascript-micro/step20.ts",
+        "caption": "Перепиши только выделенные строки"
+      },
+      "blocks": [],
+      "commands": [
+        {
+          "code": "        game.over(true)",
+          "purpose": "Добавь в место, указанное в инструкции."
+        }
+      ],
+      "newLines": [
+        [
+          56,
+          56
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
     }
   ],
   "quiz": [

@@ -87,6 +87,5 @@ export default function App() {
         </section>
       </article>}
     </main>
-    <footer className="page-footer catalog-footer">Создавай. Пробуй. Смотри, что изменилось.</footer>
   </div>;
 }
