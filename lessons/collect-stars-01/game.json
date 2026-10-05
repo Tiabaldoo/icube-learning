@@ -7,7 +7,7 @@
   "learns": ["Спрайты", "Управление", "Случайные координаты", "Счёт", "Условия"],
   "modes": {
     "blocks": { "available": true },
-    "javascript": { "available": false },
+    "javascript": { "available": true },
     "python": { "available": false }
   }
 }

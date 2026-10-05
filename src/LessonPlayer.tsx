@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import type { Lesson } from './games';
+import type { Lesson, LessonMode } from './games';
 import BlocksImage from './BlocksImage';
+import JavaScriptCode from './JavaScriptCode';
 
 const images = import.meta.glob<string>('../lessons/*/images/*.png', {
   eager: true, query: '?url', import: 'default',
@@ -26,14 +27,14 @@ function countCorrect(answers: Progress['answers'], lesson: Lesson) {
   return answers.filter((answer, index) => answer === lesson.quiz[index].correct).length;
 }
 
-export default function LessonPlayer({ lesson, onBack }: { lesson: Lesson; onBack: () => void }) {
+export default function LessonPlayer({ lesson, mode, onBack }: { lesson: Lesson; mode: LessonMode; onBack: () => void }) {
   const [progress, setProgress] = useState(() => freshProgress(lesson));
   const [imageFailed, setImageFailed] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);
   const step = lesson.steps[progress.step];
   const question = lesson.quiz[progress.questionIndex];
   const chosen = progress.answers[progress.questionIndex];
-  const imageKey = `../lessons/${lesson.id}/images/${step.typescriptFile.split('/').pop()!.replace(/\.ts$/, '.png')}`;
+  const imageKey = 'typescriptFile' in step ? `../lessons/${lesson.id}/images/${step.typescriptFile.split('/').pop()!.replace(/\.ts$/, '.png')}` : '';
 
   useEffect(() => {
     setImageFailed(false);
@@ -53,9 +54,9 @@ export default function LessonPlayer({ lesson, onBack }: { lesson: Lesson; onBac
   return (
     <div className={`app-shell ${progress.phase === 'lesson' ? 'lesson-screen' : ''}`}>
       <header className="lesson-header">
-        <div className="brand"><span className="brand-mark" aria-hidden="true">✦</span> ICUBE <button className="back-link lesson-back" onClick={onBack}>← К игре</button></div>
+        <div className="brand"><span className="brand-mark" aria-hidden="true">iC</span> Айкуб Игры <button className="back-link lesson-back" onClick={onBack}>← К игре</button></div>
         <div className="lesson-heading">
-          <div><p className="eyebrow">ТВОЯ ПЕРВАЯ ИГРА</p><h1>{lesson.title}</h1></div>
+          <div><p className="eyebrow">{mode === 'javascript' ? 'JavaScript' : 'Блоки'}</p><h1>{lesson.title}</h1></div>
         </div>
         <ol className="step-track" aria-label="Шаги урока">
           {lesson.steps.map((item, index) => (
@@ -71,19 +72,19 @@ export default function LessonPlayer({ lesson, onBack }: { lesson: Lesson; onBac
       <main>
         {progress.phase === 'lesson' && <>
           <section className="lesson-card step-card" aria-labelledby="screen-title">
-            <figure className="blocks-picture">
+            {'codeFile' in step ? <JavaScriptCode key={step.id} lessonId={lesson.id} codeFile={step.codeFile} newLines={step.newLines} /> : <figure className="blocks-picture">
               {imageFailed || !images[imageKey]
                 ? <p role="alert">Не удалось загрузить картинку блоков. Попробуй обновить страницу.</p>
                 : <BlocksImage key={step.id} src={images[imageKey]} alt={`Блоки MakeCode: ${step.title}`} onError={() => setImageFailed(true)} />}
               <figcaption>Собери эти блоки в MakeCode Arcade</figcaption>
-            </figure>
+            </figure>}
             <div className="step-content">
               <div className="card-intro">
                 <p className="step-label">Шаг {progress.step + 1} из {lesson.steps.length}</p>
                 <h2 id="screen-title" ref={heading} tabIndex={-1}>{step.title}</h2>
               </div>
               <section className="step-goal"><h3>Что делаем</h3><p>{step.goal}</p></section>
-              <section className="block-guide" aria-labelledby="block-guide-title">
+              {'blocks' in step ? <section className="block-guide" aria-labelledby="block-guide-title">
                 <h3 id="block-guide-title">Где найти</h3>
                 <ul>
                   {step.blocks.map((block, index) => <li key={index}>
@@ -91,7 +92,10 @@ export default function LessonPlayer({ lesson, onBack }: { lesson: Lesson; onBac
                     <strong>«{block.name}»</strong>
                   </li>)}
                 </ul>
-              </section>
+              </section> : <section className="command-guide" aria-labelledby="command-guide-title">
+                <h3 id="command-guide-title">Что написать</h3>
+                <ul>{step.commands.map((command, index) => <li key={index}><code>{command.code}</code><p>{command.purpose}</p></li>)}</ul>
+              </section>}
               <section className="expected"><h3>Проверь</h3><p>{step.check}</p></section>
               <section className="challenge"><h3>Попробуй сам</h3><p>{step.challenge}</p></section>
               <details className="step-theory" key={step.id}>

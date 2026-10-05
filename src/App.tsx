@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import LessonPlayer from './LessonPlayer';
-import { games, programmingModes, type Game, type ProgrammingMode } from './games';
+import { games, programmingModes, type Game, type ProgrammingMode, type LessonMode } from './games';
 
-type Screen = { page: 'catalog' } | { page: 'game' | 'lesson'; game: Game };
+type Screen = { page: 'catalog' } | { page: 'game'; game: Game } | { page: 'lesson'; game: Game; mode: LessonMode };
 
 function Difficulty({ value }: { value: number }) {
   return <span className="game-difficulty" aria-label={`Сложность: ${value} из 5`}>
@@ -37,18 +37,17 @@ export default function App() {
   }, [screen]);
 
   if (screen.page === 'lesson') {
-    return <LessonPlayer lesson={screen.game.lesson} onBack={() => setScreen({ page: 'game', game: screen.game })} />;
+    return <LessonPlayer key={screen.mode} lesson={screen.game.lessons[screen.mode]} mode={screen.mode} onBack={() => setScreen({ page: 'game', game: screen.game })} />;
   }
 
   return <div className="catalog-shell">
     <header className="catalog-header">
-      <div className="brand"><span className="brand-mark" aria-hidden="true">✦</span> ICUBE LEARNING</div>
+      <div className="brand"><span className="brand-mark" aria-hidden="true">iC</span> Айкуб Игры</div>
       {screen.page === 'game' && <button className="back-link" onClick={() => setScreen({ page: 'catalog' })}>← Все игры</button>}
     </header>
     <main>
       {screen.page === 'catalog' ? <>
-        <h1 ref={heading} tabIndex={-1}>ICUBE LEARNING</h1>
-        <p className="catalog-subtitle">Выбери игру и начни создавать</p>
+        <h1 className="catalog-title" ref={heading} tabIndex={-1}>Выбери игру</h1>
         <div className="game-grid">
           {games.map(game => <button className="game-card" key={game.metadata.id}
             aria-label={`Открыть игру «${game.metadata.title}»`}
@@ -79,7 +78,7 @@ export default function App() {
               const available = screen.game.metadata.modes[mode].available;
               const info = programmingModes[mode];
               return <button className="mode-card" key={mode} disabled={!available}
-                onClick={() => setScreen({ page: 'lesson', game: screen.game })}>
+                onClick={() => { if (mode in screen.game.lessons) setScreen({ page: 'lesson', game: screen.game, mode: mode as LessonMode }); }}>
                 <span className="mode-card-heading">{info.title}{!available && <span className="soon-badge">Скоро</span>}</span>
                 <span>{info.description}</span>
               </button>;
