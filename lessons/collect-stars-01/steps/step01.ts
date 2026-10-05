@@ -1,4 +1,4 @@
-let player2 = sprites.create(
+let player = sprites.create(
     sprites.castle.heroWalkFront1,
     SpriteKind.Player
 )

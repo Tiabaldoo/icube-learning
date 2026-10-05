@@ -78,7 +78,7 @@ export default function App() {
   }
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${progress.phase === 'lesson' ? 'lesson-screen' : ''}`}>
       <header className="lesson-header">
         <div className="brand"><span className="brand-mark" aria-hidden="true">✦</span> ICUBE <span className="brand-note">учимся создавать игры</span></div>
         <div className="lesson-heading">
@@ -100,31 +100,34 @@ export default function App() {
         {storageFailed && <p className="storage-note" role="status">Не удалось сохранить прогресс. Оставь вкладку открытой, чтобы продолжить урок.</p>}
 
         {progress.phase === 'lesson' && <>
-          <section className="lesson-card" aria-labelledby="screen-title">
-            <div className="card-intro">
-              <p className="step-label">Шаг {progress.step + 1} из {lesson.steps.length}</p>
-              <h2 id="screen-title" ref={heading} tabIndex={-1}>{step.title}</h2>
-              <p className="explanation">{step.explanation}</p>
-            </div>
+          <section className="lesson-card step-card" aria-labelledby="screen-title">
             <figure className="blocks-picture">
               {imageFailed || !images[imageKey]
                 ? <p role="alert">Не удалось загрузить картинку блоков. Попробуй обновить страницу.</p>
                 : <img src={images[imageKey]} alt={`Блоки MakeCode: ${step.title}`} onError={() => setImageFailed(true)} />}
               <figcaption>Собери эти блоки в MakeCode Arcade</figcaption>
             </figure>
-            <section className="block-guide" aria-labelledby="block-guide-title">
-              <h3 id="block-guide-title">Где искать</h3>
-              <ul>
-                {step.blocks.map((block, index) => <li key={index}>
-                  <span className="block-category">{block.category}</span>
-                  <strong>«{block.name}»</strong>
-                  <p>{block.purpose}</p>
-                </li>)}
-              </ul>
-            </section>
-            <div className="step-notes">
-              <section className="challenge"><h3><span aria-hidden="true">✦</span> Попробуй сам</h3><p>{step.challenge}</p></section>
-              <section className="expected"><h3><span aria-hidden="true">✓</span> Что получится</h3><p>{step.expectedResult}</p></section>
+            <div className="step-content">
+              <div className="card-intro">
+                <p className="step-label">Шаг {progress.step + 1} из {lesson.steps.length}</p>
+                <h2 id="screen-title" ref={heading} tabIndex={-1}>{step.title}</h2>
+              </div>
+              <section className="step-goal"><h3>Что делаем</h3><p>{step.goal}</p></section>
+              <section className="block-guide" aria-labelledby="block-guide-title">
+                <h3 id="block-guide-title">Где найти</h3>
+                <ul>
+                  {step.blocks.map((block, index) => <li key={index}>
+                    <span className="block-category" data-category={block.category}>{block.category}</span>
+                    <strong>«{block.name}»</strong>
+                  </li>)}
+                </ul>
+              </section>
+              <section className="expected"><h3>Проверь</h3><p>{step.check}</p></section>
+              <section className="challenge"><h3>Попробуй сам</h3><p>{step.challenge}</p></section>
+              <details className="step-theory" key={step.id}>
+                <summary>Почему это работает?</summary>
+                <p>{step.theory}</p>
+              </details>
             </div>
           </section>
           <nav className="navigation" aria-label="Переход между шагами">

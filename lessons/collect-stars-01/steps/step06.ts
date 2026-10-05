@@ -13,13 +13,13 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Star, function (sprite, otherSpr
 
 let star: Sprite = null
 
-let player2 = sprites.create(
+let player = sprites.create(
     sprites.castle.heroWalkFront1,
     SpriteKind.Player
 )
 
-controller.moveSprite(player2, 100, 100)
-player2.setStayInScreen(true)
+controller.moveSprite(player, 100, 100)
+player.setStayInScreen(true)
 
 star = sprites.create(img`
     . . . . . . . . . . . . . . . .
