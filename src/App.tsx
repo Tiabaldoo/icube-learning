@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import lesson from '../lessons/collect-stars-01/lesson.json';
+import BlocksImage from './BlocksImage';
 
 const images = import.meta.glob<string>('../lessons/collect-stars-01/images/*.png', {
   eager: true, query: '?url', import: 'default',
@@ -104,7 +105,7 @@ export default function App() {
             <figure className="blocks-picture">
               {imageFailed || !images[imageKey]
                 ? <p role="alert">Не удалось загрузить картинку блоков. Попробуй обновить страницу.</p>
-                : <img src={images[imageKey]} alt={`Блоки MakeCode: ${step.title}`} onError={() => setImageFailed(true)} />}
+                : <BlocksImage key={step.id} src={images[imageKey]} alt={`Блоки MakeCode: ${step.title}`} onError={() => setImageFailed(true)} />}
               <figcaption>Собери эти блоки в MakeCode Arcade</figcaption>
             </figure>
             <div className="step-content">

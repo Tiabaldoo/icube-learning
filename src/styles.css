@@ -89,7 +89,21 @@ figcaption { margin-top: 18px; font-size: 14px; color: #6b7286; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .step-card { display: grid; grid-template-columns: minmax(0, 62fr) minmax(0, 38fr); overflow: visible; }
 .step-card .blocks-picture { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; margin: 12px; padding: 12px; }
-.step-card .blocks-picture img { width: 100%; height: auto; max-height: calc(100dvh - 280px); object-fit: contain; }
+.image-viewer { display: flex; flex-direction: column; gap: 8px; width: 100%; flex: 1; min-height: 0; }
+.image-controls { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; flex-shrink: 0; }
+.image-controls button { min-height: 32px; padding: 3px 10px; border: 1px solid #d9ddea; border-radius: 8px; background: white; color: #555e74; font-size: 14px; font-weight: 600; }
+.image-controls button:hover:not(:disabled) { background: #eee9fc; }
+.image-controls button:disabled { opacity: .45; }
+.image-scale { color: #687086; font-size: 12px; min-width: 36px; text-align: center; }
+.image-viewport { position: relative; flex: 1; min-height: 0; overflow: hidden; user-select: none; }
+.image-viewport.can-pan { cursor: grab; touch-action: none; }
+.image-viewport.is-dragging { cursor: grabbing; }
+.image-viewport img { position: absolute; left: 50%; top: 50%; max-width: none; max-height: none; margin: 0; object-fit: contain; transform-origin: center; }
+.image-dialog { position: fixed; inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 16px; border: 0; background: #202638; color: white; }
+.image-dialog[open] { display: flex; }
+.image-dialog::backdrop { background: #202638; }
+.image-dialog .image-scale { color: #d9ddea; }
+.blocks-picture .image-viewport img { max-width: none; max-height: none; margin: 0; }
 .step-card figcaption { margin-top: 10px; }
 .step-content { min-width: 0; padding: 16px 18px 16px 6px; display: flex; flex-direction: column; gap: 8px; font-size: 16px; line-height: 1.4; }
 .step-card .card-intro { padding: 0; }
@@ -124,6 +138,7 @@ figcaption { margin-top: 18px; font-size: 14px; color: #6b7286; }
   .lesson-screen .step-track { grid-column: 1 / -1; }
   .lesson-screen .step-track li > span:first-child { width: 26px; height: 26px; font-size: 14px; }
   .step-card { min-height: calc(100dvh - 194px); }
+  .step-card .blocks-picture { height: calc(100dvh - 220px); }
   .lesson-screen .navigation { padding: 12px 0; }
   .lesson-screen .button { min-height: 44px; padding: 9px 22px; font-size: 17px; }
   .lesson-screen .page-footer { padding: 0 0 8px; font-size: 12px; }
@@ -131,7 +146,7 @@ figcaption { margin-top: 18px; font-size: 14px; color: #6b7286; }
 @media (max-width: 1023px) {
   .step-card { grid-template-columns: 1fr; }
   .step-content { padding: 20px; }
-  .step-card .blocks-picture img { max-height: none; }
+  .step-card .blocks-picture > .image-viewer { flex: none; height: 440px; }
 }
 @media (max-width: 760px) {
   .app-shell { width: min(100% - 32px, 1120px); }
