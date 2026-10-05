@@ -1,0 +1,13 @@
+{
+  "id": "collect-stars-01",
+  "title": "Собери 10 звёзд",
+  "description": "Создай игру, в которой персонаж собирает звёзды, появляющиеся в случайных местах.",
+  "difficulty": 1,
+  "cover": { "hero": "🧑‍🚀", "collectible": "⭐" },
+  "learns": ["Спрайты", "Управление", "Случайные координаты", "Счёт", "Условия"],
+  "modes": {
+    "blocks": { "available": true },
+    "javascript": { "available": false },
+    "python": { "available": false }
+  }
+}

@@ -1,181 +1,93 @@
 import { useEffect, useRef, useState } from 'react';
-import lesson from '../lessons/collect-stars-01/lesson.json';
-import BlocksImage from './BlocksImage';
+import LessonPlayer from './LessonPlayer';
+import { games, programmingModes, type Game, type ProgrammingMode } from './games';
 
-const images = import.meta.glob<string>('../lessons/collect-stars-01/images/*.png', {
-  eager: true, query: '?url', import: 'default',
-});
-const storageKey = `icube-learning:${lesson.id}:progress:v1`;
+type Screen = { page: 'catalog' } | { page: 'game' | 'lesson'; game: Game };
 
-type Progress = {
-  phase: 'lesson' | 'quiz' | 'result';
-  step: number;
-  lessonCompleted: boolean;
-  questionIndex: number;
-  answers: (number | null)[];
-  result: number | null;
-};
-
-function freshProgress(): Progress {
-  return {
-    phase: 'lesson', step: 0, lessonCompleted: false, questionIndex: 0,
-    answers: lesson.quiz.map(() => null), result: null,
-  };
+function Difficulty({ value }: { value: number }) {
+  return <span className="game-difficulty" aria-label={`Сложность: ${value} из 5`}>
+    <span aria-hidden="true">{'★'.repeat(value)}{'☆'.repeat(5 - value)}</span>
+  </span>;
 }
 
-function countCorrect(answers: Progress['answers']) {
-  return answers.filter((answer, index) => answer === lesson.quiz[index].correct).length;
-}
-
-function loadProgress(): Progress {
-  try {
-    const saved = JSON.parse(localStorage.getItem(storageKey) || 'null') as Progress | null;
-    if (saved && ['lesson', 'quiz', 'result'].includes(saved.phase)
-      && Number.isInteger(saved.step) && saved.step >= 0 && saved.step < lesson.steps.length
-      && typeof saved.lessonCompleted === 'boolean'
-      && Number.isInteger(saved.questionIndex) && saved.questionIndex >= 0 && saved.questionIndex < lesson.quiz.length
-      && Array.isArray(saved.answers) && saved.answers.length === lesson.quiz.length
-      && saved.answers.every((answer, index) => answer === null
-        || (Number.isInteger(answer) && answer >= 0 && answer < lesson.quiz[index].answers.length))
-      && (saved.result === null || saved.result === countCorrect(saved.answers))
-      && (saved.phase === 'lesson' || saved.lessonCompleted)
-      && (saved.phase !== 'result' || (saved.answers.every(answer => answer !== null) && saved.result !== null))) {
-      return saved;
-    }
-  } catch { /* Invalid or unavailable storage starts a fresh lesson. */ }
-  return freshProgress();
+function GameCover({ game }: { game: Game }) {
+  return <div className="game-cover" aria-hidden="true">
+    <span className="cover-hero">{game.metadata.cover.hero}</span>
+    <span className="cover-star star-one">{game.metadata.cover.collectible}</span>
+    <span className="cover-star star-two">{game.metadata.cover.collectible}</span>
+    <span className="cover-star star-three">{game.metadata.cover.collectible}</span>
+    <span className="cover-ground" />
+  </div>;
 }
 
 export default function App() {
-  const [progress, setProgress] = useState(loadProgress);
-  const [storageFailed, setStorageFailed] = useState(false);
-  const [imageFailed, setImageFailed] = useState(false);
+  const [screen, setScreen] = useState<Screen>({ page: 'catalog' });
   const heading = useRef<HTMLHeadingElement>(null);
-  const step = lesson.steps[progress.step];
-  const question = lesson.quiz[progress.questionIndex];
-  const chosen = progress.answers[progress.questionIndex];
-  const imageKey = `../lessons/${lesson.id}/images/${step.typescriptFile.split('/').pop()!.replace(/\.ts$/, '.png')}`;
 
   useEffect(() => {
+    // Discard only obsolete lesson progress; never read or persist personal progress.
     try {
-      localStorage.setItem(storageKey, JSON.stringify(progress));
-      setStorageFailed(false);
-    } catch { setStorageFailed(true); }
-  }, [progress]);
+      games.forEach(game => localStorage.removeItem(`icube-learning:${game.metadata.id}:progress:v1`));
+    } catch { /* Catalog and lessons also work when storage is unavailable. */ }
+  }, []);
 
   useEffect(() => {
-    setImageFailed(false);
     heading.current?.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [progress.phase, progress.step, progress.questionIndex]);
+  }, [screen]);
 
-  function advanceQuiz() {
-    if (chosen === null) return;
-    if (progress.questionIndex === lesson.quiz.length - 1) {
-      setProgress({ ...progress, phase: 'result', result: countCorrect(progress.answers) });
-    } else {
-      setProgress({ ...progress, questionIndex: progress.questionIndex + 1 });
-    }
+  if (screen.page === 'lesson') {
+    return <LessonPlayer lesson={screen.game.lesson} onBack={() => setScreen({ page: 'game', game: screen.game })} />;
   }
 
-  return (
-    <div className={`app-shell ${progress.phase === 'lesson' ? 'lesson-screen' : ''}`}>
-      <header className="lesson-header">
-        <div className="brand"><span className="brand-mark" aria-hidden="true">✦</span> ICUBE <span className="brand-note">учимся создавать игры</span></div>
-        <div className="lesson-heading">
-          <div><p className="eyebrow">ТВОЯ ПЕРВАЯ ИГРА</p><h1>{lesson.title}</h1></div>
-          <div className="lesson-meta"><span>{lesson.age} лет</span><span>до {lesson.duration} минут</span></div>
+  return <div className="catalog-shell">
+    <header className="catalog-header">
+      <div className="brand"><span className="brand-mark" aria-hidden="true">✦</span> ICUBE LEARNING</div>
+      {screen.page === 'game' && <button className="back-link" onClick={() => setScreen({ page: 'catalog' })}>← Все игры</button>}
+    </header>
+    <main>
+      {screen.page === 'catalog' ? <>
+        <h1 ref={heading} tabIndex={-1}>ICUBE LEARNING</h1>
+        <p className="catalog-subtitle">Выбери игру и начни создавать</p>
+        <div className="game-grid">
+          {games.map(game => <button className="game-card" key={game.metadata.id}
+            aria-label={`Открыть игру «${game.metadata.title}»`}
+            onClick={() => setScreen({ page: 'game', game })}>
+            <GameCover game={game} />
+            <span className="game-card-body">
+              <span className="game-card-title">{game.metadata.title}</span>
+              <Difficulty value={game.metadata.difficulty} />
+              <span className="game-learns">{game.metadata.learns.join(' • ')}</span>
+            </span>
+          </button>)}
         </div>
-        <ol className="step-track" aria-label="Шаги урока">
-          {lesson.steps.map((item, index) => (
-            <li key={item.id} className={progress.phase !== 'lesson' || index < progress.step ? 'done' : index === progress.step ? 'current' : ''}
-              aria-current={progress.phase === 'lesson' && index === progress.step ? 'step' : undefined}>
-              <span>{progress.phase !== 'lesson' || index < progress.step ? '✓' : index + 1}</span>
-              <span className="sr-only">{item.title}</span>
-            </li>
-          ))}
-        </ol>
-      </header>
-
-      <main>
-        {storageFailed && <p className="storage-note" role="status">Не удалось сохранить прогресс. Оставь вкладку открытой, чтобы продолжить урок.</p>}
-
-        {progress.phase === 'lesson' && <>
-          <section className="lesson-card step-card" aria-labelledby="screen-title">
-            <figure className="blocks-picture">
-              {imageFailed || !images[imageKey]
-                ? <p role="alert">Не удалось загрузить картинку блоков. Попробуй обновить страницу.</p>
-                : <BlocksImage key={step.id} src={images[imageKey]} alt={`Блоки MakeCode: ${step.title}`} onError={() => setImageFailed(true)} />}
-              <figcaption>Собери эти блоки в MakeCode Arcade</figcaption>
-            </figure>
-            <div className="step-content">
-              <div className="card-intro">
-                <p className="step-label">Шаг {progress.step + 1} из {lesson.steps.length}</p>
-                <h2 id="screen-title" ref={heading} tabIndex={-1}>{step.title}</h2>
-              </div>
-              <section className="step-goal"><h3>Что делаем</h3><p>{step.goal}</p></section>
-              <section className="block-guide" aria-labelledby="block-guide-title">
-                <h3 id="block-guide-title">Где найти</h3>
-                <ul>
-                  {step.blocks.map((block, index) => <li key={index}>
-                    <span className="block-category" data-category={block.category}>{block.category}</span>
-                    <strong>«{block.name}»</strong>
-                  </li>)}
-                </ul>
-              </section>
-              <section className="expected"><h3>Проверь</h3><p>{step.check}</p></section>
-              <section className="challenge"><h3>Попробуй сам</h3><p>{step.challenge}</p></section>
-              <details className="step-theory" key={step.id}>
-                <summary>Почему это работает?</summary>
-                <p>{step.theory}</p>
-              </details>
-            </div>
-          </section>
-          <nav className="navigation" aria-label="Переход между шагами">
-            <button className="button secondary" disabled={progress.step === 0}
-              onClick={() => setProgress({ ...progress, step: progress.step - 1 })}>Назад</button>
-            <span className="navigation-note">Маленький шаг — новая возможность</span>
-            <button className="button primary" onClick={() => setProgress(progress.step === lesson.steps.length - 1
-              ? { ...progress, phase: 'quiz', lessonCompleted: true }
-              : { ...progress, step: progress.step + 1 })}>
-              {progress.step === lesson.steps.length - 1 ? 'Перейти к тесту' : 'Далее'} <span aria-hidden="true">→</span>
-            </button>
-          </nav>
-        </>}
-
-        {progress.phase === 'quiz' && <section className="lesson-card quiz-card" aria-labelledby="screen-title">
-          <p className="step-label">Вопрос {progress.questionIndex + 1} из {lesson.quiz.length}</p>
-          <h2 id="screen-title" ref={heading} tabIndex={-1}>Проверим, что ты узнал</h2>
-          <fieldset className="answers" disabled={chosen !== null}>
-            <legend>{question.question}</legend>
-            {question.answers.map((answer, index) => <label key={index}
-              className={`answer ${chosen === index ? 'selected' : ''} ${chosen !== null && index === question.correct ? 'correct' : ''}`}>
-              <input type="radio" name={`question-${progress.questionIndex}`} checked={chosen === index}
-                onChange={() => setProgress({ ...progress, answers: progress.answers.map((value, i) => i === progress.questionIndex ? index : value) })} />
-              <span>{answer}</span>
-            </label>)}
-          </fieldset>
-          {chosen !== null && <div className={`feedback ${chosen === question.correct ? 'success' : 'retry'}`} role="status">
-            <h3>{chosen === question.correct ? 'Верно!' : 'Пока не совсем верно'}</h3>
-            {chosen !== question.correct && <p>Правильный ответ: {question.answers[question.correct]}.</p>}
-            <p>{question.explanation}</p>
-          </div>}
-          <div className="quiz-navigation"><button className="button primary" disabled={chosen === null} onClick={advanceQuiz}>
-            {progress.questionIndex === lesson.quiz.length - 1 ? 'Показать результат' : 'К следующему вопросу'} <span aria-hidden="true">→</span>
-          </button></div>
-        </section>}
-
-        {progress.phase === 'result' && <section className="lesson-card result-card" aria-labelledby="screen-title">
-          <div className="result-star" aria-hidden="true">✦</div>
-          <p className="step-label">Урок пройден</p>
-          <h2 id="screen-title" ref={heading} tabIndex={-1}>Результат: {progress.result} из {lesson.quiz.length}</h2>
-          <p className="explanation">{progress.result === lesson.quiz.length
-            ? 'Все ответы верные! Ты знаешь, как работает твоя игра.'
-            : 'Ты прошёл весь урок! Можно повторить шаги и попробовать ещё раз.'}</p>
-          <button className="button primary" onClick={() => setProgress(freshProgress())}>Пройти урок заново</button>
-        </section>}
-      </main>
-      <footer className="page-footer">Создавай. Пробуй. Смотри, что изменилось.</footer>
-    </div>
-  );
+      </> : <article className="game-details lesson-card">
+        <div className="game-overview">
+          <GameCover game={screen.game} />
+          <div>
+            <h1 ref={heading} tabIndex={-1}>{screen.game.metadata.title}</h1>
+            <Difficulty value={screen.game.metadata.difficulty} />
+            <p className="game-description">{screen.game.metadata.description}</p>
+            <h2 className="learns-heading">Ты научишься</h2>
+            <ul className="learns-list">{screen.game.metadata.learns.map(item => <li key={item}>{item}</li>)}</ul>
+          </div>
+        </div>
+        <section className="mode-selection" aria-labelledby="mode-title">
+          <h2 id="mode-title">Выбери способ программирования</h2>
+          <div className="mode-grid">
+            {(Object.keys(screen.game.metadata.modes) as ProgrammingMode[]).map(mode => {
+              const available = screen.game.metadata.modes[mode].available;
+              const info = programmingModes[mode];
+              return <button className="mode-card" key={mode} disabled={!available}
+                onClick={() => setScreen({ page: 'lesson', game: screen.game })}>
+                <span className="mode-card-heading">{info.title}{!available && <span className="soon-badge">Скоро</span>}</span>
+                <span>{info.description}</span>
+              </button>;
+            })}
+          </div>
+        </section>
+      </article>}
+    </main>
+    <footer className="page-footer catalog-footer">Создавай. Пробуй. Смотри, что изменилось.</footer>
+  </div>;
 }
