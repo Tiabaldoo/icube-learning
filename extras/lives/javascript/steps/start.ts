@@ -1,0 +1,1 @@
+info.setLife(3)

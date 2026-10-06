@@ -3,7 +3,7 @@ import { mkdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 // Real MakeCode UI screenshots for this lesson, not drawings of its interface.
-export async function captureUI(browser, directory, selected = []) {
+export async function captureUI(browser, directory, selected = [], background = false) {
     let context;
     let page;
     let captured = 0;
@@ -40,7 +40,9 @@ export async function captureUI(browser, directory, selected = []) {
     async function load(step, mode = 'javascript-micro') {
         await page.locator('.javascript-menuitem:visible').first().click();
         await page.waitForFunction(() => window.E.getEditor().editor.editor?.getModel?.()?.uri.path.endsWith('/main.ts') && !window.E.getEditor().updatingEditorFile);
-        const source = await readFile(path.join(directory, `steps/${mode}/step${String(step).padStart(2, '0')}.ts`), 'utf8');
+        const file = background ? `${mode === 'blocks-micro' ? 'blocks' : 'javascript'}/steps/create.ts`
+            : `steps/${mode}/step${String(step).padStart(2, '0')}.ts`;
+        const source = await readFile(path.join(directory, file), 'utf8');
         await page.evaluate(code => window.E.getEditor().editor.editor.getModel().setValue(code), source);
         await expect.poll(() => page.evaluate(() => window.E.getEditor().editor.getCurrentSource()), { timeout: 120_000 }).toBe(source);
         await page.evaluate(() => window.E.getEditor().saveFileAsync());
@@ -120,11 +122,11 @@ export async function captureUI(browser, directory, selected = []) {
         await load(step);
         const line = await page.evaluate(variable => {
             const editor = window.E.getEditor().editor.editor;
-            const lineNumber = editor.getValue().split('\n').findIndex(text => text.includes(`let ${variable} = sprites.create`)) + 1;
+            const lineNumber = editor.getValue().split('\n').findIndex(text => text.includes(variable)) + 1;
             editor.setPosition({ lineNumber, column: 1 });
             editor.revealLineInCenter(lineNumber, window.monaco.editor.ScrollType.Immediate);
             return lineNumber;
-        }, step === 8 ? 'Звезда' : 'Игрок');
+        }, background ? 'scene.setBackgroundImage' : `let ${step === 8 ? 'Звезда' : 'Игрок'} = sprites.create`);
         await page.waitForFunction(lineNumber => {
             const editor = window.E.getEditor().editor.editor;
             const top = editor.getDomNode().getBoundingClientRect().top + editor.getScrolledVisiblePosition({ lineNumber, column: 1 }).top;
@@ -144,6 +146,27 @@ export async function captureUI(browser, directory, selected = []) {
         await glyph.click({ force: true });
     }
     try {
+        if (background) {
+            await blocks(1);
+            const fieldId = await page.evaluate(() => {
+                const ws = window.E.getEditor().blocksEditor.editor;
+                const field = ws.getAllBlocks(false).map(b => b.getField('img')).find(Boolean);
+                if (!field) throw new Error(JSON.stringify(ws.getAllBlocks(false).map(b => ({
+                    type: b.type, fields: b.inputList.flatMap(input => input.fieldRow.map(field => field.name)),
+                }))));
+                return field.getSvgRoot().id;
+            });
+            await page.locator(`[id=${JSON.stringify(fieldId)}]`).click();
+            await page.locator('.image-editor-region:visible').waitFor();
+            const fill = page.locator('[title*="Залив"]:visible, [title*="Fill"]:visible').first();
+            if (await fill.count()) await mark(fill);
+            await frame('editor', { x: 24, y: 24, width: 1318, height: 852 });
+            await page.locator('[title="Готово"]:visible').click();
+            await page.locator('.image-editor-region:visible').waitFor({ state: 'hidden' });
+            await palette('palette', 1);
+            console.log(`Captured ${captured} background editor screenshots.`);
+            return;
+        }
         await project();
         await variable('Игрок', 'player');
         await variable('Звезда', 'star');

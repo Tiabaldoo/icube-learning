@@ -1,0 +1,1 @@
+scene.setBackgroundImage(img``)

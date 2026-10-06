@@ -23,6 +23,8 @@ h1:focus { outline: none; }
 .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 350px)); gap: 24px; margin-top: 28px; }
 .game-card { display: block; padding: 0; text-align: left; border: 1px solid #e2e5ef; border-radius: 20px; overflow: hidden; background: white; color: inherit; box-shadow: 0 8px 28px #23234806; }
 .game-card:hover { border-color: #ed6500; box-shadow: 0 8px 28px #ed65001c; }
+.extra-icon { font-size: 38px; color: #ed6500; }
+.improve-invitation { display: grid; gap: 16px; justify-items: center; margin: 24px 0 16px; }
 .game-cover { position: relative; min-height: 210px; overflow: hidden; border-radius: inherit; background: linear-gradient(145deg, #fff1e5, #d8e9ff); }
 .cover-hero { position: absolute; left: 19%; bottom: 30px; font-size: 84px; line-height: 1; z-index: 1; }
 .cover-star { position: absolute; font-size: 38px; line-height: 1; }
@@ -197,6 +199,8 @@ figcaption { margin-top: 18px; font-size: 14px; color: #6b7286; }
 .step-card .block-category[data-category="Математика"] { background: #7652b4; }
 .step-card .block-category[data-category="Переменные"] { background: #b53554; }
 .step-card .block-category[data-category="Циклы"] { background: #31773d; }
+.step-card .block-category[data-category="Сцена"] { background: #a54e00; }
+.step-card .block-category[data-category="Музыка"] { background: #a13b9b; }
 .step-card .expected, .step-card .challenge { padding: 9px 12px; border-radius: 10px; }
 .step-theory { border-top: 1px solid #e2e5ef; padding-top: 8px; }
 .step-theory summary { cursor: pointer; font-weight: 650; color: #b44900; }

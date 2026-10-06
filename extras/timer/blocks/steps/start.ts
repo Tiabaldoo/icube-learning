@@ -1,0 +1,1 @@
+info.startCountdown(30)

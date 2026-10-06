@@ -1,0 +1,1 @@
+info.changeLifeBy(-1)

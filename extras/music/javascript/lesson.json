@@ -1,0 +1,75 @@
+{
+  "id": "music",
+  "title": "Добавь музыку",
+  "steps": [
+    {
+      "id": "music-add",
+      "title": "Добавь мелодию при старте",
+      "actionType": "type-code",
+      "goal": "Запустим простую музыку во время игры.",
+      "check": "При запуске слышна мелодия, а игрой можно управлять, не дожидаясь её конца.",
+      "challenge": "",
+      "theory": "Музыка создаёт настроение во время игры, а короткий звуковой эффект отмечает одно событие. Здесь мелодия запускается при старте, а не при каждом нажатии.\n\nТемп 120 задаёт скорость нот. Режим «в фоне» не останавливает действия игры, пока играет мелодия.",
+      "instructions": [
+        "В начале программы, вне событий, добавь строку из «Что написать».",
+        "Буквы в кавычках — ноты; знак - оставляет паузу. Число 120 — темп."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "javascript/steps/add.ts",
+        "caption": "Фрагмент для твоей игры"
+      },
+      "blocks": [],
+      "commands": [
+        {
+          "code": "music.play(music.stringPlayable(\"C D E G E D C - \", 120), music.PlaybackMode.InBackground)",
+          "purpose": "Добавь один раз при запуске игры."
+        }
+      ],
+      "newLines": [
+        [
+          1,
+          1
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "music-loop",
+      "title": "Включи повтор мелодии",
+      "actionType": "modify-code",
+      "goal": "Сделаем так, чтобы музыка не обрывалась после одного проигрывания.",
+      "check": "Дождись конца мелодии: она начинается снова, а управление продолжает работать.",
+      "challenge": "",
+      "theory": "Повторение возвращает мелодию к началу после последней ноты. Фоновый режим позволяет делать это одновременно с игрой. Отдельный цикл не нужен — он мог бы запускать новые звуки слишком часто.",
+      "instructions": [
+        "Измени только режим в существующей строке, как в «Стало».",
+        "Не добавляй вторую команду: LoopingInBackground повторяет мелодию сам."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "javascript/steps/loop.ts",
+        "caption": "Фрагмент для твоей игры"
+      },
+      "blocks": [],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [
+        [
+          1,
+          1
+        ]
+      ],
+      "change": {
+        "before": "music.play(music.stringPlayable(\"C D E G E D C - \", 120), music.PlaybackMode.InBackground)",
+        "after": "music.play(music.stringPlayable(\"C D E G E D C - \", 120), music.PlaybackMode.LoopingInBackground)"
+      }
+    }
+  ]
+}

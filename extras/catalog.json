@@ -1,0 +1,57 @@
+[
+  {
+    "id": "background",
+    "title": "Добавь фон",
+    "description": "Картинка позади объектов.",
+    "icon": "🌄",
+    "modes": {
+      "blocks": true,
+      "javascript": true,
+      "python": false
+    }
+  },
+  {
+    "id": "sound",
+    "title": "Добавь звук",
+    "description": "Звук при важном событии.",
+    "icon": "🔔",
+    "modes": {
+      "blocks": true,
+      "javascript": true,
+      "python": false
+    }
+  },
+  {
+    "id": "music",
+    "title": "Добавь музыку",
+    "description": "Мелодия во время игры.",
+    "icon": "🎵",
+    "modes": {
+      "blocks": true,
+      "javascript": true,
+      "python": false
+    }
+  },
+  {
+    "id": "lives",
+    "title": "Добавь жизни",
+    "description": "Несколько попыток в игре.",
+    "icon": "♥",
+    "modes": {
+      "blocks": true,
+      "javascript": true,
+      "python": false
+    }
+  },
+  {
+    "id": "timer",
+    "title": "Добавь таймер",
+    "description": "Обратный отсчёт времени.",
+    "icon": "⏱",
+    "modes": {
+      "blocks": true,
+      "javascript": true,
+      "python": false
+    }
+  }
+]
