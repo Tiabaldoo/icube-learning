@@ -1,0 +1,75 @@
+{
+  "id": "music",
+  "title": "Добавь музыку",
+  "steps": [
+    {
+      "id": "music-add",
+      "title": "Добавь мелодию при старте",
+      "actionType": "type-code",
+      "goal": "Запустим простую музыку во время игры.",
+      "check": "При запуске слышна мелодия, а игрой можно управлять, не дожидаясь её конца.",
+      "challenge": "",
+      "theory": "Мелодия создаёт настроение во время игры. Здесь она запускается при старте, а не при каждом нажатии.\n\nmusic.string_playable собирает мелодию из нот в кавычках. Число 120 задаёт темп, то есть скорость нот. Режим IN_BACKGROUND не задерживает управление, пока звучит музыка.",
+      "instructions": [
+        "Добавь строку в начало программы, вне функций событий и без отступа.",
+        "Буквы в кавычках — ноты, знак - оставляет паузу, а число 120 задаёт темп."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "python/steps/add.py",
+        "caption": "Фрагмент для твоей игры, не полная программа"
+      },
+      "blocks": [],
+      "commands": [
+        {
+          "code": "music.play(music.string_playable(\"C D E G E D C - \", 120), music.PlaybackMode.IN_BACKGROUND)",
+          "purpose": "Размести только этот фрагмент по инструкции шага."
+        }
+      ],
+      "newLines": [
+        [
+          1,
+          1
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "music-loop",
+      "title": "Включи повтор мелодии",
+      "actionType": "modify-code",
+      "goal": "Сделаем так, чтобы музыка не обрывалась после одного проигрывания.",
+      "check": "Дождись конца мелодии: она начинается снова, а управление продолжает работать.",
+      "challenge": "",
+      "theory": "Повторение возвращает мелодию к началу после последней ноты. Фоновый режим позволяет делать это одновременно с игрой. Отдельный цикл не нужен — он мог бы запускать новые звуки слишком часто.",
+      "instructions": [
+        "Измени только режим в уже написанной строке: IN_BACKGROUND на LOOPING_IN_BACKGROUND.",
+        "Не добавляй вторую команду: этот режим сам повторяет мелодию."
+      ],
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "python/steps/loop.py",
+        "caption": "Фрагмент для твоей игры, не полная программа"
+      },
+      "blocks": [],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [
+        [
+          1,
+          1
+        ]
+      ],
+      "change": {
+        "before": "music.play(music.string_playable(\"C D E G E D C - \", 120), music.PlaybackMode.IN_BACKGROUND)",
+        "after": "music.play(music.string_playable(\"C D E G E D C - \", 120), music.PlaybackMode.LOOPING_IN_BACKGROUND)"
+      }
+    }
+  ]
+}

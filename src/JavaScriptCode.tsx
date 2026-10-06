@@ -7,7 +7,7 @@ const sources = import.meta.glob<string>('../lessons/*/steps/javascript-micro/*.
 const extraSources = import.meta.glob<string>('../extras/*/javascript/steps/*.ts', {
   eager: true, query: '?raw', import: 'default',
 });
-const pythonSources = import.meta.glob<string>('../lessons/*/python/steps/*.py', {
+const pythonSources = import.meta.glob<string>(['../lessons/*/python/steps/*.py', '../extras/*/python/steps/*.py'], {
   eager: true, query: '?raw', import: 'default',
 });
 

@@ -7,7 +7,7 @@
     "modes": {
       "blocks": true,
       "javascript": true,
-      "python": false
+      "python": true
     }
   },
   {
@@ -18,7 +18,7 @@
     "modes": {
       "blocks": true,
       "javascript": true,
-      "python": false
+      "python": true
     }
   },
   {
@@ -29,7 +29,7 @@
     "modes": {
       "blocks": true,
       "javascript": true,
-      "python": false
+      "python": true
     }
   },
   {
@@ -40,7 +40,7 @@
     "modes": {
       "blocks": true,
       "javascript": true,
-      "python": false
+      "python": true
     }
   },
   {
@@ -51,7 +51,7 @@
     "modes": {
       "blocks": true,
       "javascript": true,
-      "python": false
+      "python": true
     }
   }
 ]

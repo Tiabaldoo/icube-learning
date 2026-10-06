@@ -24,9 +24,6 @@ h1:focus { outline: none; }
 .game-card { display: block; padding: 0; text-align: left; border: 1px solid #e2e5ef; border-radius: 20px; overflow: hidden; background: white; color: inherit; box-shadow: 0 8px 28px #23234806; }
 .game-card:hover { border-color: #ed6500; box-shadow: 0 8px 28px #ed65001c; }
 .extra-icon { font-size: 38px; color: #ed6500; }
-.python-image-guide { margin: 6px 0; min-width: 0; }
-.python-image-guide .image-viewport { height: 180px; }
-.python-image-guide figcaption { font-size: 12px; color: #687086; margin-top: 4px; }
 .improve-invitation { display: grid; gap: 16px; justify-items: center; margin: 24px 0 16px; }
 .game-cover { position: relative; min-height: 210px; overflow: hidden; border-radius: inherit; background: linear-gradient(145deg, #fff1e5, #d8e9ff); }
 .cover-hero { position: absolute; left: 19%; bottom: 30px; font-size: 84px; line-height: 1; z-index: 1; }

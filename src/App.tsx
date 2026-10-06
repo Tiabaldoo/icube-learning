@@ -42,9 +42,8 @@ export default function App() {
   }, [screen]);
 
   if (screen.page === 'lesson') {
-    const improvementMode = screen.mode === 'python' ? null : screen.mode;
     return <LessonPlayer key={screen.mode} lesson={screen.game.lessons[screen.mode]} mode={screen.mode} onBack={() => setScreen({ page: 'game', game: screen.game })}
-      onImprove={improvementMode ? () => setScreen({ page: 'improvements', game: screen.game, mode: improvementMode }) : undefined} />;
+      onImprove={() => setScreen({ page: 'improvements', game: screen.game, mode: screen.mode })} />;
   }
   if (screen.page === 'improvements') {
     return <ExtrasCatalog onBack={() => setScreen({ page: 'game', game: screen.game })}
