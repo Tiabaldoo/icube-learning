@@ -24,6 +24,14 @@ h1:focus { outline: none; }
 .game-card { display: block; padding: 0; text-align: left; border: 1px solid #e2e5ef; border-radius: 20px; overflow: hidden; background: white; color: inherit; box-shadow: 0 8px 28px #23234806; }
 .game-card:hover { border-color: #ed6500; box-shadow: 0 8px 28px #ed65001c; }
 .extra-icon { font-size: 38px; color: #ed6500; }
+.game-cover.cover-maze { background: repeating-linear-gradient(0deg, #efe3d0 0 28px, #ded0bb 28px 30px); }
+.cover-maze::before, .cover-maze::after { content: ''; position: absolute; border: 14px solid #986550; border-radius: 8px; }
+.cover-maze::before { inset: 20px 45px 25px 45px; border-left-color: transparent; }
+.cover-maze::after { inset: 58px 90px 64px 95px; border-right-color: transparent; }
+.cover-maze .cover-hero { left: 8%; font-size: 58px; bottom: 34px; }
+.cover-enemy { position: absolute; right: 28%; top: 40px; font-size: 38px; z-index: 1; }
+.cover-maze .star-one { right: 13%; top: auto; bottom: 32px; font-size: 40px; z-index: 1; }
+.cover-maze .star-two, .cover-maze .star-three, .cover-maze .cover-ground { display: none; }
 .improve-invitation { display: grid; gap: 16px; justify-items: center; margin: 24px 0 16px; }
 .game-cover { position: relative; min-height: 210px; overflow: hidden; border-radius: inherit; background: linear-gradient(145deg, #fff1e5, #d8e9ff); }
 .cover-hero { position: absolute; left: 19%; bottom: 30px; font-size: 84px; line-height: 1; z-index: 1; }

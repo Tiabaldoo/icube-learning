@@ -16,8 +16,9 @@ function Difficulty({ value }: { value: number }) {
 }
 
 function GameCover({ game }: { game: Game }) {
-  return <div className="game-cover" aria-hidden="true">
+  return <div className={`game-cover ${'layout' in game.metadata.cover ? 'cover-' + game.metadata.cover.layout : ''}`} aria-hidden="true">
     <span className="cover-hero">{game.metadata.cover.hero}</span>
+    {'enemy' in game.metadata.cover && <span className="cover-enemy">{game.metadata.cover.enemy}</span>}
     <span className="cover-star star-one">{game.metadata.cover.collectible}</span>
     <span className="cover-star star-two">{game.metadata.cover.collectible}</span>
     <span className="cover-star star-three">{game.metadata.cover.collectible}</span>

@@ -27,7 +27,7 @@ function workspace() {
     return window.E?.getEditor()?.blocksEditor?.editor;
 }
 
-export async function capture(browser, file, outputFile, variableNames = []) {
+export async function capture(browser, file, outputFile, variableNames = [], tilemapExpression) {
     const source = await readFile(file, 'utf8');
     if (!source.trim()) throw new Error('The TypeScript file is empty');
     const destination = outputFile || path.join(path.dirname(path.dirname(file)), 'images', `${path.basename(file, '.ts')}.png`);
@@ -62,6 +62,13 @@ export async function capture(browser, file, outputFile, variableNames = []) {
         await page.locator('.javascript-menuitem:visible').first().click();
         await page.waitForFunction(() => !!window.monaco?.editor.getModels().find(model => model.uri.path.endsWith('/main.ts')));
         await page.waitForFunction(() => !window.E.getEditor().updatingEditorFile);
+        if (tilemapExpression) await page.evaluate(async expression => {
+            const project = window.pxt.react.getTilemapProject();
+            const data = window.pxt.sprite.decodeTilemap(expression, 'typescript', project);
+            if (!data) throw new Error('Cannot decode lesson tilemap');
+            project.createNewTilemapFromData(data, 'level1');
+            await window.E.pkg.mainEditorPkg().buildAssetsAsync();
+        }, tilemapExpression);
         await page.evaluate(code => {
             const model = window.monaco.editor.getModels().find(model => model.uri.path.endsWith('/main.ts'));
             model.setValue(code);
@@ -137,6 +144,19 @@ export async function capture(browser, file, outputFile, variableNames = []) {
             await document.fonts.ready;
             await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
         });
+        if (tilemapExpression) {
+            // Large maze event stacks need space beside the toolbox, not its center.
+            await page.evaluate(() => {
+                const ws = window.E.getEditor().blocksEditor.editor;
+                const roots = ws.getTopBlocks(false).map(block => block.getSvgRoot().getBoundingClientRect());
+                const view = ws.getParentSvg().getBoundingClientRect();
+                const metrics = ws.getMetrics();
+                const left = Math.min(...roots.map(r => r.left));
+                const top = Math.min(...roots.map(r => r.top));
+                ws.scroll(ws.scrollX + view.left + metrics.absoluteLeft + 24 - left, ws.scrollY + view.top + 24 - top);
+            });
+            await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+        }
         const clip = await page.evaluate(() => {
             const ws = window.E.getEditor().blocksEditor.editor;
             const roots = ws.getTopBlocks(false).map(block => block.getSvgRoot().getBoundingClientRect());
