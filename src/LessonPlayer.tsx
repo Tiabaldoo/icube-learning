@@ -40,6 +40,7 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
   const [progress, setProgress] = useState(() => freshProgress(lesson));
   const [imageFailed, setImageFailed] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);
+  const stepTrack = useRef<HTMLOListElement>(null);
   const step = lesson.steps[progress.step];
   const mini = Boolean(onFinish);
   const quiz = lesson.quiz || [];
@@ -53,6 +54,23 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
     heading.current?.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [progress.phase, progress.step, progress.questionIndex]);
+
+  useEffect(() => {
+    const track = stepTrack.current;
+    const circle = track?.querySelector<HTMLElement>('[aria-current="step"] > span:first-child');
+    if (!track || !circle) return;
+
+    const trackBounds = track.getBoundingClientRect();
+    const circleBounds = circle.getBoundingClientRect();
+    const edgePadding = 12;
+    const leftEdge = trackBounds.left + edgePadding;
+    const rightEdge = trackBounds.left + track.clientWidth - edgePadding;
+    if (circleBounds.left < leftEdge) {
+      track.scrollLeft += circleBounds.left - leftEdge;
+    } else if (circleBounds.right > rightEdge) {
+      track.scrollLeft += circleBounds.right - rightEdge;
+    }
+  }, [progress.phase, progress.step]);
 
   function advanceQuiz() {
     if (chosen === null) return;
@@ -70,7 +88,7 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
         <div className="lesson-heading">
           <div><p className="eyebrow">{mode === 'python' ? 'Python' : mode === 'javascript' ? 'JavaScript' : 'Блоки'}</p><h1>{lesson.title}</h1></div>
         </div>
-        {!mini && <ol className="step-track" aria-label="Шаги урока">
+        {!mini && <ol ref={stepTrack} className="step-track" aria-label="Шаги урока">
           {lesson.steps.map((item, index) => (
             <li key={item.id} className={progress.phase !== 'lesson' || index < progress.step ? 'done' : index === progress.step ? 'current' : ''}
               aria-current={progress.phase === 'lesson' && index === progress.step ? 'step' : undefined}>

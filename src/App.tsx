@@ -65,7 +65,7 @@ export default function App() {
       {screen.page === 'catalog' ? <>
         <h1 className="catalog-title" ref={heading} tabIndex={-1}>Выбери игру</h1>
         <div className="game-grid">
-          {games.map(game => <button className="game-card" key={game.metadata.id}
+          {games.map(game => <button className="game-card game-card-with-cover" key={game.metadata.id}
             aria-label={`Открыть игру «${game.metadata.title}»`}
             onClick={() => setScreen({ page: 'game', game })}>
             <GameCover game={game} />
