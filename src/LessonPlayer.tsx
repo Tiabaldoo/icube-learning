@@ -68,7 +68,7 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
       <header className="lesson-header">
         <div className="brand"><span className="brand-mark" aria-hidden="true">iC</span> Айкуб Игры <button className="back-link lesson-back" onClick={onBack}>← К игре</button></div>
         <div className="lesson-heading">
-          <div><p className="eyebrow">{mode === 'javascript' ? 'JavaScript' : 'Блоки'}</p><h1>{lesson.title}</h1></div>
+          <div><p className="eyebrow">{mode === 'python' ? 'Python' : mode === 'javascript' ? 'JavaScript' : 'Блоки'}</p><h1>{lesson.title}</h1></div>
         </div>
         {!mini && <ol className="step-track" aria-label="Шаги урока">
           {lesson.steps.map((item, index) => (
@@ -84,7 +84,7 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
       <main>
         {progress.phase === 'lesson' && <>
           <section className="lesson-card step-card" aria-labelledby="screen-title">
-            {step.visual.type === 'code' ? <JavaScriptCode key={step.id} lessonId={lesson.id} codeFile={step.visual.codeFile} newLines={step.newLines} changedLines={step.changedLines} sourceRoot={mini ? 'extras' : 'lessons'} /> : <figure className="blocks-picture">
+            {step.visual.type === 'code' || mode === 'python' ? <JavaScriptCode key={step.id} lessonId={lesson.id} codeFile={step.visual.codeFile} newLines={step.newLines} changedLines={step.changedLines} sourceRoot={mini ? 'extras' : 'lessons'} language={mode === 'python' ? 'python' : 'javascript'} /> : <figure className="blocks-picture">
               {imageFailed || !imageSource
                 ? <p role="alert">Не удалось загрузить картинку. Попробуй обновить страницу.</p>
                 : <BlocksImage key={step.id} src={imageSource} alt={`${step.visual.type === 'ui' ? 'Интерфейс' : 'Блоки'} MakeCode: ${step.title}`} onError={() => setImageFailed(true)} />}
@@ -97,6 +97,11 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
               </div>
               <section className="step-goal"><h3>Что делаем</h3><p>{step.goal}</p></section>
               <ol className="action-instructions">{step.instructions.map((instruction, index) => <li key={index}>{instruction}</li>)}</ol>
+              {mode === 'python' && step.visual.type === 'ui' && <figure className="python-image-guide">
+                {imageFailed || !imageSource ? <p role="alert">Не удалось загрузить картинку.</p>
+                  : <BlocksImage key={step.id} src={imageSource} alt={step.visual.caption} onError={() => setImageFailed(true)} />}
+                <figcaption>{step.visual.caption}</figcaption>
+              </figure>}
               {step.blocks.length > 0 && <section className="block-guide" aria-labelledby="block-guide-title">
                 <h3 id="block-guide-title">Где найти</h3>
                 <ul>
@@ -163,6 +168,7 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
             ? 'Все ответы верные! Ты знаешь, как работает твоя игра.'
             : 'Ты прошёл весь урок! Можно повторить шаги и попробовать ещё раз.'}</p>
           {onImprove && <section className="improve-invitation"><h3>Игра готова! Хочешь её улучшить?</h3><button className="button primary" onClick={onImprove}>Улучшить игру</button></section>}
+          {mode === 'python' && <p className="explanation">Улучшения для Python появятся позже.</p>}
           <button className="button secondary" onClick={() => setProgress(freshProgress(lesson))}>Пройти урок заново</button>
         </section>}
       </main>

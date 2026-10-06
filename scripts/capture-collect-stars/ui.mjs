@@ -3,7 +3,7 @@ import { mkdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 // Real MakeCode UI screenshots for this lesson, not drawings of its interface.
-export async function captureUI(browser, directory, selected = [], background = false) {
+export async function captureUI(browser, directory, selected = [], background = false, python = false) {
     let context;
     let page;
     let captured = 0;
@@ -118,19 +118,23 @@ export async function captureUI(browser, directory, selected = [], background = 
         }, variableName);
         return page.locator(`[id=${JSON.stringify(fieldId)}]`);
     }
-    async function palette(name, step) {
-        await load(step);
+    async function palette(name, step, pythonSource) {
+        if (pythonSource) {
+            await page.evaluate(code => window.E.getEditor().editor.editor.getModel().setValue(code), pythonSource);
+            await expect.poll(() => page.evaluate(() => window.E.getEditor().editor.getCurrentSource())).toBe(pythonSource);
+            await page.evaluate(() => window.E.getEditor().saveFileAsync());
+        } else await load(step);
         const line = await page.evaluate(variable => {
             const editor = window.E.getEditor().editor.editor;
             const lineNumber = editor.getValue().split('\n').findIndex(text => text.includes(variable)) + 1;
             editor.setPosition({ lineNumber, column: 1 });
             editor.revealLineInCenter(lineNumber, window.monaco.editor.ScrollType.Immediate);
             return lineNumber;
-        }, background ? 'scene.setBackgroundImage' : `let ${step === 8 ? 'Звезда' : 'Игрок'} = sprites.create`);
+        }, pythonSource ? `${step === 8 ? 'star' : 'player'} = sprites.create` : background ? 'scene.setBackgroundImage' : `let ${step === 8 ? 'Звезда' : 'Игрок'} = sprites.create`);
         await page.waitForFunction(lineNumber => {
             const editor = window.E.getEditor().editor.editor;
             const top = editor.getDomNode().getBoundingClientRect().top + editor.getScrolledVisiblePosition({ lineNumber, column: 1 }).top;
-            const rangeReady = window.E.getEditor().editor.fieldEditors.liveRanges.some(r => r.line === lineNumber && r.range.endLineNumber === lineNumber);
+            const rangeReady = window.E.getEditor().editor.fieldEditors.liveRanges.some(r => r.line === lineNumber && (window.E.getEditor().isPythonActive() || r.range.endLineNumber === lineNumber));
             return rangeReady && [...document.querySelectorAll('.sprite-editor-glyph')].some(el => Math.abs(el.getBoundingClientRect().top - top) < 3);
         }, line);
         const index = await page.evaluate(lineNumber => {
@@ -146,6 +150,28 @@ export async function captureUI(browser, directory, selected = [], background = 
         await glyph.click({ force: true });
     }
     try {
+        if (python) {
+            await project();
+            await load(20);
+            const reference = (await readFile(path.join(directory, 'steps/javascript-micro/step20.ts'), 'utf8'))
+                .replaceAll('Игрок', 'player').replaceAll('SpriteKind.Звезда', 'SpriteKind.Star')
+                .replaceAll('const Звезда', 'const Star').replaceAll('Звезда', 'star')
+                .replace('game.over(true)', 'game.over(true, effects.confetti)');
+            await page.evaluate(code => window.E.getEditor().editor.editor.getModel().setValue(code), reference);
+            await page.evaluate(() => window.E.getEditor().saveFileAsync());
+            await page.evaluate(() => window.E.getEditor().openBlocksAsync());
+            await page.waitForFunction(() => window.E.getEditor().isBlocksActive());
+            await page.evaluate(() => window.E.getEditor().openPython());
+            await page.waitForFunction(() => window.E.getEditor().editor.editor?.getModel?.()?.uri.path.endsWith('/main.py') && !window.E.getEditor().updatingEditorFile);
+            const converted = (await page.evaluate(() => window.E.getEditor().editor.getCurrentSource())).replace(/\bplayer2\b/g, 'player');
+            console.log('PYTHON_SOURCE_BEGIN\n' + converted + '\nPYTHON_SOURCE_END');
+            await palette('python-player-palette', 2, 'player = sprites.create(img("""\n"""), SpriteKind.player)\n');
+            await page.locator('[title="Готово"]:visible').click();
+            await page.locator('.image-editor-region:visible').waitFor({ state: 'hidden' });
+            await palette('python-star-palette', 8, '@namespace\nclass SpriteKind:\n    Star = SpriteKind.create()\n\nstar: Sprite = None\nstar = sprites.create(img("""\n"""), SpriteKind.Star)\n');
+            console.log(`Captured ${captured} Python palette screenshots.`);
+            return;
+        }
         if (background) {
             await blocks(1);
             const fieldId = await page.evaluate(() => {

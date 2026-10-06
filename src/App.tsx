@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import LessonPlayer from './LessonPlayer';
 import ExtrasCatalog from './ExtrasCatalog';
-import type { Extra } from './extras';
+import type { Extra, ExtraMode } from './extras';
 import { games, programmingModes, type Game, type ProgrammingMode, type LessonMode } from './games';
 
 type Screen = { page: 'catalog' } | { page: 'game'; game: Game }
   | { page: 'lesson'; game: Game; mode: LessonMode }
-  | { page: 'improvements'; game: Game; mode: LessonMode }
-  | { page: 'improvement'; game: Game; mode: LessonMode; extra: Extra };
+  | { page: 'improvements'; game: Game; mode: ExtraMode }
+  | { page: 'improvement'; game: Game; mode: ExtraMode; extra: Extra };
 
 function Difficulty({ value }: { value: number }) {
   return <span className="game-difficulty" aria-label={`Сложность: ${value} из 5`}>
@@ -42,8 +42,9 @@ export default function App() {
   }, [screen]);
 
   if (screen.page === 'lesson') {
+    const improvementMode = screen.mode === 'python' ? null : screen.mode;
     return <LessonPlayer key={screen.mode} lesson={screen.game.lessons[screen.mode]} mode={screen.mode} onBack={() => setScreen({ page: 'game', game: screen.game })}
-      onImprove={() => setScreen({ page: 'improvements', game: screen.game, mode: screen.mode })} />;
+      onImprove={improvementMode ? () => setScreen({ page: 'improvements', game: screen.game, mode: improvementMode }) : undefined} />;
   }
   if (screen.page === 'improvements') {
     return <ExtrasCatalog onBack={() => setScreen({ page: 'game', game: screen.game })}

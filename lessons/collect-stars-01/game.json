@@ -8,6 +8,6 @@
   "modes": {
     "blocks": { "available": true },
     "javascript": { "available": true },
-    "python": { "available": false }
+    "python": { "available": true }
   }
 }
