@@ -13,6 +13,28 @@ npm run dev
 npm run build
 ```
 
+## Desktop build
+
+Node.js 24 рекомендуется. Версия desktop — `package.json` (`0.1.0`).
+Один frontend используется для сайта и встроенной офлайн-копии уроков.
+
+```bash
+npm run dev:desktop
+npm run build:desktop       # установщик для текущей ОС
+npm run build:desktop:mac   # на macOS
+npm run build:desktop:win   # на Windows
+```
+
+Установщики сохраняются в `release/`, в git не попадают. Подписи и автообновления
+не настроены; macOS может предупредить о неизвестном разработчике.
+На macOS запускайте только доверенный установщик через «Открыть»/настройки безопасности.
+
+В GitHub: **Actions → Desktop release → Run workflow** — скачать установщики
+в artifacts запуска. Для релиза обновите `version` и lockfile, затем создайте
+совпадающий тег (`git tag v0.1.0` и `git push origin v0.1.0`). Workflow собирает
+Windows x64 и macOS x64/arm64 на отдельных runners и прикладывает установщики
+к **Releases**. Обычный push в `main` desktop-сборку не запускает.
+
 Для снимков обновлённого урока (11 схем блоков и 9 реальных UI-скриншотов)
 нужен доступ к интернету:
 

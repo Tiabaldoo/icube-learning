@@ -1,0 +1,27 @@
+{
+  "appId": "io.github.tiabaldoo.icube-learning",
+  "productName": "Айкуб Игры",
+  "asar": true,
+  "directories": { "output": "release", "buildResources": "build" },
+  "files": ["dist-desktop/**/*", "electron/main.cjs", "build/icon.png", "package.json"],
+  "icon": "build/icon.png",
+  "publish": null,
+  "mac": {
+    "target": ["dmg"],
+    "category": "public.app-category.education",
+    "identity": null,
+    "notarize": false,
+    "artifactName": "Aicube-Games-${version}-mac-${arch}.${ext}"
+  },
+  "win": {
+    "target": ["nsis"],
+    "artifactName": "Aicube-Games-Setup-${version}-${arch}.${ext}"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true
+  }
+}

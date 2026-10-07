@@ -1,10 +1,19 @@
 {
   "name": "icube-learning",
+  "version": "0.1.0",
+  "description": "Айкуб Игры — офлайн-уроки создания игр",
+  "author": "Tiabaldoo",
   "private": true,
   "type": "module",
+  "main": "electron/main.cjs",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "dev:desktop": "node electron/prepare-icon.mjs && node electron/dev.mjs",
+    "build:desktop:assets": "tsc --noEmit && vite build --mode desktop && node electron/prepare-icon.mjs",
+    "build:desktop": "npm run build:desktop:assets && electron-builder --publish never",
+    "build:desktop:mac": "npm run build:desktop:assets && electron-builder --mac --publish never",
+    "build:desktop:win": "npm run build:desktop:assets && electron-builder --win --publish never",
     "capture:blocks": "node scripts/capture-makecode-blocks/capture.mjs",
     "capture:lesson": "node scripts/capture-collect-stars/capture.mjs"
   },
@@ -17,6 +26,9 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^6.1.1",
+    "electron": "44.6.0",
+    "electron-builder": "26.15.3",
+    "sharp": "0.35.5",
     "typescript": "^5.9.3",
     "vite": "^8.3.2"
   }

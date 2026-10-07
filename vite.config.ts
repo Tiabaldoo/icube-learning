@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
-  base: '/icube-learning/',
-});
+  base: mode === 'desktop' ? './' : '/icube-learning/',
+  build: { outDir: mode === 'desktop' ? 'dist-desktop' : 'dist' },
+}));
