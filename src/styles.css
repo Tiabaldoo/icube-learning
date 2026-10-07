@@ -8,6 +8,8 @@
   line-height: 1.55;
 }
 * { box-sizing: border-box; }
+html, body, #root { width: 100%; max-width: 100%; min-width: 0; }
+html, body { overflow-x: clip; }
 body { margin: 0; }
 button, input { font: inherit; }
 button { cursor: pointer; }
@@ -78,7 +80,8 @@ h1 { font-size: clamp(30px, 4vw, 44px); letter-spacing: -.035em; }
 h2 { font-size: clamp(26px, 3vw, 34px); letter-spacing: -.025em; }
 h2:focus { outline: none; }
 h3 { font-size: 20px; }
-.app-shell { width: min(1120px, 100% - 64px); margin: 0 auto; }
+.app-shell { width: min(1120px, 100% - 64px); max-width: 100%; min-width: 0; margin: 0 auto; }
+.app-shell > main, .lesson-header, .lesson-header > *, .lesson-heading > *, .step-content > * { min-width: 0; max-width: 100%; }
 .lesson-header { padding: 28px 0 24px; }
 .brand { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; letter-spacing: .08em; }
 .brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: #ed6500; color: white; font-size: 23px; letter-spacing: -.05em; }
@@ -115,7 +118,8 @@ h3 { font-size: 20px; }
 .eyebrow { font-size: 12px; font-weight: 750; letter-spacing: .14em; color: #b44900; margin-bottom: 10px; }
 .lesson-meta { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; padding-bottom: 5px; }
 .lesson-meta span { background: white; border: 1px solid #e2e5ef; border-radius: 30px; padding: 6px 14px; font-size: 14px; white-space: nowrap; color: #596078; }
-.step-track { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 100%; min-width: 0; overflow-x: auto; list-style: none; padding: 8px 12px; margin: 0; }
+/* Keep absolute screen-reader labels inside this scroll container, not the page. */
+.step-track { position: relative; display: flex; align-items: center; gap: 12px; width: 100%; max-width: 100%; min-width: 0; overflow-x: auto; list-style: none; padding: 8px 12px; margin: 0; }
 .step-track li { display: flex; flex: 1 0 50px; align-items: center; gap: 12px; }
 .step-track li::after { content: ""; height: 3px; flex: 1; background: #e0e3ed; border-radius: 3px; }
 .step-track li:last-child { flex: 0 0 auto; }
@@ -191,7 +195,7 @@ figcaption { margin-top: 18px; font-size: 14px; color: #6b7286; }
 .image-dialog .image-scale { color: #d9ddea; }
 .blocks-picture .image-viewport img { max-width: none; max-height: none; margin: 0; }
 .step-card figcaption { margin-top: 10px; }
-.step-content { min-width: 0; padding: 16px 18px 16px 6px; display: flex; flex-direction: column; gap: 8px; font-size: 16px; line-height: 1.4; }
+.step-content { min-width: 0; overflow-wrap: anywhere; padding: 16px 18px 16px 6px; display: flex; flex-direction: column; gap: 8px; font-size: 16px; line-height: 1.4; }
 .step-card .card-intro { padding: 0; }
 .step-card .step-label { padding: 3px 9px; font-size: 14px; margin-bottom: 6px; }
 .step-card h2 { font-size: 26px; }
@@ -199,7 +203,7 @@ figcaption { margin-top: 18px; font-size: 14px; color: #6b7286; }
 .step-card .block-guide { margin: 0; padding: 0; border: 0; background: none; }
 .step-card .block-guide ul { grid-template-columns: 1fr; gap: 6px; margin-top: 8px; }
 .step-card .block-guide li { display: flex; align-items: baseline; gap: 8px; border: 0; padding: 0; overflow-wrap: normal; }
-.step-card .block-guide strong { font-size: 15px; font-weight: 600; }
+.step-card .block-guide strong { min-width: 0; overflow-wrap: anywhere; font-size: 15px; font-weight: 600; }
 .step-card .block-category { flex-shrink: 0; display: inline-block; margin: 0; padding: 2px 7px; border-radius: 6px; font-size: 12px; color: white; background: #654bc7; }
 .step-card .block-category[data-category="Спрайты"] { background: #316ab5; }
 .step-card .block-category[data-category="Контроллер"] { background: #b43c26; }
