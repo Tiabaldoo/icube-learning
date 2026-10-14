@@ -53,8 +53,8 @@ test('single image has no extra navigation; sequences change only their image', 
 });
 test('published package contains every sequence resource and has matching SHA-256', () => {
   const manifest = JSON.parse(fs.readFileSync('public/content/manifest.json'));
-  const data = format.verifyPackage(fs.readFileSync('public/content/' + manifest.files[0].path), manifest, '0.1.2');
-  assert.equal(manifest.minAppVersion, '0.1.2');
+  const data = format.verifyPackage(fs.readFileSync('public/content/' + manifest.files[0].path), manifest, '0.1.3');
+  assert.equal(manifest.minAppVersion, '0.1.3');
   for (const game of data.games) for (const lesson of Object.values(game.lessons)) for (const step of lesson.steps) for (const image of step.visual.images || []) assert(game.resources['lessons/' + game.metadata.id + '/' + image.src]);
   assert.throws(() => format.validateManifest(manifest, '0.1.0'));
 });

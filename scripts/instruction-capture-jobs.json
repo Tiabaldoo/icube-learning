@@ -1,0 +1,152 @@
+[
+  {
+    "root": "lessons/collect-stars-01",
+    "step": "blocks-05",
+    "code": "steps/blocks-micro/step05.ts",
+    "variable": "Игрок",
+    "match": "control",
+    "menu": "images/ui/assemble-blocks-05-variable.png",
+    "partial": "images/ui/assemble-blocks-05-input.png"
+  },
+  {
+    "root": "lessons/collect-stars-01",
+    "step": "blocks-12",
+    "code": "steps/blocks-micro/step12.ts",
+    "variable": "Звезда",
+    "match": "position|setpos",
+    "menu": "images/ui/assemble-blocks-12-variable.png",
+    "partial": "images/ui/assemble-blocks-12-input.png"
+  },
+  {
+    "root": "lessons/maze-01",
+    "step": "blocks-place-player",
+    "code": "steps/blocks/step12.ts",
+    "variable": "Игрок",
+    "match": "place.*random|place.*tile",
+    "menu": "images/ui/assemble-blocks-place-player-variable.png",
+    "partial": "images/ui/assemble-blocks-place-player-input.png"
+  },
+  {
+    "root": "lessons/maze-01",
+    "step": "blocks-place-finish",
+    "code": "steps/blocks/step20.ts",
+    "variable": "Финиш",
+    "match": "place.*random|place.*tile",
+    "menu": "images/ui/assemble-blocks-place-finish-variable.png",
+    "partial": "images/ui/assemble-blocks-place-finish-input.png"
+  },
+  {
+    "root": "lessons/maze-01",
+    "step": "blocks-place-enemy",
+    "code": "steps/blocks/step28.ts",
+    "variable": "Враг",
+    "match": "place.*random|place.*tile",
+    "menu": "images/ui/assemble-blocks-place-enemy-variable.png",
+    "partial": "images/ui/assemble-blocks-place-enemy-input.png"
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-33",
+    "code": "steps/blocks/r32.ts",
+    "variable": "Игрок",
+    "match": "place.*random|place.*tile",
+    "menu": "images/ui/assemble-maze-02-33-variable.png",
+    "partial": "images/ui/assemble-maze-02-33-input.png",
+    "owner": "начатьПопытку"
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-36",
+    "code": "steps/blocks/r35.ts",
+    "variable": "Ключ",
+    "match": "place.*random|place.*tile",
+    "menu": "images/ui/assemble-maze-02-36-variable.png",
+    "partial": "images/ui/assemble-maze-02-36-input.png",
+    "owner": "начатьПопытку"
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-42",
+    "code": "steps/blocks/r41.ts",
+    "variable": "Враг",
+    "match": "place.*random|place.*tile",
+    "menu": "images/ui/assemble-maze-02-42-variable.png",
+    "partial": "images/ui/assemble-maze-02-42-input.png",
+    "owner": "загрузитьУровень"
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-43",
+    "code": "steps/blocks/r42.ts",
+    "variable": "Финиш",
+    "match": "place.*random|place.*tile",
+    "menu": "images/ui/assemble-maze-02-43-variable.png",
+    "partial": "images/ui/assemble-maze-02-43-input.png",
+    "owner": "загрузитьУровень"
+  },
+  {
+    "root": "extras/enemy",
+    "step": "enemy-5",
+    "code": "blocks/steps/position.ts",
+    "variable": "Враг",
+    "match": "position|setpos",
+    "menu": "images/ui/assemble-enemy-5-variable.png",
+    "partial": "images/ui/assemble-enemy-5-input.png"
+  },
+  {
+    "root": "extras/maze-chase",
+    "step": "maze-chase-2",
+    "code": "blocks/steps/follow.ts",
+    "variable": "Враг",
+    "match": "follow",
+    "menu": "images/ui/assemble-maze-chase-2-variable.png",
+    "partial": "images/ui/assemble-maze-chase-2-input.png"
+  },
+  {
+    "root": "lessons/collect-stars-01",
+    "step": "blocks-12-palette",
+    "lessonStep": "blocks-12",
+    "code": "steps/blocks-micro/step12.ts",
+    "category": "Математика",
+    "match": "случайн",
+    "menu": "images/ui/assemble-blocks-12-palette.png",
+    "partial": "images/ui/assemble-blocks-12-temporary.png"
+  },
+  {
+    "root": "extras/timer",
+    "step": "timer-2-palette",
+    "lessonStep": "timer-2",
+    "code": "blocks/steps/start.ts",
+    "category": "Информация",
+    "match": "countdown|отсч",
+    "menu": "images/ui/assemble-timer-2-palette.png",
+    "partial": "images/ui/assemble-timer-2-temporary.png"
+  },
+  {
+    "root": "extras/sound",
+    "step": "sound-2-palette",
+    "lessonStep": "sound-2",
+    "code": "blocks/steps/placed.ts",
+    "category": "Музыка",
+    "match": "music_playable_play.*звук",
+    "menu": "images/ui/assemble-sound-2-palette.png",
+    "partial": "images/ui/assemble-sound-2-temporary.png"
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-40-palette",
+    "lessonStep": "maze-02-40",
+    "code": "steps/blocks/r39.ts",
+    "category": "Массивы",
+    "match": "get.*index|получить.*значен|значение.*индекс",
+    "menu": "images/ui/assemble-maze-02-40-palette.png",
+    "partial": "images/ui/assemble-maze-02-40-temporary.png"
+  },
+  {
+    "root": "extras/maze-chase",
+    "step": "maze-chase-final",
+    "code": "blocks/steps/follow.ts",
+    "partial": "images/follow.png",
+    "final": true
+  }
+]

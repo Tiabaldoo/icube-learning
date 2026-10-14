@@ -3,6 +3,7 @@ import type { Lesson, LessonMode } from './games';
 import LessonImages from './LessonImages';
 import JavaScriptCode from './JavaScriptCode';
 import { codeProtection } from './codeProtection';
+import { needsImageReminder } from './lessonNavigation';
 
 export type MiniLesson = { id: string; title: string; steps: Lesson['steps'] };
 type PlayerLesson = MiniLesson;
@@ -11,10 +12,25 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
   lesson: PlayerLesson; mode: LessonMode; onBack: () => void; onImprove?: () => void; onFinish?: () => void; onCatalog?: () => void; resources?: Record<string, string>;
 }) {
   const [progress, setProgress] = useState<{ phase: 'lesson' | 'result'; step: number }>({ phase: 'lesson', step: 0 });
+  const [imageView, setImageView] = useState({ step: '', viewed: [0], selected: 0 });
+  const [reminder, setReminder] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);
   const stepTrack = useRef<HTMLOListElement>(null);
   const step = lesson.steps[progress.step];
   const mini = Boolean(onFinish);
+
+  function openStep(index: number) {
+    setReminder(false);
+    setImageView({ step: lesson.steps[index].id, viewed: [0], selected: 0 });
+    setProgress({ phase: 'lesson', step: index });
+  }
+  function advance() {
+    setReminder(false);
+    if (progress.step === lesson.steps.length - 1) setProgress({ ...progress, phase: 'result' });
+    else openStep(progress.step + 1);
+  }
+  const viewed = imageView.step === step.id ? imageView.viewed : [0];
+  const imageProps = { selected: imageView.step === step.id ? imageView.selected : 0, onSelect: (index: number) => setImageView({ step: step.id, selected: index, viewed: [...new Set([...viewed, index])] }) };
 
   useEffect(() => {
     heading.current?.focus({ preventScroll: true });
@@ -23,7 +39,7 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
 
   useEffect(() => {
     const track = stepTrack.current;
-    const circle = track?.querySelector<HTMLElement>('[aria-current="step"] > span:first-child');
+    const circle = track?.querySelector<HTMLElement>('[aria-current="step"] > button:first-child');
     if (!track || !circle) return;
 
     const trackBounds = track.getBoundingClientRect();
@@ -49,7 +65,7 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
           {lesson.steps.map((item, index) => (
             <li key={item.id} className={progress.phase !== 'lesson' || index < progress.step ? 'done' : index === progress.step ? 'current' : ''}
               aria-current={progress.phase === 'lesson' && index === progress.step ? 'step' : undefined}>
-              <span>{progress.phase !== 'lesson' || index < progress.step ? '✓' : index + 1}</span>
+              <button type="button" aria-label={`Шаг ${index + 1}: ${item.title}`} onClick={() => openStep(index)}>{progress.phase !== 'lesson' || index < progress.step ? '✓' : index + 1}</button>
               <span className="sr-only">{item.title}</span>
             </li>
           ))}
@@ -59,7 +75,7 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
       <main>
         {progress.phase === 'lesson' && <>
           <section className="lesson-card step-card" aria-labelledby="screen-title">
-            {step.visual.type === 'code' ? <div className="lesson-code-visual"><JavaScriptCode key={step.id} lessonId={lesson.id} codeFile={step.visual.codeFile} newLines={step.newLines} changedLines={step.changedLines} sourceRoot={mini ? 'extras' : 'lessons'} language={mode === 'python' ? 'python' : 'javascript'} sourceText={resources?.[`${mini ? 'extras' : 'lessons'}/${lesson.id}/${step.visual.codeFile}`]} />{step.visual.images?.length ? <LessonImages key={step.id} lessonId={lesson.id} visual={step.visual} title={step.title} mini={mini} resources={resources} /> : null}</div> : <LessonImages key={step.id} lessonId={lesson.id} visual={step.visual} title={step.title} mini={mini} resources={resources} />}
+            {step.visual.type === 'code' ? <div className="lesson-code-visual"><JavaScriptCode key={step.id} lessonId={lesson.id} codeFile={step.visual.codeFile} newLines={step.newLines} changedLines={step.changedLines} sourceRoot={mini ? 'extras' : 'lessons'} language={mode === 'python' ? 'python' : 'javascript'} sourceText={resources?.[`${mini ? 'extras' : 'lessons'}/${lesson.id}/${step.visual.codeFile}`]} />{step.visual.images?.length ? <LessonImages {...imageProps} key={step.id} lessonId={lesson.id} visual={step.visual} title={step.title} mini={mini} resources={resources} /> : null}</div> : <LessonImages {...imageProps} key={step.id} lessonId={lesson.id} visual={step.visual} title={step.title} mini={mini} resources={resources} />}
             <div className="step-content">
               <div className="card-intro">
                 <p className="step-label">Шаг {progress.step + 1} из {lesson.steps.length}</p>
@@ -89,13 +105,18 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
               </details>
             </div>
           </section>
+          {reminder && <div className="image-reminder" role="dialog" aria-labelledby="image-reminder-title" aria-describedby="image-reminder-description">
+            <h2 id="image-reminder-title">Ты посмотрел не все картинки</h2>
+            <p id="image-reminder-description">В этом шаге есть ещё картинки, которые помогут тебе выполнить задание. Посмотри их, чтобы ничего не пропустить.</p>
+            <button className="button primary" autoFocus onClick={() => { imageProps.onSelect(Array.from({ length: step.visual.images?.length || 1 }, (_, i) => i).find(i => !viewed.includes(i)) || 0); setReminder(false); }}>Посмотреть картинки</button>
+            <button className="button secondary" onClick={advance}>Всё равно дальше</button>
+          </div>}
           <nav className="navigation" aria-label="Переход между шагами">
             <button className="button secondary" disabled={progress.step === 0}
-              onClick={() => setProgress({ ...progress, step: progress.step - 1 })}>Назад</button>
+              onClick={() => openStep(progress.step - 1)}>Назад</button>
             <button className="button primary" onClick={() => {
-              setProgress(progress.step === lesson.steps.length - 1
-                ? { ...progress, phase: 'result' }
-                : { ...progress, step: progress.step + 1 });
+              if (progress.step < lesson.steps.length - 1 && needsImageReminder(step.visual.images?.length || 1, viewed)) setReminder(true);
+              else advance();
             }}>
               {progress.step === lesson.steps.length - 1 ? (mini ? 'Улучшение готово!' : 'Игра готова!') : 'Следующий шаг'} <span aria-hidden="true">→</span>
             </button>

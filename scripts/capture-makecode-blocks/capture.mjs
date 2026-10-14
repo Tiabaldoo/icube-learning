@@ -27,7 +27,7 @@ function workspace() {
     return window.E?.getEditor()?.blocksEditor?.editor;
 }
 
-export async function capture(browser, file, outputFile, variableNames = [], tilemapExpression) {
+export async function capture(browser, file, outputFile, variableNames = [], tilemapExpression, instructionParts) {
     const source = await readFile(file, 'utf8');
     if (!source.trim()) throw new Error('The TypeScript file is empty');
     const destination = outputFile || path.join(path.dirname(path.dirname(file)), 'images', `${path.basename(file, '.ts')}.png`);
@@ -69,6 +69,7 @@ export async function capture(browser, file, outputFile, variableNames = [], til
             project.createNewTilemapFromData(data, 'level1');
             await window.E.pkg.mainEditorPkg().buildAssetsAsync();
         }, tilemapExpression);
+        if (instructionParts?.assets) await instructionParts.assets(page);
         await page.evaluate(code => {
             const model = window.monaco.editor.getModels().find(model => model.uri.path.endsWith('/main.ts'));
             model.setValue(code);
@@ -93,6 +94,7 @@ export async function capture(browser, file, outputFile, variableNames = [], til
         await expect.poll(() => page.evaluate(() => window.E.getEditor().blocksEditor.editor.getAllBlocks(false).length)).toBeGreaterThan(0);
         await expect(page.locator('.ReactModal__Overlay:visible')).toHaveCount(0);
         await expect(page.locator('.teaching-bubble-container:visible')).toHaveCount(0);
+        if (instructionParts?.decompiled) await instructionParts.decompiled(page);
         const types = await page.evaluate(() => window.E.getEditor().blocksEditor.editor.getAllBlocks(false).map(block => block.type));
         if (types.some(type => /^(typescript|ts)_(statement|expression)$/.test(type))) {
             throw new Error('MakeCode left unconverted JavaScript blocks');
@@ -157,6 +159,16 @@ export async function capture(browser, file, outputFile, variableNames = [], til
             });
             await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
         }
+        if (instructionParts?.prepare) {
+            await instructionParts.prepare(page);
+            await page.evaluate(() => {
+                const ws = window.E.getEditor().blocksEditor.editor; ws.resize();
+                const roots = ws.getTopBlocks(false).map(b => b.getSvgRoot().getBoundingClientRect());
+                const view = ws.getParentSvg().getBoundingClientRect(), metrics = ws.getMetrics();
+                ws.scroll(ws.scrollX + view.left + metrics.absoluteLeft + 24 - Math.min(...roots.map(r => r.left)), ws.scrollY + view.top + 24 - Math.min(...roots.map(r => r.top)));
+            });
+            await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+        }
         const clip = await page.evaluate(() => {
             const ws = window.E.getEditor().blocksEditor.editor;
             const roots = ws.getTopBlocks(false).map(block => block.getSvgRoot().getBoundingClientRect());
@@ -176,6 +188,7 @@ export async function capture(browser, file, outputFile, variableNames = [], til
             return { x, y, width: Math.min(view.right, Math.ceil(right + margin)) - x, height: Math.min(view.bottom, Math.ceil(bottom + margin)) - y };
         });
         await page.screenshot({ path: temporary, type: 'png', clip, animations: 'disabled' });
+        if (instructionParts?.captured) await instructionParts.captured(page, clip);
         const png = await readFile(temporary);
         if (png.length < 24 || png.subarray(0, 8).toString('hex') !== '89504e470d0a1a0a' || !png.readUInt32BE(16) || !png.readUInt32BE(20)) {
             throw new Error('The generated file is not a nonempty PNG');

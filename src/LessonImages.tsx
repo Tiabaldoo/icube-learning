@@ -2,8 +2,10 @@ import { useState } from 'react';
 import type { LessonStep } from './games';
 import BlocksImage from './BlocksImage';
 const images = import.meta.glob<string>(['../lessons/*/images/blocks/*.png', '../lessons/*/images/ui/*.png', '../extras/*/images/*.png', '../extras/*/images/ui/*.png'], { eager: true, query: '?url', import: 'default' });
-export default function LessonImages({ lessonId, visual, title, mini, resources }: { lessonId: string; visual: LessonStep['visual']; title: string; mini: boolean; resources?: Record<string, string> }) {
-  const [index, setIndex] = useState(0);
+export default function LessonImages({ lessonId, visual, title, mini, resources, selected, onSelect }: { lessonId: string; visual: LessonStep['visual']; title: string; mini: boolean; resources?: Record<string, string>; selected?: number; onSelect?: (index: number) => void }) {
+  const [localIndex, setLocalIndex] = useState(0);
+  const index = selected ?? localIndex;
+  const setIndex = (value: number) => { setLocalIndex(value); onSelect?.(value); };
   const [failed, setFailed] = useState<number | null>(null);
   const pictures = visual.images?.length ? visual.images : [{ src: visual.src, caption: visual.caption, type: visual.type, focus: visual.focus }];
   const picture = pictures[index];

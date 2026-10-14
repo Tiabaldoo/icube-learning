@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { difficultyGroups, filterByDifficulty } from './catalog';
 import LessonPlayer from './LessonPlayer';
 import { loadPublished, mergeGames, type Bundle } from './content';
 import { games, programmingModes, type Game, type ProgrammingMode, type LessonMode, type Improvement } from './games';
@@ -28,6 +29,7 @@ function GameCover({ game }: { game: Game }) {
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>({ page: 'catalog' });
+  const [difficulty, setDifficulty] = useState('all');
   const heading = useRef<HTMLHeadingElement>(null);
 
   const [catalog, setCatalog] = useState(games);
@@ -95,18 +97,23 @@ export default function App() {
       </div>}
       {screen.page === 'catalog' ? <>
         <h1 className="catalog-title" ref={heading} tabIndex={-1}>Выбери игру</h1>
-        <div className="game-grid">
-          {catalog.map(game => <button className="game-card game-card-with-cover" key={game.metadata.id}
+        <div className="catalog-filter" role="group" aria-label="Сложность игр">{[{ id: 'all', label: 'Все игры' }, ...difficultyGroups].map(group => <button className="button secondary" key={group.id} aria-pressed={difficulty === group.id} onClick={() => setDifficulty(group.id)}>{group.label}</button>)}</div>
+        {difficultyGroups.filter(group => difficulty === 'all' || group.id === difficulty).map(group => {
+          const groupGames = filterByDifficulty(catalog, group.id);
+          return groupGames.length ? <section className="catalog-group" key={group.id}><h2>{group.title}</h2><p>{group.description}</p><div className="game-grid">
+          {groupGames.map(game => <button className="game-card game-card-with-cover" key={game.metadata.id}
             aria-label={`Открыть игру «${game.metadata.title}»`}
             onClick={() => setScreen({ page: 'game', game })}>
             <GameCover game={game} />
             <span className="game-card-body">
               <span className="game-card-title">{game.metadata.title}</span>
               <Difficulty value={game.metadata.difficulty} />
+              {game.metadata.id === 'maze-02' && <span className="game-prerequisite">Продолжение игры «Лабиринт». Сначала создай первый лабиринт.</span>}
               <span className="game-learns">{game.metadata.learns.join(' • ')}</span>
             </span>
           </button>)}
-        </div>
+        </div></section> : null; })}
+        {filterByDifficulty(catalog, difficulty).length === 0 && <p role="status">Пока нет игр этой сложности. Выбери другой уровень.</p>}
       </> : screen.page === 'improvements' ? <section className="game-details lesson-card improvement-details">
         <button className="back-link" onClick={() => setScreen({ page: 'game', game: screen.game })}>← К игре</button>
         <h1 ref={heading} tabIndex={-1}>Улучши свою игру</h1>

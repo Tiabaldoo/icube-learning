@@ -128,9 +128,9 @@ h3 { font-size: 20px; }
 .step-track li::after { content: ""; height: 3px; flex: 1; background: #e0e3ed; border-radius: 3px; }
 .step-track li:last-child { flex: 0 0 auto; }
 .step-track li:last-child::after { display: none; }
-.step-track li > span:first-child { display: grid; flex-shrink: 0; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #e7e9f1; color: #6b7286; font-weight: 700; }
-.step-track .current > span:first-child { background: #ed6500; color: white; box-shadow: 0 0 0 5px #fff1e5; }
-.step-track .done > span:first-child { background: #dcefe9; color: #26755b; }
+.step-track li > button:first-child { display: grid; flex-shrink: 0; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #e7e9f1; color: #6b7286; font-weight: 700; }
+.step-track .current > button:first-child { background: #ed6500; color: white; box-shadow: 0 0 0 5px #fff1e5; }
+.step-track .done > button:first-child { background: #dcefe9; color: #26755b; }
 .step-track .done::after { background: #c7e5d9; }
 .lesson-card { background: white; border: 1px solid #e2e5ef; border-radius: 24px; overflow: hidden; box-shadow: 0 8px 28px #23234806; }
 .card-intro { padding: 30px 36px 24px; }
@@ -232,7 +232,7 @@ figcaption { margin-top: 18px; font-size: 14px; color: #6b7286; }
   .lesson-screen .eyebrow { display: none; }
   .lesson-screen .lesson-meta { padding: 0; }
   .lesson-screen .step-track { grid-column: 1 / -1; }
-  .lesson-screen .step-track li > span:first-child { width: 26px; height: 26px; font-size: 14px; }
+  .lesson-screen .step-track li > button:first-child { width: 26px; height: 26px; font-size: 14px; }
   .step-card { min-height: calc(100dvh - 194px); }
   .step-card .blocks-picture { height: calc(100dvh - 220px); }
   .lesson-screen .navigation { padding: 12px 0; }
@@ -244,7 +244,7 @@ figcaption { margin-top: 18px; font-size: 14px; color: #6b7286; }
   .step-track { gap: 8px; }
   .step-track li, .step-track li:last-child { flex: 0 0 auto; }
   .step-track li::after { display: none; }
-  .step-track li > span:first-child { width: 27px; height: 27px; font-size: 13px; }
+  .step-track li > button:first-child { width: 27px; height: 27px; font-size: 13px; }
   .step-content { padding: 20px; }
   .step-card .blocks-picture > .image-viewer { flex: none; height: 440px; }
 }
@@ -264,7 +264,7 @@ figcaption { margin-top: 18px; font-size: 14px; color: #6b7286; }
   .lesson-header { padding-top: 18px; }
   .brand-note { font-size: 12px; margin-left: 2px; }
   .step-track, .step-track li { gap: 6px; }
-  .step-track li > span:first-child { width: 30px; height: 30px; }
+  .step-track li > button:first-child { width: 30px; height: 30px; }
   .card-intro { padding: 22px 18px; }
   .block-guide { margin: 16px 18px 0; padding: 16px; }
   .blocks-picture { margin: 0 8px; padding: 14px 8px; }
@@ -292,3 +292,16 @@ figcaption { margin-top: 18px; font-size: 14px; color: #6b7286; }
 .picture-navigation span { font-weight: 700; color: #9a3c00; }
 .picture-navigation .button { padding: 7px 12px; font-size: 14px; }
 .picture-navigation .picture-next { background: #ed6500; color: white; border-color: #ed6500; }
+
+.step-track li > button { border: 0; padding: 0; cursor: pointer; font: inherit; }
+.step-track li > button:hover { filter: brightness(.95); }
+.step-track li > button:focus-visible { outline: 3px solid #9a3c00; outline-offset: 3px; }
+.catalog-filter { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0; }
+.catalog-filter .button { min-height: 36px; padding: 7px 14px; font-size: 15px; }
+.catalog-filter [aria-pressed="true"] { background: #fff1e5; border-color: #ed6500; color: #9a3c00; }
+.catalog-group { margin: 24px 0 32px; }
+.catalog-group > p { color: #6b7286; margin: 8px 0 16px; }
+.game-prerequisite { font-size: 14px; line-height: 1.4; }
+.image-reminder { padding: 20px; margin-top: 12px; border: 1px solid #ffd0ac; border-radius: 16px; background: #fff1e5; }
+.image-reminder p { margin: 10px 0 16px; }
+.image-reminder button { margin: 4px 8px 4px 0; }

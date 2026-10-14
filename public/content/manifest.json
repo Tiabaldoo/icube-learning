@@ -1,18 +1,18 @@
 {
-  "version": "1.0.7",
+  "version": "1.0.8",
   "formatVersion": 1,
-  "minAppVersion": "0.1.2",
+  "minAppVersion": "0.1.3",
   "files": [
     {
-      "path": "versions/1.0.7/bundle.json",
-      "size": 23863906,
-      "sha256": "6c1255a8eb2a1cee594a4cecf8a0de207be21b6a30f03c5fbd5200da51d52ba6"
+      "path": "versions/1.0.8/bundle.json",
+      "size": 30639029,
+      "sha256": "2271d037f067d920c755d497e460531c7bffe770edb837ea0c56af66ad49d960"
     }
   ],
   "games": [
     {
       "id": "collect-stars-01",
-      "title": "Собери 10 звёзд"
+      "title": "Собери звёзды"
     },
     {
       "id": "maze-01",
