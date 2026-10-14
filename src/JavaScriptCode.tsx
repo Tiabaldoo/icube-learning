@@ -31,13 +31,13 @@ function highlight(source: string, python = false) {
   return lines;
 }
 
-export default function JavaScriptCode({ lessonId, codeFile, newLines, changedLines, sourceRoot = 'lessons', language = 'javascript' }: {
-  lessonId: string; codeFile: string; newLines: number[][]; changedLines: number[][]; sourceRoot?: 'lessons' | 'extras'; language?: 'javascript' | 'python';
+export default function JavaScriptCode({ lessonId, codeFile, newLines, changedLines, sourceRoot = 'lessons', language = 'javascript', sourceText }: {
+  lessonId: string; codeFile: string; newLines: number[][]; changedLines: number[][]; sourceRoot?: 'lessons' | 'extras'; language?: 'javascript' | 'python'; sourceText?: string;
 }) {
   const [fontSize, setFontSize] = useState(16);
   const viewer = useRef<HTMLPreElement>(null);
   const key = `../${sourceRoot}/${lessonId}/${codeFile}`;
-  const source = (language === 'python' ? pythonSources : sourceRoot === 'extras' ? extraSources : sources)[key];
+  const source = sourceText ?? (language === 'python' ? pythonSources : sourceRoot === 'extras' ? extraSources : sources)[key];
   useEffect(() => {
     const panel = viewer.current;
     const target = panel?.querySelector('.changed-code, .new-code');

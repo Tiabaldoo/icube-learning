@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "formatVersion": 1,
+  "minAppVersion": "0.1.0",
+  "files": [
+    {
+      "path": "versions/1.0.0/bundle.json",
+      "size": 5685051,
+      "sha256": "49f088fbf7b9b0bbf9b8d4689650e2846353c924b4216cdc30c584d15e33d0b6"
+    }
+  ],
+  "games": [
+    {
+      "id": "collect-stars-01",
+      "title": "Собери 10 звёзд"
+    },
+    {
+      "id": "maze-01",
+      "title": "Лабиринт"
+    }
+  ]
+}

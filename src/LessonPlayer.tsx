@@ -12,48 +12,25 @@ const extraImages = import.meta.glob<string>(['../extras/*/images/*.png', '../ex
 });
 
 export type MiniLesson = { id: string; title: string; steps: Lesson['steps'] };
-type PlayerLesson = MiniLesson & { quiz?: Lesson['quiz'] };
+type PlayerLesson = MiniLesson;
 
-type Progress = {
-  phase: 'lesson' | 'quiz' | 'result';
-  step: number;
-  lessonCompleted: boolean;
-  questionIndex: number;
-  answers: (number | null)[];
-  result: number | null;
-};
-
-function freshProgress(lesson: PlayerLesson): Progress {
-  return {
-    phase: 'lesson', step: 0, lessonCompleted: false, questionIndex: 0,
-    answers: (lesson.quiz || []).map(() => null), result: null,
-  };
-}
-
-function countCorrect(answers: Progress['answers'], lesson: PlayerLesson) {
-  return answers.filter((answer, index) => answer === lesson.quiz?.[index].correct).length;
-}
-
-export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish }: {
-  lesson: PlayerLesson; mode: LessonMode; onBack: () => void; onImprove?: () => void; onFinish?: () => void;
+export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish, onCatalog, resources }: {
+  lesson: PlayerLesson; mode: LessonMode; onBack: () => void; onImprove?: () => void; onFinish?: () => void; onCatalog?: () => void; resources?: Record<string, string>;
 }) {
-  const [progress, setProgress] = useState(() => freshProgress(lesson));
+  const [progress, setProgress] = useState<{ phase: 'lesson' | 'result'; step: number }>({ phase: 'lesson', step: 0 });
   const [imageFailed, setImageFailed] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);
   const stepTrack = useRef<HTMLOListElement>(null);
   const step = lesson.steps[progress.step];
   const mini = Boolean(onFinish);
-  const quiz = lesson.quiz || [];
-  const question = quiz[progress.questionIndex];
-  const chosen = progress.answers[progress.questionIndex];
   const imageKey = `../${mini ? 'extras' : 'lessons'}/${lesson.id}/${step.visual.src}`;
-  const imageSource = (mini ? extraImages : images)[imageKey];
+  const imageSource = resources ? resources[imageKey.slice(3)] : (mini ? extraImages : images)[imageKey];
 
   useEffect(() => {
     setImageFailed(false);
     heading.current?.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [progress.phase, progress.step, progress.questionIndex]);
+  }, [progress.phase, progress.step]);
 
   useEffect(() => {
     const track = stepTrack.current;
@@ -72,15 +49,6 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
     }
   }, [progress.phase, progress.step]);
 
-  function advanceQuiz() {
-    if (chosen === null) return;
-    if (progress.questionIndex === quiz.length - 1) {
-      setProgress({ ...progress, phase: 'result', result: countCorrect(progress.answers, lesson) });
-    } else {
-      setProgress({ ...progress, questionIndex: progress.questionIndex + 1 });
-    }
-  }
-
   return (
     <div className={`app-shell ${progress.phase === 'lesson' ? 'lesson-screen' : ''}`}>
       <header className="lesson-header">
@@ -88,7 +56,7 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
         <div className="lesson-heading">
           <div><p className="eyebrow">{mode === 'python' ? 'Python' : mode === 'javascript' ? 'JavaScript' : 'Блоки'}</p><h1>{lesson.title}</h1></div>
         </div>
-        {!mini && <ol ref={stepTrack} className="step-track" aria-label="Шаги урока">
+        {<ol ref={stepTrack} className="step-track" aria-label="Шаги урока">
           {lesson.steps.map((item, index) => (
             <li key={item.id} className={progress.phase !== 'lesson' || index < progress.step ? 'done' : index === progress.step ? 'current' : ''}
               aria-current={progress.phase === 'lesson' && index === progress.step ? 'step' : undefined}>
@@ -102,7 +70,7 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
       <main>
         {progress.phase === 'lesson' && <>
           <section className="lesson-card step-card" aria-labelledby="screen-title">
-            {step.visual.type === 'code' ? <JavaScriptCode key={step.id} lessonId={lesson.id} codeFile={step.visual.codeFile} newLines={step.newLines} changedLines={step.changedLines} sourceRoot={mini ? 'extras' : 'lessons'} language={mode === 'python' ? 'python' : 'javascript'} /> : <figure className="blocks-picture">
+            {step.visual.type === 'code' ? <JavaScriptCode key={step.id} lessonId={lesson.id} codeFile={step.visual.codeFile} newLines={step.newLines} changedLines={step.changedLines} sourceRoot={mini ? 'extras' : 'lessons'} language={mode === 'python' ? 'python' : 'javascript'} sourceText={resources?.[`${mini ? 'extras' : 'lessons'}/${lesson.id}/${step.visual.codeFile}`]} /> : <figure className="blocks-picture">
               {imageFailed || !imageSource
                 ? <p role="alert">Не удалось загрузить картинку. Попробуй обновить страницу.</p>
                 : <BlocksImage key={step.id} src={imageSource} alt={`${step.visual.type === 'ui' ? 'Интерфейс' : 'Блоки'} MakeCode: ${step.title}`} onError={() => setImageFailed(true)} />}
@@ -141,47 +109,22 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
             <button className="button secondary" disabled={progress.step === 0}
               onClick={() => setProgress({ ...progress, step: progress.step - 1 })}>Назад</button>
             <button className="button primary" onClick={() => {
-              if (progress.step === lesson.steps.length - 1 && onFinish) onFinish();
-              else setProgress(progress.step === lesson.steps.length - 1
-                ? { ...progress, phase: 'quiz', lessonCompleted: true }
+              setProgress(progress.step === lesson.steps.length - 1
+                ? { ...progress, phase: 'result' }
                 : { ...progress, step: progress.step + 1 });
             }}>
-              {progress.step === lesson.steps.length - 1 ? (mini ? 'К другим улучшениям' : 'Перейти к тесту') : 'Далее'} <span aria-hidden="true">→</span>
+              {progress.step === lesson.steps.length - 1 ? (mini ? 'Улучшение готово!' : 'Игра готова!') : 'Далее'} <span aria-hidden="true">→</span>
             </button>
           </nav>
         </>}
 
-        {progress.phase === 'quiz' && <section className="lesson-card quiz-card" aria-labelledby="screen-title">
-          <p className="step-label">Вопрос {progress.questionIndex + 1} из {quiz.length}</p>
-          <h2 id="screen-title" ref={heading} tabIndex={-1}>Проверим, что ты узнал</h2>
-          <fieldset className="answers" disabled={chosen !== null}>
-            <legend>{question.question}</legend>
-            {question.answers.map((answer, index) => <label key={index}
-              className={`answer ${chosen === index ? 'selected' : ''} ${chosen !== null && index === question.correct ? 'correct' : ''}`}>
-              <input type="radio" name={`question-${progress.questionIndex}`} checked={chosen === index}
-                onChange={() => setProgress({ ...progress, answers: progress.answers.map((value, i) => i === progress.questionIndex ? index : value) })} />
-              <span>{answer}</span>
-            </label>)}
-          </fieldset>
-          {chosen !== null && <div className={`feedback ${chosen === question.correct ? 'success' : 'retry'}`} role="status">
-            <h3>{chosen === question.correct ? 'Верно!' : 'Пока не совсем верно'}</h3>
-            {chosen !== question.correct && <p>Правильный ответ: {question.answers[question.correct]}.</p>}
-            <p>{question.explanation}</p>
-          </div>}
-          <div className="quiz-navigation"><button className="button primary" disabled={chosen === null} onClick={advanceQuiz}>
-            {progress.questionIndex === quiz.length - 1 ? 'Показать результат' : 'К следующему вопросу'} <span aria-hidden="true">→</span>
-          </button></div>
-        </section>}
-
         {progress.phase === 'result' && <section className="lesson-card result-card" aria-labelledby="screen-title">
           <div className="result-star" aria-hidden="true">✦</div>
-          <p className="step-label">Урок пройден</p>
-          <h2 id="screen-title" ref={heading} tabIndex={-1}>Результат: {progress.result} из {quiz.length}</h2>
-          <p className="explanation">{progress.result === quiz.length
-            ? 'Все ответы верные! Ты знаешь, как работает твоя игра.'
-            : 'Ты прошёл весь урок! Можно повторить шаги и попробовать ещё раз.'}</p>
-          {onImprove && <section className="improve-invitation"><h3>Игра готова! Хочешь её улучшить?</h3><button className="button primary" onClick={onImprove}>Улучшить игру</button></section>}
-          <button className="button secondary" onClick={() => setProgress(freshProgress(lesson))}>Пройти урок заново</button>
+          <h2 id="screen-title" ref={heading} tabIndex={-1}>{mini ? 'Улучшение готово!' : 'Игра готова!'}</h2>
+          <p className="explanation">{mini ? 'Теперь в твоей игре появилась новая возможность.' : 'Ты создал свою игру. Теперь можешь поиграть или добавить новые возможности.'}</p>
+          {onImprove && <button className="button primary" onClick={onImprove}>Улучши свою игру</button>}
+          {onFinish && <button className="button primary" onClick={onFinish}>К списку улучшений</button>}
+          <button className="button secondary" onClick={mini ? onBack : onCatalog || onBack}>{mini ? 'К карточке игры' : 'Все игры'}</button>
         </section>}
       </main>
     </div>

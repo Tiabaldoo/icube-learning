@@ -270,3 +270,6 @@ figcaption { margin-top: 18px; font-size: 14px; color: #6b7286; }
   .quiz-card, .result-card { padding: 24px 18px; }
   .answer { padding: 15px 14px; font-size: 18px; }
 }
+.content-updates { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; font-size: 14px; }
+.improvement-section { border-top: 1px solid #eadfd3; margin-top: 28px; padding-top: 20px; }
+.result-card .button { margin: 8px; }

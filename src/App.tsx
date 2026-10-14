@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import LessonPlayer from './LessonPlayer';
-import ExtrasCatalog from './ExtrasCatalog';
-import type { Extra, ExtraMode } from './extras';
-import { games, programmingModes, type Game, type ProgrammingMode, type LessonMode } from './games';
+import { loadPublished, mergeGames, type Bundle } from './content';
+import { games, programmingModes, type Game, type ProgrammingMode, type LessonMode, type Improvement } from './games';
 
 type Screen = { page: 'catalog' } | { page: 'game'; game: Game }
   | { page: 'lesson'; game: Game; mode: LessonMode }
-  | { page: 'improvements'; game: Game; mode: ExtraMode }
-  | { page: 'improvement'; game: Game; mode: ExtraMode; extra: Extra };
+  | { page: 'improvements'; game: Game }
+  | { page: 'improvement-mode'; game: Game; extra: Improvement }
+  | { page: 'improvement'; game: Game; mode: LessonMode; extra: Improvement };
 
 function Difficulty({ value }: { value: number }) {
   return <span className="game-difficulty" aria-label={`Сложность: ${value} из 5`}>
@@ -30,12 +30,42 @@ export default function App() {
   const [screen, setScreen] = useState<Screen>({ page: 'catalog' });
   const heading = useRef<HTMLHeadingElement>(null);
 
-  useEffect(() => {
-    // Discard only obsolete lesson progress; never read or persist personal progress.
+  const [catalog, setCatalog] = useState(games);
+  const [pending, setPending] = useState<Bundle | null>(null);
+  const [message, setMessage] = useState('');
+  const [available, setAvailable] = useState(false);
+  const [busy, setBusy] = useState(false);
+  async function check(manual = true) {
+    if (!window.learningContent) return;
+    setBusy(true);
     try {
-      games.forEach(game => localStorage.removeItem(`icube-learning:${game.metadata.id}:progress:v1`));
-    } catch { /* Catalog and lessons also work when storage is unavailable. */ }
+      const result = await window.learningContent.check();
+      setAvailable(result.state === 'available');
+      if (result.state === 'available') setMessage('Доступны новые материалы. Появились новые игры или обновления уроков.');
+      else if (manual) setMessage('Все материалы обновлены');
+    } catch { if (manual) setMessage('Не удалось проверить материалы. Проверь подключение к интернету. Уроки доступны офлайн.'); }
+    finally { setBusy(false); }
+  }
+  async function install() {
+    if (!window.learningContent) return;
+    setBusy(true); setMessage('Загрузка материалов…');
+    try {
+      setPending(await window.learningContent.install()); setAvailable(false);
+      setMessage('Материалы обновлены');
+    } catch { setMessage('Не удалось обновить материалы. Предыдущие уроки сохранены. Попробуй позже.'); }
+    finally { setBusy(false); }
+  }
+  useEffect(() => {
+    let active = true;
+    loadPublished().then(bundle => { if (active && bundle) setPending(bundle); }).finally(() => { if (active) void check(false); });
+    return () => { active = false; };
   }, []);
+  useEffect(() => {
+    if (pending && screen.page === 'catalog') {
+      setCatalog(mergeGames(pending.games)); setPending(null);
+    }
+  }, [pending, screen.page]);
+
 
   useEffect(() => {
     heading.current?.focus({ preventScroll: true });
@@ -43,29 +73,30 @@ export default function App() {
   }, [screen]);
 
   if (screen.page === 'lesson') {
-    return <LessonPlayer key={screen.mode} lesson={screen.game.lessons[screen.mode]} mode={screen.mode} onBack={() => setScreen({ page: 'game', game: screen.game })}
-      onImprove={() => setScreen({ page: 'improvements', game: screen.game, mode: screen.mode })} />;
-  }
-  if (screen.page === 'improvements') {
-    return <ExtrasCatalog onBack={() => setScreen({ page: 'game', game: screen.game })}
-      onOpen={extra => setScreen({ page: 'improvement', game: screen.game, mode: screen.mode, extra })} />;
+    return <LessonPlayer key={screen.mode} lesson={screen.game.lessons[screen.mode]!} resources={screen.game.resources} mode={screen.mode} onBack={() => setScreen({ page: 'game', game: screen.game })}
+      onCatalog={() => setScreen({ page: 'catalog' })} onImprove={screen.game.improvements.length ? () => setScreen({ page: 'improvements', game: screen.game }) : undefined} />;
   }
   if (screen.page === 'improvement') {
-    return <LessonPlayer key={`${screen.extra.metadata.id}:${screen.mode}`} lesson={screen.extra.lessons[screen.mode]} mode={screen.mode}
+    return <LessonPlayer key={`${screen.extra.metadata.id}:${screen.mode}`} lesson={screen.extra.lessons[screen.mode]!} resources={screen.game.resources} mode={screen.mode}
       onBack={() => setScreen({ page: 'game', game: screen.game })}
-      onFinish={() => setScreen({ page: 'improvements', game: screen.game, mode: screen.mode })} />;
+      onFinish={() => setScreen({ page: 'improvements', game: screen.game })} />;
   }
 
   return <div className="catalog-shell">
     <header className="catalog-header">
       <div className="brand"><span className="brand-mark" aria-hidden="true">iC</span> Айкуб Игры</div>
-      {screen.page === 'game' && <button className="back-link" onClick={() => setScreen({ page: 'catalog' })}>← Все игры</button>}
+      {screen.page !== 'catalog' && <button className="back-link" onClick={() => setScreen({ page: 'catalog' })}>← Все игры</button>}
     </header>
     <main>
+      {window.learningContent && <div className="content-updates">
+        <button className="back-link" disabled={busy} onClick={() => void check()}>Проверить обновления</button>
+        <span role="status">{message}</span>
+        {available && <button className="button primary" disabled={busy} onClick={() => void install()}>Обновить</button>}
+      </div>}
       {screen.page === 'catalog' ? <>
         <h1 className="catalog-title" ref={heading} tabIndex={-1}>Выбери игру</h1>
         <div className="game-grid">
-          {games.map(game => <button className="game-card game-card-with-cover" key={game.metadata.id}
+          {catalog.map(game => <button className="game-card game-card-with-cover" key={game.metadata.id}
             aria-label={`Открыть игру «${game.metadata.title}»`}
             onClick={() => setScreen({ page: 'game', game })}>
             <GameCover game={game} />
@@ -76,7 +107,21 @@ export default function App() {
             </span>
           </button>)}
         </div>
-      </> : <article className="game-details lesson-card">
+      </> : screen.page === 'improvements' ? <section className="lesson-card">
+        <button className="back-link" onClick={() => setScreen({ page: 'game', game: screen.game })}>← К игре</button>
+        <h1 ref={heading} tabIndex={-1}>Улучши свою игру</h1>
+        <p>Уже создал игру? Добавь в неё новые возможности! Эти уроки необязательные.</p>
+        <div className="mode-grid">{screen.game.improvements.map(extra => <button className="mode-card" key={extra.metadata.id} onClick={() => setScreen({ page: 'improvement-mode', game: screen.game, extra })}>
+          <span className="mode-card-heading">{extra.metadata.icon} {extra.metadata.title}</span><span>{extra.metadata.description}</span>
+        </button>)}</div>
+      </section> : screen.page === 'improvement-mode' ? <section className="lesson-card">
+        <button className="back-link" onClick={() => setScreen({ page: 'improvements', game: screen.game })}>← К улучшениям</button>
+        <h1 ref={heading} tabIndex={-1}>{screen.extra.metadata.title}</h1><p>{screen.extra.metadata.description}</p>
+        <h2>Выбери способ программирования</h2>
+        <div className="mode-grid">{(Object.keys(screen.extra.lessons) as LessonMode[]).map(mode => <button className="mode-card" key={mode} onClick={() => setScreen({ page: 'improvement', game: screen.game, extra: screen.extra, mode })}>
+          <span className="mode-card-heading">{programmingModes[mode].title}</span><span>{programmingModes[mode].description}</span>
+        </button>)}</div>
+      </section> : <article className="game-details lesson-card">
         <div className="game-overview">
           <GameCover game={screen.game} />
           <div>
@@ -91,7 +136,7 @@ export default function App() {
           <h2 id="mode-title">Выбери способ программирования</h2>
           <div className="mode-grid">
             {(Object.keys(screen.game.metadata.modes) as ProgrammingMode[]).map(mode => {
-              const available = screen.game.metadata.modes[mode].available;
+              const available = screen.game.metadata.modes[mode]!.available;
               const info = programmingModes[mode];
               return <button className="mode-card" key={mode} disabled={!available}
                 onClick={() => { if (mode in screen.game.lessons) setScreen({ page: 'lesson', game: screen.game, mode: mode as LessonMode }); }}>
@@ -101,6 +146,12 @@ export default function App() {
             })}
           </div>
         </section>
+        {screen.game.improvements.length > 0 && <section className="improvement-section">
+          <h2>Улучши свою игру</h2><p>Уже создал игру? Добавь в неё новые возможности! Эти уроки необязательные.</p>
+          <div className="mode-grid">{screen.game.improvements.map(extra => <button className="mode-card" key={extra.metadata.id} onClick={() => setScreen({ page: 'improvement-mode', game: screen.game, extra })}>
+            <span className="mode-card-heading">{extra.metadata.icon} {extra.metadata.title}</span><span>{extra.metadata.description}</span><span>Открыть инструкцию →</span>
+          </button>)}</div>
+        </section>}
       </article>}
     </main>
   </div>;
