@@ -34,12 +34,12 @@ for (const entry of registry.games) {
   }
   games.push({ metadata: await read(`lessons/${entry.id}/game.json`), lessons, improvements, resources });
 }
-const bundle = { version: registry.version, formatVersion: 1, minAppVersion: '0.1.1', games };
-format.validateBundle(bundle, '0.1.1');
+const bundle = { version: registry.version, formatVersion: 1, minAppVersion: '0.1.2', games };
+format.validateBundle(bundle, '0.1.2');
 const bytes = Buffer.from(JSON.stringify(bundle));
 const packagePath = `versions/${registry.version}/bundle.json`;
-const manifest = { version: registry.version, formatVersion: 1, minAppVersion: '0.1.1', files: [{ path: packagePath, size: bytes.length, sha256: format.sha256(bytes) }], games: games.map(g => ({ id: g.metadata.id, title: g.metadata.title })) };
-format.verifyPackage(bytes, manifest, '0.1.1');
+const manifest = { version: registry.version, formatVersion: 1, minAppVersion: '0.1.2', files: [{ path: packagePath, size: bytes.length, sha256: format.sha256(bytes) }], games: games.map(g => ({ id: g.metadata.id, title: g.metadata.title })) };
+format.verifyPackage(bytes, manifest, '0.1.2');
 const output = path.join('public/content', packagePath);
 await fs.mkdir(path.dirname(output), { recursive: true });
 try { const previous = await fs.readFile(output); if (!previous.equals(bytes)) throw new Error('Content version already exists. Increment content/registry.json version.'); }

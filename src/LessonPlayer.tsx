@@ -97,7 +97,7 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
                 ? { ...progress, phase: 'result' }
                 : { ...progress, step: progress.step + 1 });
             }}>
-              {progress.step === lesson.steps.length - 1 ? (mini ? 'Улучшение готово!' : 'Игра готова!') : 'Далее'} <span aria-hidden="true">→</span>
+              {progress.step === lesson.steps.length - 1 ? (mini ? 'Улучшение готово!' : 'Игра готова!') : 'Следующий шаг'} <span aria-hidden="true">→</span>
             </button>
           </nav>
         </>}

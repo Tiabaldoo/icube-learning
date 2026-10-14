@@ -39,6 +39,15 @@ function validateBundle(data, appVersion) {
   assert(Array.isArray(data.games) && data.games.length > 0 && data.games.length <= 100);
   const ids = new Set();
   const string = v => assert(typeof v === 'string' && v.length < 1000000);
+  function focus(regions) {
+    if (regions === undefined) return;
+    assert(compareVersions(data.minAppVersion, '0.1.2') >= 0, 'Image focus requires application 0.1.2');
+    assert(Array.isArray(regions) && regions.length > 0 && regions.length <= 20, 'Invalid image focus');
+    for (const r of regions) {
+      assert(r && ['x', 'y', 'width', 'height'].every(k => typeof r[k] === 'number' && Number.isFinite(r[k]) && r[k] >= 0 && r[k] <= 100), 'Invalid focus coordinates');
+      assert(r.width > 0 && r.height > 0 && r.x + r.width <= 100 && r.y + r.height <= 100, 'Focus outside image');
+    }
+  }
   function lesson(l, resources, root, expectedId) {
     assert(l.id === expectedId); string(l.title);
     assert(Array.isArray(l.steps) && l.steps.length > 0 && l.steps.length < 1000);
@@ -51,11 +60,12 @@ function validateBundle(data, appVersion) {
       const p = root + safePath(s.visual.type === 'code' ? s.visual.codeFile : s.visual.src);
       assert(Object.hasOwn(resources, p), `Missing resource: ${p}`);
       assert(s.visual.type === 'code' ? /\.(ts|py)$/.test(p) : /\.png$/.test(p));
+      focus(s.visual.focus);
       if (s.visual.images !== undefined) {
         assert(compareVersions(data.minAppVersion, '0.1.1') >= 0, 'Image sequences require application 0.1.1');
         assert(Array.isArray(s.visual.images) && s.visual.images.length > 0 && s.visual.images.length <= 20);
         for (const image of s.visual.images) {
-          string(image.caption);
+          string(image.caption); focus(image.focus);
           assert(image.type === undefined || ['ui', 'blocks'].includes(image.type));
           const imagePath = root + safePath(image.src);
           assert(/\.png$/.test(imagePath) && Object.hasOwn(resources, imagePath), 'Missing image sequence resource');

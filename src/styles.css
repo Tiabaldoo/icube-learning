@@ -283,3 +283,12 @@ figcaption { margin-top: 18px; font-size: 14px; color: #6b7286; }
 .picture-navigation button:disabled { opacity: .45; cursor: default; }
 
 .lesson-code-visual { min-width: 0; }
+.image-plane { position: absolute; left: 50%; top: 50%; transform-origin: center; }
+.image-viewport .image-plane img { position: static; display: block; width: 100%; height: 100%; max-width: none; margin: 0; }
+.image-focus-mask { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.focus-controls { display: flex; justify-content: center; flex-shrink: 0; }
+.focus-controls .focus-toggle { padding: 6px 14px; font-size: 14px; min-height: 34px; }
+.picture-navigation { padding: 8px; border-radius: 10px; background: #fff1e5; border: 1px solid #ffd0ac; }
+.picture-navigation span { font-weight: 700; color: #9a3c00; }
+.picture-navigation .button { padding: 7px 12px; font-size: 14px; }
+.picture-navigation .picture-next { background: #ed6500; color: white; border-color: #ed6500; }

@@ -1,9 +1,10 @@
 import registry from '../content/registry.json';
 import extraCatalog from '../extras/catalog.json';
 
+export type ImageFocus = { x: number; y: number; width: number; height: number };
 export type LessonStep = {
   id: string; title: string; actionType: string; goal: string; check: string; challenge: string; theory: string;
-  instructions: string[]; visual: { type: string; src: string; codeFile: string; caption: string; images?: { src: string; caption: string; type?: "ui" | "blocks" }[] };
+  instructions: string[]; visual: { type: string; src: string; codeFile: string; caption: string; focus?: ImageFocus[]; images?: { src: string; caption: string; type?: "ui" | "blocks"; focus?: ImageFocus[] }[] };
   blocks: { category: string; name: string; purpose: string }[]; commands: { code: string; purpose: string }[];
   newLines: number[][]; changedLines: number[][]; change: { before: string; after: string };
 };

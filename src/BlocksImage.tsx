@@ -1,11 +1,14 @@
-import { useEffect, useRef, useState, type PointerEvent } from 'react';
+import { useEffect, useId, useRef, useState, type PointerEvent } from 'react';
 
-type ImageProps = { src: string; alt: string; onError: () => void };
+import type { ImageFocus } from './games';
+import ImageFocusMask from './ImageFocusMask';
+type ImageProps = { src: string; alt: string; onError: () => void; focus?: ImageFocus[]; focusVisible?: boolean; onToggleFocus?: () => void };
 const limit = (value: number, maximum: number) => Math.max(-maximum, Math.min(maximum, value));
 
-function ZoomImage({ src, alt, onError, onExpand, onClose }: ImageProps & {
+function ZoomImage({ src, alt, onError, focus, focusVisible, onToggleFocus, onExpand, onClose }: ImageProps & {
   onExpand?: () => void; onClose?: () => void;
 }) {
+  const maskId = useId();
   const viewport = useRef<HTMLDivElement>(null);
   const drag = useRef<{ x: number; y: number; left: number; top: number } | null>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -69,11 +72,14 @@ function ZoomImage({ src, alt, onError, onExpand, onClose }: ImageProps & {
       title="Увеличение: Ctrl + колесо мыши. Увеличенную картинку можно перетаскивать."
       onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={endDrag}
       onPointerCancel={endDrag} onLostPointerCapture={endDrag}>
-      <img src={src} alt={alt} draggable={false} onDragStart={event => event.preventDefault()} onError={onError}
-        onLoad={event => setNatural({ width: event.currentTarget.naturalWidth, height: event.currentTarget.naturalHeight })}
-        style={{ width, height, visibility: fit ? 'visible' : 'hidden',
-          transform: `translate(-50%, -50%) translate(${offset.x}px, ${offset.y}px) scale(${zoom})` }} />
+      <div className="image-plane" style={{ width, height, visibility: fit ? 'visible' : 'hidden',
+        transform: `translate(-50%, -50%) translate(${offset.x}px, ${offset.y}px) scale(${zoom})` }}>
+        <img src={src} alt={alt} draggable={false} onDragStart={event => event.preventDefault()} onError={onError}
+          onLoad={event => setNatural({ width: event.currentTarget.naturalWidth, height: event.currentTarget.naturalHeight })} />
+        {focus?.length && focusVisible ? <ImageFocusMask focus={focus} id={maskId} /> : null}
+      </div>
     </div>
+    {focus?.length ? <div className="focus-controls"><button type="button" className="button secondary focus-toggle" aria-pressed={Boolean(focusVisible)} onClick={onToggleFocus}>{focusVisible ? 'Показать всё' : 'Показать выделение'}</button></div> : null}
   </div>;
 }
 
@@ -99,8 +105,10 @@ function FullscreenImage({ onClose, ...props }: ImageProps & { onClose: () => vo
 
 export default function BlocksImage(props: ImageProps) {
   const [expanded, setExpanded] = useState(false);
+  const [focusVisible, setFocusVisible] = useState(true);
+  const focusProps = { focusVisible, onToggleFocus: () => setFocusVisible(value => !value) };
   return <>
-    <ZoomImage {...props} onExpand={() => setExpanded(true)} />
-    {expanded && <FullscreenImage {...props} onClose={() => setExpanded(false)} />}
+    <ZoomImage {...props} {...focusProps} onExpand={() => setExpanded(true)} />
+    {expanded && <FullscreenImage {...props} {...focusProps} onClose={() => setExpanded(false)} />}
   </>;
 }

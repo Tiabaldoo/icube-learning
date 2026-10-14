@@ -1,6 +1,6 @@
 {
   "name": "icube-learning",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Айкуб Игры — офлайн-уроки создания игр",
   "author": "Tiabaldoo",
   "private": true,
@@ -17,7 +17,7 @@
     "capture:blocks": "node scripts/capture-makecode-blocks/capture.mjs",
     "capture:lesson": "node scripts/capture-collect-stars/capture.mjs",
     "content:prepare": "node scripts/prepare-content.mjs",
-    "content:test": "node --test tests/content.test.cjs"
+    "content:test": "node --test tests/content.test.cjs tests/lesson-images.test.cjs tests/image-focus.test.cjs"
   },
   "dependencies": {
     "react": "^19.3.0",

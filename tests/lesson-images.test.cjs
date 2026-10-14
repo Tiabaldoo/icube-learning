@@ -44,17 +44,17 @@ test('single image has no extra navigation; sequences change only their image', 
   assert(oldHtml.includes('/offline-one.png')); assert(!oldHtml.includes('picture-navigation'));
   const multiple = { ...props, visual: { ...props.visual, images: [{ src: 'one.png', caption: 'Первая' }, { src: 'two.png', caption: 'Вторая' }] } };
   const first = g.render(multiple), html = renderToStaticMarkup(first);
-  assert(html.includes('1 / 2')); assert(html.includes('Первая')); assert(!html.includes('/offline-two.png'));
+  assert(html.includes('Картинка 1 из 2')); assert(html.includes('Первая')); assert(!html.includes('/offline-two.png'));
   first.props.children[2].props.children[2].props.onClick(); assert.equal(g.next(), 1);
   g = gallery(1); const second = g.render(multiple);
   assert(renderToStaticMarkup(second).includes('/offline-two.png'));
   second.props.children[2].props.children[0].props.onClick(); assert.equal(g.next(), 0);
-  assert(renderToStaticMarkup(gallery().render(multiple)).includes('1 / 2'));
+  assert(renderToStaticMarkup(gallery().render(multiple)).includes('Картинка 1 из 2'));
 });
 test('published package contains every sequence resource and has matching SHA-256', () => {
   const manifest = JSON.parse(fs.readFileSync('public/content/manifest.json'));
-  const data = format.verifyPackage(fs.readFileSync('public/content/' + manifest.files[0].path), manifest, '0.1.1');
-  assert.equal(manifest.minAppVersion, '0.1.1');
+  const data = format.verifyPackage(fs.readFileSync('public/content/' + manifest.files[0].path), manifest, '0.1.2');
+  assert.equal(manifest.minAppVersion, '0.1.2');
   for (const game of data.games) for (const lesson of Object.values(game.lessons)) for (const step of lesson.steps) for (const image of step.visual.images || []) assert(game.resources['lessons/' + game.metadata.id + '/' + image.src]);
   assert.throws(() => format.validateManifest(manifest, '0.1.0'));
 });
