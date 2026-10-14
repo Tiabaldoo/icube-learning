@@ -13,7 +13,8 @@
       "instructions": [
         "Открой arcade.makecode.com и в разделе «Мои проекты» выбери свою готовую игру «Собери 10 звёзд». Если она уже открыта, останься в ней. Новый проект не создавай.",
         "В верхней панели нажми «JavaScript».",
-        "Сохрани существующий код и свои рисунки: добавлять будем только музыку."
+        "Сохрани существующий код и свои рисунки: добавлять будем только музыку.",
+        "В образце показано только это улучшение. Свои рисунки и ранее добавленные возможности не удаляй."
       ],
       "visual": {
         "type": "code",
@@ -48,7 +49,13 @@
         "codeFile": "javascript/steps/ready.ts",
         "caption": "Полная игра «Собери 10 звёзд». Меняй только музыку; свои рисунки оставь."
       },
-      "blocks": [],
+      "blocks": [
+        {
+          "category": "Информация",
+          "name": "info.setScore(0)",
+          "purpose": ""
+        }
+      ],
       "commands": [],
       "newLines": [],
       "changedLines": [],
@@ -76,7 +83,13 @@
         "codeFile": "javascript/steps/add.ts",
         "caption": "Полная игра «Собери 10 звёзд». Меняй только музыку; свои рисунки оставь."
       },
-      "blocks": [],
+      "blocks": [
+        {
+          "category": "Информация",
+          "name": "info.setScore(0)",
+          "purpose": ""
+        }
+      ],
       "commands": [
         {
           "code": "music.play(music.stringPlayable(\"C D E G E D C - \", 120), music.PlaybackMode.InBackground)",
@@ -113,7 +126,13 @@
         "codeFile": "javascript/steps/loop.ts",
         "caption": "Полная игра «Собери 10 звёзд». Меняй только музыку; свои рисунки оставь."
       },
-      "blocks": [],
+      "blocks": [
+        {
+          "category": "Музыка",
+          "name": "music.PlaybackMode.LoopingInBackground",
+          "purpose": ""
+        }
+      ],
       "commands": [],
       "newLines": [],
       "changedLines": [

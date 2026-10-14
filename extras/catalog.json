@@ -12,8 +12,8 @@
   },
   {
     "id": "sound",
-    "title": "Добавь звук",
-    "description": "Звук при важном событии.",
+    "title": "Звук при сборе звезды",
+    "description": "Короткий звук при каждой собранной звезде.",
     "icon": "🔔",
     "modes": {
       "blocks": true,
@@ -45,9 +45,20 @@
   },
   {
     "id": "timer",
-    "title": "Добавь таймер",
-    "description": "Обратный отсчёт времени.",
+    "title": "Игра на время",
+    "description": "Собери 10 звёзд за 30 секунд.",
     "icon": "⏱",
+    "modes": {
+      "blocks": true,
+      "javascript": true,
+      "python": true
+    }
+  },
+  {
+    "id": "enemy",
+    "title": "Добавь врага",
+    "description": "Избегай врага, который движется и отскакивает от краёв.",
+    "icon": "👾",
     "modes": {
       "blocks": true,
       "javascript": true,

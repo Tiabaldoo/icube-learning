@@ -13,7 +13,9 @@
       "instructions": [
         "Открой arcade.makecode.com и в разделе «Мои проекты» выбери свою готовую игру «Собери 10 звёзд». Если она уже открыта, останься в ней. Новый проект не создавай.",
         "В верхней панели нажми стрелку рядом с «JavaScript» и выбери «Python».",
-        "Сохрани существующий код и свои рисунки: добавлять будем только музыку."
+        "Сохрани существующий код и свои рисунки: добавлять будем только музыку.",
+        "В образце показано только это улучшение. Свои рисунки и ранее добавленные возможности не удаляй.",
+        "Если MakeCode сообщает ошибку имени player, замени имя переменной на my_player при создании героя, в аргументе controller.move_sprite и перед .set_stay_in_screen. SpriteKind.player не меняй. Уже работающее имя героя оставь прежним."
       ],
       "visual": {
         "type": "code",
@@ -48,7 +50,13 @@
         "codeFile": "python/steps/ready.py",
         "caption": "Полная игра «Собери 10 звёзд». Меняй только музыку; свои рисунки оставь."
       },
-      "blocks": [],
+      "blocks": [
+        {
+          "category": "Информация",
+          "name": "info.set_score(0)",
+          "purpose": ""
+        }
+      ],
       "commands": [],
       "newLines": [],
       "changedLines": [],
@@ -76,7 +84,13 @@
         "codeFile": "python/steps/add.py",
         "caption": "Полная игра «Собери 10 звёзд». Меняй только музыку; свои рисунки оставь."
       },
-      "blocks": [],
+      "blocks": [
+        {
+          "category": "Информация",
+          "name": "info.set_score(0)",
+          "purpose": ""
+        }
+      ],
       "commands": [
         {
           "code": "music.play(music.string_playable(\"C D E G E D C - \", 120), music.PlaybackMode.IN_BACKGROUND)",
@@ -113,7 +127,13 @@
         "codeFile": "python/steps/loop.py",
         "caption": "Полная игра «Собери 10 звёзд». Меняй только музыку; свои рисунки оставь."
       },
-      "blocks": [],
+      "blocks": [
+        {
+          "category": "Музыка",
+          "name": "music.PlaybackMode.LOOPING_IN_BACKGROUND",
+          "purpose": ""
+        }
+      ],
       "commands": [],
       "newLines": [],
       "changedLines": [

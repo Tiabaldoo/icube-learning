@@ -1,5 +1,5 @@
 {
-  "version": "1.0.3",
+  "version": "1.0.4",
   "games": [
     {
       "id": "collect-stars-01",
@@ -9,7 +9,10 @@
         "python": "python/lesson.json"
       },
       "improvements": [
-        "music"
+        "music",
+        "sound",
+        "enemy",
+        "timer"
       ]
     },
     {
