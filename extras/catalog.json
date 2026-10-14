@@ -64,5 +64,16 @@
       "javascript": true,
       "python": true
     }
+  },
+  {
+    "id": "maze-chase",
+    "title": "Враг преследует игрока",
+    "description": "Замени патрулирование скелета простым преследованием.",
+    "icon": "💀",
+    "modes": {
+      "blocks": true,
+      "javascript": true,
+      "python": true
+    }
   }
 ]

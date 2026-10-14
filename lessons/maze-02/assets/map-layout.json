@@ -1,0 +1,31 @@
+{
+  "width": 16,
+  "height": 16,
+  "rows": [
+    "################",
+    "#S.....#......F#",
+    "#......#.......#",
+    "#####..#..######",
+    "#......#.......#",
+    "#..#####..######",
+    "#......#.......#",
+    "#####..D..######",
+    "#......#.......#",
+    "#..#####..######",
+    "#....E.#.......#",
+    "#......#..######",
+    "#####..#.......#",
+    "#K.....#.......#",
+    "#......#########",
+    "################"
+  ],
+  "legend": {
+    "#": "sprites.dungeon.darkGroundCenter (wall)",
+    ".": "sprites.dungeon.floorLight0",
+    "S": "sprites.dungeon.collectibleInsignia",
+    "E": "sprites.dungeon.floorLight3",
+    "F": "sprites.dungeon.chestClosed",
+    "K": "sprites.dungeon.floorLight2",
+    "D": "sprites.dungeon.doorClosedNorth"
+  }
+}

@@ -1,12 +1,12 @@
 {
-  "version": "1.0.4",
+  "version": "1.0.5",
   "formatVersion": 1,
   "minAppVersion": "0.1.0",
   "files": [
     {
-      "path": "versions/1.0.4/bundle.json",
-      "size": 8717652,
-      "sha256": "b5cfc53edb4e9d723309e40a84281ea0f5d43582f6d65be7494432833efea9bb"
+      "path": "versions/1.0.5/bundle.json",
+      "size": 13550701,
+      "sha256": "c2a94a3147b00b350e21f07c3246a6e54259ff0429c582b9720b6939821d438a"
     }
   ],
   "games": [
@@ -17,6 +17,10 @@
     {
       "id": "maze-01",
       "title": "Лабиринт"
+    },
+    {
+      "id": "maze-02",
+      "title": "Лабиринт: продолжение"
     }
   ]
 }

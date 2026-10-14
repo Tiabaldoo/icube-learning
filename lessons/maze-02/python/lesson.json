@@ -1,0 +1,932 @@
+{
+  "id": "maze-02",
+  "title": "Лабиринт: продолжение",
+  "steps": [
+    {
+      "id": "maze-02-1",
+      "title": "Открой свой лабиринт",
+      "goal": "Продолжим сохранённую игру.",
+      "instructions": [
+        "Открой arcade.makecode.com и выбери свой сохранённый проект «Лабиринт». Сегодня добавим к нему второй уровень с ключом и дверью.",
+        "На образце — финал первого урока. Сохрани свои рисунки и карту."
+      ],
+      "check": "В твоей игре уже есть управление, камера, скелет и финиш.",
+      "theory": "Все новые действия добавляем в этот же проект.",
+      "challenge": "",
+      "actionType": "ui-action",
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "python/steps/0.py",
+        "caption": "Открой свой лабиринт — программа твоего лабиринта."
+      },
+      "blocks": [],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-2",
+      "title": "Уточни имя героя в Python",
+      "goal": "Сохраним героя и избежим совпадения с именем MakeCode.",
+      "instructions": [
+        "В своём коде переименуй только переменную player в my_player: объявление, создание, перенос на старт, управление, камера и событие врага. SpriteKind.player не меняй.",
+        "Рисунки, карту и обработчики сохрани. В образце подсвечены все места замены."
+      ],
+      "check": "Везде переменная героя называется my_player, а тип остаётся SpriteKind.player.",
+      "theory": "player также используется MakeCode как служебное имя. Новое имя относится к тому же спрайту.",
+      "challenge": "",
+      "actionType": "type-code",
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "python/steps/1.py",
+        "caption": "Тот же финальный лабиринт; заменено только имя переменной героя."
+      },
+      "blocks": [],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [
+        [
+          7,
+          7
+        ],
+        [
+          14,
+          14
+        ],
+        [
+          18,
+          21
+        ]
+      ],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-3",
+      "title": "Запомни уровень и ключ",
+      "goal": "Заведём память для двух уровней.",
+      "instructions": [
+        "Перед my_player: Sprite добавь current_level = 1 и have_key = False."
+      ],
+      "check": "При запуске выбран первый уровень, ключ ещё не найден.",
+      "theory": "Число выбирает карту; логическое значение запоминает ключ.",
+      "challenge": "",
+      "actionType": "type-code",
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "python/steps/2.py",
+        "caption": "Запомни уровень и ключ — программа твоего лабиринта."
+      },
+      "blocks": [
+        {
+          "category": "Переменные / Логика",
+          "name": "Создать переменную…",
+          "purpose": ""
+        },
+        {
+          "category": "Переменные / Логика",
+          "name": "задать Уровень значение 1",
+          "purpose": ""
+        },
+        {
+          "category": "Переменные / Логика",
+          "name": "ложь",
+          "purpose": ""
+        }
+      ],
+      "commands": [
+        {
+          "code": "current_level = 1\nhave_key = False",
+          "purpose": "Измени только указанные выше места. Остальной готовый код сохрани."
+        }
+      ],
+      "newLines": [
+        [
+          14,
+          15
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-4",
+      "title": "Создай отдельную вторую карту",
+      "goal": "Сохраним первую карту и добавим новую.",
+      "instructions": [
+        "Открой «Ресурсы» в верхней панели. Нажми + («Создать новый ресурс») и выбери «Тайловая карта».",
+        "Создавай новый ресурс: карточку level1 не открывай и не переименовывай."
+      ],
+      "check": "Открыт редактор новой пустой карты; первая карта level1 сохранена.",
+      "theory": "Две карты — два отдельных ресурса.",
+      "challenge": "",
+      "actionType": "ui-action",
+      "visual": {
+        "type": "ui",
+        "src": "images/ui/create-map.png",
+        "codeFile": "python/steps/2.py",
+        "caption": "Редактор MakeCode: Создай отдельную вторую карту."
+      },
+      "blocks": [
+        {
+          "category": "Верхняя панель → Ресурсы",
+          "name": "+ → Тайловая карта",
+          "purpose": ""
+        }
+      ],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-5",
+      "title": "Подготовь размер и пол",
+      "goal": "Сделаем основу новой карты.",
+      "instructions": [
+        "Внизу задай название level2, ширину 16 и высоту 16. Это 16 столбцов и 16 строк плиток.",
+        "В палитре открой Forest → Dungeon. На странице 2 выбери floorLight0 — светлый пол. Инструментом с ведёрком (Fill Tool) залей всю карту."
+      ],
+      "check": "Новая карта level2 размером 16 × 16 покрыта светлым полом.",
+      "theory": "Рисунки плиток выбираем в палитре, а форму лабиринта рисуем сами.",
+      "challenge": "",
+      "actionType": "ui-action",
+      "visual": {
+        "type": "ui",
+        "src": "images/ui/size-floor.png",
+        "codeFile": "python/steps/2.py",
+        "caption": "Редактор MakeCode: Подготовь размер и пол."
+      },
+      "blocks": [
+        {
+          "category": "Редактор карты",
+          "name": "Название ресурса",
+          "purpose": ""
+        },
+        {
+          "category": "Редактор карты",
+          "name": "Ширина / Высота",
+          "purpose": ""
+        },
+        {
+          "category": "Редактор карты",
+          "name": "Dungeon → floorLight0 → Fill Tool",
+          "purpose": ""
+        }
+      ],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-6",
+      "title": "Нарисуй стены и повороты",
+      "goal": "Повторим коридоры образца.",
+      "instructions": [
+        "Увеличь образец. На странице 1 Dungeon выбери darkGroundCenter — тёмную каменную плитку. Карандашом (Paint Tool) повтори внешний контур и внутренние полосы стен.",
+        "Оставь светлые проходы шириной две плитки. В середине стены, в столбце 8 и строке 8, оставь одну клетку для двери. Считай от 1, слева направо и сверху вниз."
+      ],
+      "check": "Есть извилистый путь по левой части карты и один проход к правой — место двери.",
+      "theory": "Дверь перекроет единственное соединение двух частей карты.",
+      "challenge": "",
+      "actionType": "ui-action",
+      "visual": {
+        "type": "ui",
+        "src": "images/ui/walls.png",
+        "codeFile": "python/steps/2.py",
+        "caption": "Редактор MakeCode: Нарисуй стены и повороты."
+      },
+      "blocks": [
+        {
+          "category": "Редактор карты",
+          "name": "Dungeon → darkGroundCenter",
+          "purpose": ""
+        },
+        {
+          "category": "Редактор карты",
+          "name": "Paint Tool",
+          "purpose": ""
+        }
+      ],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-7",
+      "title": "Сделай стены непроходимыми",
+      "goal": "Игрок не должен проходить через камень.",
+      "instructions": [
+        "Выбери «Рисование стен» в палитре и карандашом закрась все тёмные плитки стены. Включи «Показать стены», чтобы проверить красный слой.",
+        "Светлый пол и место будущей двери пока не закрашивай. Если ошибся — сотри лишнюю отметку ластиком в режиме стен."
+      ],
+      "check": "Красный слой покрывает все каменные стены, но не проходы.",
+      "theory": "Картинка стены сама не мешает движению. Препятствие задаёт слой стен.",
+      "challenge": "",
+      "actionType": "ui-action",
+      "visual": {
+        "type": "ui",
+        "src": "images/ui/collision.png",
+        "codeFile": "python/steps/2.py",
+        "caption": "Редактор MakeCode: Сделай стены непроходимыми."
+      },
+      "blocks": [
+        {
+          "category": "Редактор карты",
+          "name": "Рисование стен",
+          "purpose": ""
+        },
+        {
+          "category": "Редактор карты",
+          "name": "Показать стены",
+          "purpose": ""
+        },
+        {
+          "category": "Редактор карты",
+          "name": "Erase Tool",
+          "purpose": ""
+        }
+      ],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-8",
+      "title": "Поставь старт, врага и финиш",
+      "goal": "Отметим места знакомых объектов.",
+      "instructions": [
+        "Выключи «Рисование стен». «Показать стены» можно оставить включённым: красный слой на образце помогает отличить препятствия. Установи по одному маркеру из Dungeon: collectibleInsignia — столбец 2, строка 2; floorLight3 — столбец 6, строка 11; chestClosed — столбец 15, строка 2.",
+        "Маркер заменяет пол в своей клетке. Все три оставь проходимыми; floorLight3 находится в горизонтальном коридоре, а финиш — справа, за будущей дверью."
+      ],
+      "check": "На карте ровно один старт, один маркер скелета и один финиш.",
+      "theory": "Используем те же маркеры, что в первом лабиринте.",
+      "challenge": "",
+      "actionType": "ui-action",
+      "visual": {
+        "type": "ui",
+        "src": "images/ui/markers.png",
+        "codeFile": "python/steps/2.py",
+        "caption": "Редактор MakeCode: Поставь старт, врага и финиш."
+      },
+      "blocks": [
+        {
+          "category": "Редактор карты → Dungeon",
+          "name": "collectibleInsignia",
+          "purpose": ""
+        },
+        {
+          "category": "Редактор карты → Dungeon",
+          "name": "floorLight3",
+          "purpose": ""
+        },
+        {
+          "category": "Редактор карты → Dungeon",
+          "name": "chestClosed",
+          "purpose": ""
+        }
+      ],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-9",
+      "title": "Отметь ключ и закрой проход",
+      "goal": "Ключ будет слева, дверь — между частями карты.",
+      "instructions": [
+        "Поставь floorLight2 в столбце 2, строке 14: здесь появится ключ. На странице 2 Dungeon выбери doorClosedNorth и поставь в столбце 8, строке 8.",
+        "В режиме «Рисование стен» отметь только дверь как непроходимую. Проверь: камень сверху и снизу двери не оставляет обхода, а от старта можно дойти до ключа."
+      ],
+      "check": "Ключ доступен до двери. Дверь со слоем стены перекрывает единственный путь к финишу.",
+      "theory": "floorLight2 — метка места ключа; сам ключ создадим спрайтом.",
+      "challenge": "",
+      "actionType": "ui-action",
+      "visual": {
+        "type": "ui",
+        "src": "images/ui/complete-map.png",
+        "codeFile": "python/steps/2.py",
+        "caption": "Редактор MakeCode: Отметь ключ и закрой проход."
+      },
+      "blocks": [
+        {
+          "category": "Редактор карты → Dungeon",
+          "name": "floorLight2",
+          "purpose": ""
+        },
+        {
+          "category": "Редактор карты → Dungeon",
+          "name": "doorClosedNorth",
+          "purpose": ""
+        },
+        {
+          "category": "Редактор карты → Dungeon",
+          "name": "Рисование стен",
+          "purpose": ""
+        }
+      ],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-10",
+      "title": "Сохрани обе карты",
+      "goal": "Закончим карту и вернёмся к программе.",
+      "instructions": [
+        "Сверь карту с полным образцом и нажми «Готово». В «Мои ресурсы» должны остаться level1 и level2. Вернись в свой режим программирования.",
+        "Можно изменить коридоры, но оставь все пять маркеров по одному: старт, враг, финиш, ключ и дверь. Ключ доступен до двери; финиш — только после неё. Маркеры пола проходимы, дверь и стены непроходимы."
+      ],
+      "check": "level1 сохранён; level2 готов. Рисунок карты не нужно вводить кодом.",
+      "theory": "Программа найдёт маркеры сама: координаты образца в код не попадают.",
+      "challenge": "",
+      "actionType": "ui-action",
+      "visual": {
+        "type": "ui",
+        "src": "images/ui/complete-map.png",
+        "codeFile": "python/steps/2.py",
+        "caption": "Редактор MakeCode: Сохрани обе карты."
+      },
+      "blocks": [
+        {
+          "category": "Редактор карты / Верхняя панель",
+          "name": "Готово",
+          "purpose": ""
+        },
+        {
+          "category": "Редактор карты / Верхняя панель",
+          "name": "Блоки / JavaScript / Python",
+          "purpose": ""
+        }
+      ],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-11",
+      "title": "Выбери карту по номеру уровня",
+      "goal": "Свяжем две готовые карты с переменной.",
+      "instructions": [
+        "Перед def on_on_overlap добавь def load_level() из выделенных строк. Внутри выбираем level1 или level2 по current_level.",
+        "В tilemap пишем только имя готового ресурса. Длинные данные карты не вводи."
+      ],
+      "check": "Есть функция выбора карты, но игра пока запускает прежний первый уровень.",
+      "theory": "Функция собирает действия, которые позже вызовет событие финиша.",
+      "challenge": "",
+      "actionType": "type-code",
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "python/steps/3.py",
+        "caption": "Выбери карту по номеру уровня — программа твоего лабиринта."
+      },
+      "blocks": [
+        {
+          "category": "Расширенные → Функции",
+          "name": "Создать функцию…",
+          "purpose": ""
+        },
+        {
+          "category": "Логика",
+          "name": "если … иначе",
+          "purpose": ""
+        },
+        {
+          "category": "Сцена",
+          "name": "установить карту плиток",
+          "purpose": ""
+        }
+      ],
+      "commands": [
+        {
+          "code": "def load_level():\n    if current_level == 1:\n        tiles.set_current_tilemap(tilemap(\"\"\"level1\"\"\"))\n    else:\n        tiles.set_current_tilemap(tilemap(\"\"\"level2\"\"\"))",
+          "purpose": "Измени только указанные выше места. Остальной готовый код сохрани."
+        }
+      ],
+      "newLines": [
+        [
+          6,
+          10
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-12",
+      "title": "Создай один ключ",
+      "goal": "Добавим новый объект, не меняя героя и скелета.",
+      "instructions": [
+        "В class SpriteKind добавь KeyKind. В конце программы создай key этого типа и включи флаги INVISIBLE и GHOST.",
+        "Рисунок в img(\"\"\"\"\"\") сначала оставь пустым и открой его значком редактора изображения. Пиксели из образца не перепечатывай."
+      ],
+      "check": "Есть только один спрайт ключа. На первом уровне он скрыт.",
+      "theory": "Один ключ будем прятать и возвращать, а не создавать заново.",
+      "challenge": "",
+      "actionType": "type-code",
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "python/steps/4.py",
+        "caption": "Создай один ключ — программа твоего лабиринта."
+      },
+      "blocks": [
+        {
+          "category": "Спрайты",
+          "name": "задать Ключ спрайту … типа ТипКлюча",
+          "purpose": ""
+        },
+        {
+          "category": "Спрайты",
+          "name": "Ключ установить флаг невидимый ВКЛ",
+          "purpose": ""
+        },
+        {
+          "category": "Спрайты",
+          "name": "Ключ установить флаг призрак ВКЛ",
+          "purpose": ""
+        }
+      ],
+      "commands": [
+        {
+          "code": "KeyKind = SpriteKind.create()\n\nkey = sprites.create(img(\"\"\"\"\"\"), SpriteKind.KeyKind)\nkey.set_flag(SpriteFlag.INVISIBLE, True)\nkey.set_flag(SpriteFlag.GHOST, True)",
+          "purpose": "Измени только указанные выше места. Остальной готовый код сохрани."
+        }
+      ],
+      "newLines": [
+        [
+          5,
+          5
+        ],
+        [
+          82,
+          101
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-13",
+      "title": "Нарисуй ключ",
+      "goal": "Повторим простой золотой ключ.",
+      "instructions": [
+        "В создании ключа нажми на рисунок (в коде — значок редактора у img). Установи 16 × 16. Цветом 5 — жёлтым — повтори все клетки образца: кольцо сверху слева, стержень вниз и зубцы вправо.",
+        "Остальные клетки оставь прозрачными. Нажми «Готово»."
+      ],
+      "check": "У ключа есть кольцо и два зубца; рисунки существующих объектов сохранены.",
+      "theory": "Рисунок спрайта редактируется отдельно от его поведения.",
+      "challenge": "",
+      "actionType": "ui-action",
+      "visual": {
+        "type": "ui",
+        "src": "images/ui/key-editor.png",
+        "codeFile": "python/steps/4.py",
+        "caption": "Редактор MakeCode: Нарисуй ключ."
+      },
+      "blocks": [
+        {
+          "category": "Редактор изображения",
+          "name": "Ширина / Высота: 16",
+          "purpose": ""
+        },
+        {
+          "category": "Редактор изображения",
+          "name": "Цвет 5",
+          "purpose": ""
+        },
+        {
+          "category": "Редактор изображения",
+          "name": "Готово",
+          "purpose": ""
+        }
+      ],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-14",
+      "title": "Подготовь новую попытку",
+      "goal": "Соберём восстановление ключа и двери в одну функцию.",
+      "instructions": [
+        "Рядом с переменными добавь door: tiles.Location = None. Перед load_level добавь def start_attempt() из выделенных строк.",
+        "global have_key позволяет функции сбросить общую память ключа. Место door настроим следующим шагом."
+      ],
+      "check": "Функция возвращает героя; для второго уровня сбрасывает ключ и включает стену двери.",
+      "theory": "Дверь хранит клетку карты, а не отдельный спрайт.",
+      "challenge": "",
+      "actionType": "type-code",
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "python/steps/5.py",
+        "caption": "Подготовь новую попытку — программа твоего лабиринта."
+      },
+      "blocks": [
+        {
+          "category": "Функции",
+          "name": "Создать функцию…",
+          "purpose": ""
+        },
+        {
+          "category": "Сцена",
+          "name": "поместить Игрок на случайную плитку",
+          "purpose": ""
+        },
+        {
+          "category": "Сцена",
+          "name": "установить плитку в Дверь",
+          "purpose": ""
+        },
+        {
+          "category": "Сцена",
+          "name": "установить стену в Дверь ВКЛ",
+          "purpose": ""
+        },
+        {
+          "category": "Спрайты",
+          "name": "Ключ установить флаг … ВЫКЛ",
+          "purpose": ""
+        }
+      ],
+      "commands": [
+        {
+          "code": "def start_attempt():\n    global have_key\n    tiles.place_on_random_tile(my_player, sprites.dungeon.collectible_insignia)\n    if current_level == 2:\n        have_key = False\n        tiles.place_on_random_tile(key, sprites.dungeon.floor_light2)\n        key.set_flag(SpriteFlag.INVISIBLE, False)\n        key.set_flag(SpriteFlag.GHOST, False)\n        tiles.set_tile_at(door, sprites.dungeon.door_closed_north)\n        tiles.set_wall_at(door, True)\n\ndoor: tiles.Location = None",
+          "purpose": "Измени только указанные выше места. Остальной готовый код сохрани."
+        }
+      ],
+      "newLines": [
+        [
+          7,
+          16
+        ],
+        [
+          34,
+          34
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-15",
+      "title": "Размести объекты при смене карты",
+      "goal": "Допишем загрузку уровня.",
+      "instructions": [
+        "Дополни load_level по выделенным строкам. global door нужен, чтобы сохранить клетку двери; [0] берёт первую из плиток door_closed_north.",
+        "После if/else помести enemy и finish на маркеры и вызови start_attempt(). Новые спрайты не создавай."
+      ],
+      "check": "Объекты размещаются после переключения карты. Дверь найдена до восстановления попытки.",
+      "theory": "На карте одна дверь, поэтому нужен первый элемент списка. Камера уже следит за тем же героем.",
+      "challenge": "",
+      "actionType": "type-code",
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "python/steps/6.py",
+        "caption": "Размести объекты при смене карты — программа твоего лабиринта."
+      },
+      "blocks": [
+        {
+          "category": "Массивы",
+          "name": "получить элемент по индексу 0",
+          "purpose": ""
+        },
+        {
+          "category": "Сцена",
+          "name": "список всех плиток типа …",
+          "purpose": ""
+        },
+        {
+          "category": "Сцена",
+          "name": "поместить спрайт на случайную плитку",
+          "purpose": ""
+        },
+        {
+          "category": "Функции",
+          "name": "вызвать начатьПопытку",
+          "purpose": ""
+        }
+      ],
+      "commands": [
+        {
+          "code": "    global door\n\n        key.set_flag(SpriteFlag.INVISIBLE, True)\n        key.set_flag(SpriteFlag.GHOST, True)\n\n        door = tiles.get_tiles_by_type(sprites.dungeon.door_closed_north)[0]\n    tiles.place_on_random_tile(enemy, sprites.dungeon.floor_light3)\n    tiles.place_on_random_tile(finish, sprites.dungeon.chest_closed)\n    start_attempt()",
+          "purpose": "Измени только указанные выше места. Остальной готовый код сохрани."
+        }
+      ],
+      "newLines": [
+        [
+          19,
+          19
+        ],
+        [
+          22,
+          23
+        ],
+        [
+          26,
+          29
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-16",
+      "title": "Запомни подбор ключа",
+      "goal": "Ключ исчезнет, но дверь пока останется закрытой.",
+      "instructions": [
+        "Перед прежними событиями добавь on_key и регистрацию sprites.on_overlap из выделенных строк.",
+        "global have_key сохраняет подбор для события двери. Ключ скрываем; дверь здесь не меняем."
+      ],
+      "check": "После касания ключ скрыт, а дверь всё ещё непроходима.",
+      "theory": "Призрак у скрытого ключа отключает повторные пересечения.",
+      "challenge": "",
+      "actionType": "type-code",
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "python/steps/7.py",
+        "caption": "Запомни подбор ключа — программа твоего лабиринта."
+      },
+      "blocks": [
+        {
+          "category": "Спрайты / Переменные / Логика",
+          "name": "когда спрайт типа Player пересекает ТипКлюча",
+          "purpose": ""
+        },
+        {
+          "category": "Спрайты / Переменные / Логика",
+          "name": "задать ЕстьКлюч значение истина",
+          "purpose": ""
+        },
+        {
+          "category": "Спрайты / Переменные / Логика",
+          "name": "Ключ установить флаг … ВКЛ",
+          "purpose": ""
+        }
+      ],
+      "commands": [
+        {
+          "code": "def on_key(sprite, other_sprite):\n    global have_key\n    have_key = True\n    key.set_flag(SpriteFlag.INVISIBLE, True)\n    key.set_flag(SpriteFlag.GHOST, True)\nsprites.on_overlap(SpriteKind.player, SpriteKind.KeyKind, on_key)",
+          "purpose": "Измени только указанные выше места. Остальной готовый код сохрани."
+        }
+      ],
+      "newLines": [
+        [
+          31,
+          36
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-17",
+      "title": "Открой дверь при касании",
+      "goal": "С ключом можно пройти; без ключа — нельзя.",
+      "instructions": [
+        "Добавь on_wall и scene.on_hit_wall перед on_key, как в выделенных строках.",
+        "Условие проверяет уровень, ключ и плитку двери. В location выключаем стену и кладём обычный пол."
+      ],
+      "check": "Без ключа дверь удерживает героя. С ключом она исчезает только при касании.",
+      "theory": "Событие стены срабатывает от контакта с её краем; проход открываем снятием непроходимости.",
+      "challenge": "",
+      "actionType": "type-code",
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "python/steps/8.py",
+        "caption": "Открой дверь при касании — программа твоего лабиринта."
+      },
+      "blocks": [
+        {
+          "category": "Сцена",
+          "name": "когда спрайт типа Player касается стены",
+          "purpose": ""
+        },
+        {
+          "category": "Сцена",
+          "name": "плитка в location равна …",
+          "purpose": ""
+        },
+        {
+          "category": "Сцена",
+          "name": "установить стену в location ВЫКЛ",
+          "purpose": ""
+        },
+        {
+          "category": "Сцена",
+          "name": "установить плитку в location …",
+          "purpose": ""
+        },
+        {
+          "category": "Логика",
+          "name": "и",
+          "purpose": ""
+        }
+      ],
+      "commands": [
+        {
+          "code": "def on_wall(sprite, location):\n    if current_level == 2 and have_key and tiles.tile_at_location_equals(location, sprites.dungeon.door_closed_north):\n        tiles.set_wall_at(location, False)\n        tiles.set_tile_at(location, sprites.dungeon.floor_light0)\nscene.on_hit_wall(SpriteKind.player, on_wall)",
+          "purpose": "Измени только указанные выше места. Остальной готовый код сохрани."
+        }
+      ],
+      "newLines": [
+        [
+          31,
+          35
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-18",
+      "title": "Замени победу на переход",
+      "goal": "Финиш первого уровня откроет второй.",
+      "instructions": [
+        "Измени только тело существующего on_on_overlap2: добавь global current_level и условие из выделенных строк.",
+        "На первом уровне задаём current_level = 2 и вызываем load_level(); иначе побеждаем. Регистрацию sprites.on_overlap сохрани."
+      ],
+      "check": "Первый финиш переключает карту; победа есть только на втором.",
+      "theory": "Один обработчик финиша по-разному работает на двух уровнях.",
+      "challenge": "",
+      "actionType": "type-code",
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "python/steps/9.py",
+        "caption": "Замени победу на переход — программа твоего лабиринта."
+      },
+      "blocks": [
+        {
+          "category": "Логика",
+          "name": "если … иначе",
+          "purpose": ""
+        },
+        {
+          "category": "Функции",
+          "name": "вызвать загрузитьУровень",
+          "purpose": ""
+        },
+        {
+          "category": "Игра",
+          "name": "конец игры победа",
+          "purpose": ""
+        }
+      ],
+      "commands": [
+        {
+          "code": "    global current_level\n    if current_level == 1:\n        current_level = 2\n        load_level()\n    else:\n        game.over(True)",
+          "purpose": "Измени только указанные выше места. Остальной готовый код сохрани."
+        }
+      ],
+      "newLines": [
+        [
+          49,
+          54
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-19",
+      "title": "Восстанови попытку после скелета",
+      "goal": "На втором уровне ключ и дверь сбросятся.",
+      "instructions": [
+        "В существующем on_on_overlap замени перенос героя на start_attempt().",
+        "Сохрани enemy.vx = 80 и set_bounce_on_wall(True). Регистрацию события не меняй."
+      ],
+      "check": "Скелет возвращает героя на старт текущего уровня. На втором ключ снова на месте, дверь снова закрыта.",
+      "theory": "Смена попытки не меняет номер уровня и не создаёт дубликаты.",
+      "challenge": "",
+      "actionType": "type-code",
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "python/steps/10.py",
+        "caption": "Восстанови попытку после скелета — программа твоего лабиринта."
+      },
+      "blocks": [
+        {
+          "category": "Функции",
+          "name": "вызвать начатьПопытку",
+          "purpose": ""
+        }
+      ],
+      "commands": [
+        {
+          "code": "    start_attempt()",
+          "purpose": "Измени только указанные выше места. Остальной готовый код сохрани."
+        }
+      ],
+      "newLines": [
+        [
+          45,
+          45
+        ]
+      ],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    },
+    {
+      "id": "maze-02-20",
+      "title": "Пройди оба уровня",
+      "goal": "Проверим готовое продолжение.",
+      "instructions": [
+        "Перезапусти игру. На первом уровне коснись скелета и проверь возврат на прежний старт. Дойди до финиша: должна открыться вторая карта с одним скелетом, одним ключом и финишем.",
+        "На втором сначала попробуй дверь без ключа. Подбери ключ: дверь ещё закрыта. Коснись её: теперь проход открыт. Коснись скелета и проверь старт второго уровня, восстановленный ключ и закрытую дверь.",
+        "Ещё раз найди ключ, открой дверь и дойди до финиша. Теперь должна быть победа."
+      ],
+      "check": "Оба уровня работают; повторные столкновения не добавляют объекты.",
+      "theory": "Можно менять коридоры, сохраняя обязательную дверь и достижимые маркеры.",
+      "challenge": "",
+      "actionType": "ui-action",
+      "visual": {
+        "type": "code",
+        "src": "",
+        "codeFile": "python/steps/10.py",
+        "caption": "Пройди оба уровня — программа твоего лабиринта."
+      },
+      "blocks": [],
+      "commands": [],
+      "newLines": [],
+      "changedLines": [],
+      "change": {
+        "before": "",
+        "after": ""
+      }
+    }
+  ]
+}
