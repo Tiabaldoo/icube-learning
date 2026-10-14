@@ -46,11 +46,11 @@ export default function JavaScriptCode({ lessonId, codeFile, newLines, changedLi
   if (!source) return <p role="alert">Не удалось загрузить код шага.</p>;
   return <section className="code-panel" aria-label={language === 'python' ? 'Код Python' : 'Код JavaScript'}>
     <div className="code-toolbar">
-      <span>{sourceRoot === 'extras' ? 'Фрагмент для твоей игры' : 'Код после шага'} · <span className="new-code-label">{changedLines.length ? 'изменённые строки' : newLines.length || sourceRoot === 'lessons' ? 'новые строки' : 'образец'}</span></span>
+      <span>{sourceRoot === 'extras' ? 'Код игры с улучшением' : 'Код после шага'} · <span className="new-code-label">{changedLines.length ? 'изменённые строки' : newLines.length || sourceRoot === 'lessons' ? 'новые строки' : 'образец'}</span></span>
       <div><button title="Уменьшить текст" aria-label="Уменьшить текст" disabled={fontSize === 14} onClick={() => setFontSize(size => size - 1)}>A−</button>
         <button title="Увеличить текст" aria-label="Увеличить текст" disabled={fontSize === 20} onClick={() => setFontSize(size => size + 1)}>A+</button></div>
     </div>
-    <pre ref={viewer} className="code-viewer protected-code" tabIndex={0} aria-label={sourceRoot === 'extras' ? 'Фрагмент кода. Размести его в своей игре по инструкции шага.' : 'Полный код шага. Добавляй или изменяй только указанные строки; рисунки вставляет MakeCode.'} style={{ fontSize }} {...codeProtection}>
+    <pre ref={viewer} className="code-viewer protected-code" tabIndex={0} aria-label={sourceRoot === 'extras' ? 'Полный код игры с улучшением. Добавляй только указанные строки; сохрани свои рисунки.' : 'Полный код шага. Добавляй или изменяй только указанные строки; рисунки вставляет MakeCode.'} style={{ fontSize }} {...codeProtection}>
       <code>{highlight(source, language === 'python').map((line, index) => <span className={`code-line ${newLines.some(([start, end]) => index + 1 >= start && index + 1 <= end) ? 'new-code' : ''} ${changedLines.some(([start, end]) => index + 1 >= start && index + 1 <= end) ? 'changed-code' : ''}`} key={index}>
         <span className="line-number" aria-hidden="true">{index + 1}</span><span className="line-source">{line.map((token, i) => <span className={`syntax-${token.kind}`} key={i}>{token.text}</span>)}</span>
       </span>)}</code>

@@ -107,20 +107,23 @@ export default function App() {
             </span>
           </button>)}
         </div>
-      </> : screen.page === 'improvements' ? <section className="lesson-card">
+      </> : screen.page === 'improvements' ? <section className="game-details lesson-card improvement-details">
         <button className="back-link" onClick={() => setScreen({ page: 'game', game: screen.game })}>← К игре</button>
         <h1 ref={heading} tabIndex={-1}>Улучши свою игру</h1>
-        <p>Уже создал игру? Добавь в неё новые возможности! Эти уроки необязательные.</p>
+        <p className="game-description">Уже создал «{screen.game.metadata.title}»? Добавь в неё новые возможности!</p>
         <div className="mode-grid">{screen.game.improvements.map(extra => <button className="mode-card" key={extra.metadata.id} onClick={() => setScreen({ page: 'improvement-mode', game: screen.game, extra })}>
           <span className="mode-card-heading">{extra.metadata.icon} {extra.metadata.title}</span><span>{extra.metadata.description}</span>
         </button>)}</div>
-      </section> : screen.page === 'improvement-mode' ? <section className="lesson-card">
+      </section> : screen.page === 'improvement-mode' ? <section className="game-details lesson-card improvement-details">
         <button className="back-link" onClick={() => setScreen({ page: 'improvements', game: screen.game })}>← К улучшениям</button>
-        <h1 ref={heading} tabIndex={-1}>{screen.extra.metadata.title}</h1><p>{screen.extra.metadata.description}</p>
+        <h1 ref={heading} tabIndex={-1}>{screen.extra.metadata.title}</h1>
+        <p className="game-description">Улучшаем игру «{screen.game.metadata.title}»: {screen.extra.metadata.description}</p>
+        <section className="mode-selection">
         <h2>Выбери способ программирования</h2>
         <div className="mode-grid">{(Object.keys(screen.extra.lessons) as LessonMode[]).map(mode => <button className="mode-card" key={mode} onClick={() => setScreen({ page: 'improvement', game: screen.game, extra: screen.extra, mode })}>
           <span className="mode-card-heading">{programmingModes[mode].title}</span><span>{programmingModes[mode].description}</span>
         </button>)}</div>
+        </section>
       </section> : <article className="game-details lesson-card">
         <div className="game-overview">
           <GameCover game={screen.game} />
@@ -147,7 +150,7 @@ export default function App() {
           </div>
         </section>
         {screen.game.improvements.length > 0 && <section className="improvement-section">
-          <h2>Улучши свою игру</h2><p>Уже создал игру? Добавь в неё новые возможности! Эти уроки необязательные.</p>
+          <h2>Улучши свою игру</h2><p>Уже создал игру? Добавь в неё новые возможности!</p>
           <div className="mode-grid">{screen.game.improvements.map(extra => <button className="mode-card" key={extra.metadata.id} onClick={() => setScreen({ page: 'improvement-mode', game: screen.game, extra })}>
             <span className="mode-card-heading">{extra.metadata.icon} {extra.metadata.title}</span><span>{extra.metadata.description}</span><span>Открыть инструкцию →</span>
           </button>)}</div>

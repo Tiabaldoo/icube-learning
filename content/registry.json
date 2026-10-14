@@ -1,7 +1,25 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
   "games": [
-    { "id": "collect-stars-01", "lessons": { "blocks": "lesson.json", "javascript": "javascript/lesson.json", "python": "python/lesson.json" }, "improvements": ["music"] },
-    { "id": "maze-01", "lessons": { "blocks": "blocks/lesson.json", "javascript": "javascript/lesson.json", "python": "python/lesson.json" }, "improvements": [] }
+    {
+      "id": "collect-stars-01",
+      "lessons": {
+        "blocks": "lesson.json",
+        "javascript": "javascript/lesson.json",
+        "python": "python/lesson.json"
+      },
+      "improvements": [
+        "music"
+      ]
+    },
+    {
+      "id": "maze-01",
+      "lessons": {
+        "blocks": "blocks/lesson.json",
+        "javascript": "javascript/lesson.json",
+        "python": "python/lesson.json"
+      },
+      "improvements": []
+    }
   ]
 }

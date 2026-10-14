@@ -49,6 +49,9 @@ h1:focus { outline: none; }
 .game-difficulty { display: block; font-size: 25px; color: #956517; letter-spacing: 3px; }
 .game-learns { font-size: 16px; color: #687086; line-height: 1.5; }
 .game-details { padding: 28px; }
+.improvement-details > .back-link { margin-bottom: 20px; }
+.improvement-details > h1 { font-size: 36px; }
+.improvement-details > .mode-grid { margin-top: 26px; }
 .game-overview { display: grid; grid-template-columns: 34fr 66fr; gap: 28px; align-items: center; }
 .game-overview .game-cover { min-height: 275px; border-radius: 16px; }
 .game-overview h1 { font-size: 36px; }
@@ -73,6 +76,7 @@ h1:focus { outline: none; }
   .game-details { padding: 20px; }
   .game-overview, .mode-grid { grid-template-columns: 1fr; }
   .game-overview h1 { font-size: 30px; }
+  .improvement-details > h1 { font-size: 30px; }
 }
 h1, h2, h3, p, figure { margin: 0; }
 h1, h2, h3 { line-height: 1.2; }
