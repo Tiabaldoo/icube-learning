@@ -100,7 +100,7 @@ h3 { font-size: 20px; }
 .protected-code { user-select: none; -webkit-user-select: none; }
 .protected-code:focus-visible { outline: 3px solid #ed6500; outline-offset: -3px; }
 .code-line { display: flex; width: 100%; border-left: 3px solid transparent; padding-right: 16px; min-height: 1.5em; }
-.code-line.new-code { background: #fff1e5; border-left-color: #ed6500; }
+.code-line.new-code { background: #ccebd5; border-left-color: #217c42; }
 .line-number { flex: 0 0 42px; padding-right: 10px; text-align: right; color: #737b8e; font-size: .8em; }
 .line-source { flex: 1; min-width: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .syntax-keyword { color: #9b3a65; font-weight: 600; }
@@ -115,7 +115,7 @@ h3 { font-size: 20px; }
 .code-change { padding: 8px 10px; border: 1px solid #ffd0ac; border-radius: 10px; background: #fff8f2; }
 .code-change p { font-size: 13px; color: #687086; margin-top: 4px; }
 .code-change code { display: block; font-size: 13px; overflow-wrap: anywhere; white-space: pre-wrap; }
-.code-line.changed-code { background: #ffe4c9; border-left-color: #d85700; }
+.code-line.changed-code { background: #ffd6a6; border-left-color: #b44900; }
 @media (max-width: 1023px) { .code-panel { height: 440px; } }
 .brand-note { margin-left: 10px; font-size: 14px; font-weight: 500; color: #687086; letter-spacing: 0; }
 .lesson-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin: 28px 0; }
@@ -277,3 +277,9 @@ figcaption { margin-top: 18px; font-size: 14px; color: #6b7286; }
 .content-updates { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; font-size: 14px; }
 .improvement-section { border-top: 1px solid #eadfd3; margin-top: 28px; padding-top: 20px; }
 .result-card .button { margin: 8px; }
+
+.picture-navigation { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; width: 100%; flex: 0 0 auto; margin-top: 8px; }
+.picture-navigation button { padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 8px; background: white; color: #24334b; cursor: pointer; }
+.picture-navigation button:disabled { opacity: .45; cursor: default; }
+
+.lesson-code-visual { min-width: 0; }

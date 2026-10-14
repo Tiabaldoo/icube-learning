@@ -1,15 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Lesson, LessonMode } from './games';
-import BlocksImage from './BlocksImage';
+import LessonImages from './LessonImages';
 import JavaScriptCode from './JavaScriptCode';
 import { codeProtection } from './codeProtection';
-
-const images = import.meta.glob<string>(['../lessons/*/images/blocks/*.png', '../lessons/*/images/ui/*.png'], {
-  eager: true, query: '?url', import: 'default',
-});
-const extraImages = import.meta.glob<string>(['../extras/*/images/*.png', '../extras/*/images/ui/*.png'], {
-  eager: true, query: '?url', import: 'default',
-});
 
 export type MiniLesson = { id: string; title: string; steps: Lesson['steps'] };
 type PlayerLesson = MiniLesson;
@@ -18,16 +11,12 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
   lesson: PlayerLesson; mode: LessonMode; onBack: () => void; onImprove?: () => void; onFinish?: () => void; onCatalog?: () => void; resources?: Record<string, string>;
 }) {
   const [progress, setProgress] = useState<{ phase: 'lesson' | 'result'; step: number }>({ phase: 'lesson', step: 0 });
-  const [imageFailed, setImageFailed] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);
   const stepTrack = useRef<HTMLOListElement>(null);
   const step = lesson.steps[progress.step];
   const mini = Boolean(onFinish);
-  const imageKey = `../${mini ? 'extras' : 'lessons'}/${lesson.id}/${step.visual.src}`;
-  const imageSource = resources ? resources[imageKey.slice(3)] : (mini ? extraImages : images)[imageKey];
 
   useEffect(() => {
-    setImageFailed(false);
     heading.current?.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [progress.phase, progress.step]);
@@ -70,12 +59,7 @@ export default function LessonPlayer({ lesson, mode, onBack, onImprove, onFinish
       <main>
         {progress.phase === 'lesson' && <>
           <section className="lesson-card step-card" aria-labelledby="screen-title">
-            {step.visual.type === 'code' ? <JavaScriptCode key={step.id} lessonId={lesson.id} codeFile={step.visual.codeFile} newLines={step.newLines} changedLines={step.changedLines} sourceRoot={mini ? 'extras' : 'lessons'} language={mode === 'python' ? 'python' : 'javascript'} sourceText={resources?.[`${mini ? 'extras' : 'lessons'}/${lesson.id}/${step.visual.codeFile}`]} /> : <figure className="blocks-picture">
-              {imageFailed || !imageSource
-                ? <p role="alert">Не удалось загрузить картинку. Попробуй обновить страницу.</p>
-                : <BlocksImage key={step.id} src={imageSource} alt={`${step.visual.type === 'ui' ? 'Интерфейс' : 'Блоки'} MakeCode: ${step.title}`} onError={() => setImageFailed(true)} />}
-              <figcaption>{step.visual.caption}</figcaption>
-            </figure>}
+            {step.visual.type === 'code' ? <div className="lesson-code-visual"><JavaScriptCode key={step.id} lessonId={lesson.id} codeFile={step.visual.codeFile} newLines={step.newLines} changedLines={step.changedLines} sourceRoot={mini ? 'extras' : 'lessons'} language={mode === 'python' ? 'python' : 'javascript'} sourceText={resources?.[`${mini ? 'extras' : 'lessons'}/${lesson.id}/${step.visual.codeFile}`]} />{step.visual.images?.length ? <LessonImages key={step.id} lessonId={lesson.id} visual={step.visual} title={step.title} mini={mini} resources={resources} /> : null}</div> : <LessonImages key={step.id} lessonId={lesson.id} visual={step.visual} title={step.title} mini={mini} resources={resources} />}
             <div className="step-content">
               <div className="card-intro">
                 <p className="step-label">Шаг {progress.step + 1} из {lesson.steps.length}</p>

@@ -51,6 +51,16 @@ function validateBundle(data, appVersion) {
       const p = root + safePath(s.visual.type === 'code' ? s.visual.codeFile : s.visual.src);
       assert(Object.hasOwn(resources, p), `Missing resource: ${p}`);
       assert(s.visual.type === 'code' ? /\.(ts|py)$/.test(p) : /\.png$/.test(p));
+      if (s.visual.images !== undefined) {
+        assert(compareVersions(data.minAppVersion, '0.1.1') >= 0, 'Image sequences require application 0.1.1');
+        assert(Array.isArray(s.visual.images) && s.visual.images.length > 0 && s.visual.images.length <= 20);
+        for (const image of s.visual.images) {
+          string(image.caption);
+          assert(image.type === undefined || ['ui', 'blocks'].includes(image.type));
+          const imagePath = root + safePath(image.src);
+          assert(/\.png$/.test(imagePath) && Object.hasOwn(resources, imagePath), 'Missing image sequence resource');
+        }
+      }
       for (const k of ['newLines', 'changedLines']) assert(Array.isArray(s[k]) && s[k].every(r => Array.isArray(r) && r.length === 2 && r.every(n => Number.isSafeInteger(n) && n > 0) && r[0] <= r[1]));
       assert(Array.isArray(s.blocks) && Array.isArray(s.commands));
       for (const b of s.blocks) { string(b.category); string(b.name); string(b.purpose); }
