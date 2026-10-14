@@ -148,5 +148,127 @@
     "code": "blocks/steps/follow.ts",
     "partial": "images/follow.png",
     "final": true
+  },
+  {
+    "root": "lessons/collect-stars-01",
+    "step": "blocks-12-foundation",
+    "lessonStep": "blocks-12",
+    "code": "steps/blocks-micro/step12.ts",
+    "partial": "images/ui/blocks-12-foundation.png",
+    "foundation": true,
+    "match": "position|setpos",
+    "inputs": [
+      "sprite",
+      "x",
+      "y"
+    ]
+  },
+  {
+    "root": "lessons/collect-stars-01",
+    "step": "blocks-19-foundation",
+    "lessonStep": "blocks-19",
+    "code": "steps/blocks-micro/step19.ts",
+    "partial": "images/ui/blocks-19-foundation.png",
+    "foundation": true,
+    "match": "controls_if",
+    "inputs": [
+      "IF0"
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-5-foundation",
+    "lessonStep": "maze-02-5",
+    "code": "steps/blocks/r4.ts",
+    "partial": "images/ui/maze-02-5-foundation.png",
+    "foundation": true,
+    "match": "variables_set",
+    "variable": "ЕстьКлюч",
+    "inputs": [
+      "VALUE"
+    ],
+    "owner": null,
+    "rootMatch": "pxt-on-start"
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-35-foundation",
+    "lessonStep": "maze-02-35",
+    "code": "steps/blocks/r34.ts",
+    "partial": "images/ui/maze-02-35-foundation.png",
+    "foundation": true,
+    "match": "variables_set",
+    "variable": "ЕстьКлюч",
+    "inputs": [
+      "VALUE"
+    ],
+    "owner": "начатьПопытку"
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-46-foundation",
+    "lessonStep": "maze-02-46",
+    "code": "steps/blocks/r45.ts",
+    "partial": "images/ui/maze-02-46-foundation.png",
+    "foundation": true,
+    "match": "variables_set",
+    "variable": "ЕстьКлюч",
+    "inputs": [
+      "VALUE"
+    ],
+    "owner": "ТипКлюча"
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-22-foundation",
+    "lessonStep": "maze-02-22",
+    "code": "steps/blocks/r21.ts",
+    "partial": "images/ui/maze-02-22-foundation.png",
+    "foundation": true,
+    "match": "controls_if",
+    "inputs": [
+      "IF0"
+    ],
+    "owner": "загрузитьУровень"
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-34-foundation",
+    "lessonStep": "maze-02-34",
+    "code": "steps/blocks/r33.ts",
+    "partial": "images/ui/maze-02-34-foundation.png",
+    "foundation": true,
+    "match": "controls_if",
+    "inputs": [
+      "IF0"
+    ],
+    "owner": "начатьПопытку"
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-49-foundation",
+    "lessonStep": "maze-02-49",
+    "code": "steps/blocks/r48.ts",
+    "partial": "images/ui/maze-02-49-foundation.png",
+    "foundation": true,
+    "match": "controls_if",
+    "inputs": [
+      "IF0"
+    ],
+    "owner": "касается стены"
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-40-foundation",
+    "lessonStep": "maze-02-40",
+    "code": "steps/blocks/r39.ts",
+    "partial": "images/ui/maze-02-40-foundation.png",
+    "foundation": true,
+    "match": "variables_set",
+    "variable": "Дверь",
+    "inputs": [
+      "VALUE"
+    ],
+    "owner": "загрузитьУровень"
   }
 ]

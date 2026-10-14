@@ -30,6 +30,16 @@ try {
    });},
    async prepare(page){
     if(job.final)return;
+    if(job.foundation){
+      await page.evaluate(job=>{
+        const ws=window.E.getEditor().blocksEditor.editor;
+        const target=ws.getAllBlocks(false).find(b=>new RegExp(job.match,'i').test(b.type)&&(!job.owner||b.getRootBlock().toString().includes(job.owner))&&(!job.rootMatch||new RegExp(job.rootMatch).test(b.getRootBlock().type))&&(!job.variable||b.getField('VAR')?.getVariable()?.name===job.variable));
+        if(!target)throw Error('Foundation not found '+job.step+' '+ws.getAllBlocks(false).map(b=>b.type).join(','));
+        target.getSvgRoot().id='instruction-command';
+        for(const name of job.inputs){const input=target.getInput(name);if(!input?.connection)throw Error('Input missing '+name+' '+target.inputList.map(i=>i.name));const child=input.connection.targetBlock();input.connection.setShadowDom(null);if(child)child.dispose(false);}
+        ws.render();
+      },job);return;
+    }
     if(job.category){
       if(job.category==='Массивы') await page.locator('.blocklyTreeRow[data-ns=advancedcollapsed]').click({timeout:15000});
       await page.locator('.blocklyTreeRow').filter({hasText:job.category}).click({timeout:15000});
