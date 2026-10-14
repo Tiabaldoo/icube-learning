@@ -18,7 +18,8 @@ for (const entry of registry.games) {
       format.safePath(relative);
       const key = root + relative;
       const bytes = await fs.readFile(key);
-      resources[key] = key.endsWith('.png') ? `data:image/png;base64,${bytes.toString('base64')}` : bytes.toString('utf8');
+      // Canonical CRLF preserves the existing 1.0.0 package across Git checkout platforms.
+      resources[key] = key.endsWith('.png') ? `data:image/png;base64,${bytes.toString('base64')}` : bytes.toString('utf8').replace(/\r?\n/g, '\r\n');
     }
     return lesson;
   }
