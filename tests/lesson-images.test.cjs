@@ -58,3 +58,23 @@ test('published package contains every sequence resource and has matching SHA-25
   for (const game of data.games) for (const lesson of Object.values(game.lessons)) for (const step of lesson.steps) for (const image of step.visual.images || []) assert(game.resources['lessons/' + game.metadata.id + '/' + image.src]);
   assert.throws(() => format.validateManifest(manifest, '0.1.0'));
 });
+
+// Resolve the real glob patterns, rather than stubbing the bundled source maps.
+test('code sources load from new and legacy paths while offline resources take priority',()=>{
+ const path=require('node:path');
+ const source=fs.readFileSync('src/JavaScriptCode.tsx','utf8').replace(/import\.meta\.glob<string>\(([\s\S]*?), \{[\s\S]*?\}\)/g,(_,patterns)=>'resolveGlob('+patterns+')');
+ const code=ts.transpileModule(source,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText;
+ const m={exports:{}},mock={...React,useEffect:()=>{},useRef:()=>({current:null}),useState:initial=>[initial,()=>{}]};
+ vm.runInNewContext(code,{module:m,exports:m.exports,require:name=>name==='react'?mock:name==='./codeProtection'?{codeProtection:{}}:require(name),resolveGlob:patterns=>Object.fromEntries(fs.globSync(Array.from(typeof patterns==='string'?[patterns]:patterns),{cwd:path.resolve('src')}).map(p=>[p.replaceAll('\\','/'),fs.readFileSync(path.resolve('src',p),'utf8')]))});
+ const Viewer=m.exports.default;
+ for(const root of['lessons/dodge-meteors-01','lessons/collect-stars-01',...['music','lives','speed'].map(x=>'extras/meteors-'+x)])for(const language of['javascript','python']){
+  const lesson=JSON.parse(fs.readFileSync(root+'/'+language+'/lesson.json'));
+  for(const step of lesson.steps.filter(s=>s.visual.type==='code')){
+   const props={lessonId:lesson.id,sourceRoot:root.startsWith('extras/')?'extras':'lessons',language,codeFile:step.visual.codeFile,newLines:step.newLines,changedLines:step.changedLines};
+   assert.equal(Viewer(props).props.className,'code-panel',root+'/'+step.visual.codeFile);
+   const html=renderToStaticMarkup(Viewer({...props,sourceText:'offline_override = 1\nchanged_value = 2\n',newLines:[[1,1]],changedLines:[[2,2]]}));
+   assert(html.includes('offline_override'));assert(html.includes('new-code'));assert(html.includes('changed-code'));
+  }
+ }
+ assert.equal(Viewer({lessonId:'downloaded',sourceRoot:'lessons',language:'python',codeFile:'downloaded.py',sourceText:'offline_only = 1',newLines:[],changedLines:[]}).props.className,'code-panel');
+});

@@ -17,9 +17,6 @@ jobs:
           - os: windows-latest
             platform: windows
             command: npm run build:desktop:win -- --x64
-          - os: macos-latest
-            platform: macos
-            command: npm run build:desktop:mac -- --x64 --arm64
     runs-on: ${{ matrix.os }}
     env:
       CSC_IDENTITY_AUTO_DISCOVERY: 'false'
@@ -45,7 +42,6 @@ jobs:
           name: installers-${{ matrix.platform }}
           path: |
             release/*.exe
-            release/*.dmg
           if-no-files-found: error
           retention-days: 30
 

@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { codeProtection } from './codeProtection';
 
-const sources = import.meta.glob<string>(['../lessons/*/steps/javascript-micro/*.ts', '../lessons/*/javascript/steps/*.ts'], {
+const sources = import.meta.glob<string>(['../lessons/*/steps/javascript-micro/*.ts', '../lessons/*/steps/javascript/*.ts', '../lessons/*/javascript/steps/*.ts'], {
   eager: true, query: '?raw', import: 'default',
 });
 const extraSources = import.meta.glob<string>('../extras/*/javascript/steps/*.ts', {
   eager: true, query: '?raw', import: 'default',
 });
-const pythonSources = import.meta.glob<string>(['../lessons/*/python/steps/*.py', '../extras/*/python/steps/*.py'], {
+const pythonSources = import.meta.glob<string>(['../lessons/*/steps/python/*.py', '../lessons/*/python/steps/*.py', '../extras/*/python/steps/*.py'], {
   eager: true, query: '?raw', import: 'default',
 });
 
