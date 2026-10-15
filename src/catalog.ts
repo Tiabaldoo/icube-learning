@@ -5,5 +5,6 @@ export const difficultyGroups = [
 ];
 export function filterByDifficulty<T extends { metadata: { difficulty: number } }>(games: T[], id: string) {
   const group = difficultyGroups.find(group => group.id === id);
-  return group ? games.filter(game => game.metadata.difficulty >= group.min && game.metadata.difficulty <= group.max) : games;
+  const filtered = group ? games.filter(game => game.metadata.difficulty >= group.min && game.metadata.difficulty <= group.max) : [...games];
+  return filtered.sort((a, b) => a.metadata.difficulty - b.metadata.difficulty);
 }
