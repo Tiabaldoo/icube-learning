@@ -19,13 +19,7 @@
         "codeFile": "python/steps/1.py",
         "caption": "Готовая игра с изменениями этого шага"
       },
-      "blocks": [
-        {
-          "category": "Мои проекты",
-          "name": "Мои проекты → Метеориты",
-          "purpose": "Где найти действие этого шага."
-        }
-      ],
+      "blocks": [],
       "commands": [],
       "newLines": [],
       "changedLines": [],
@@ -52,13 +46,7 @@
         "codeFile": "python/steps/2.py",
         "caption": "Готовая игра с изменениями этого шага"
       },
-      "blocks": [
-        {
-          "category": "Информация",
-          "name": "Информация → установить жизни …",
-          "purpose": "Где найти действие этого шага."
-        }
-      ],
+      "blocks": [],
       "commands": [
         {
           "code": "info.set_life(3)",
@@ -95,13 +83,7 @@
         "codeFile": "python/steps/3.py",
         "caption": "Готовая игра с изменениями этого шага"
       },
-      "blocks": [
-        {
-          "category": "Информация",
-          "name": "Информация → изменить жизни на …",
-          "purpose": "Где найти действие этого шага."
-        }
-      ],
+      "blocks": [],
       "commands": [
         {
           "code": "    info.change_life_by(-1)",
@@ -138,13 +120,7 @@
         "codeFile": "python/steps/4.py",
         "caption": "Готовая игра с изменениями этого шага"
       },
-      "blocks": [
-        {
-          "category": "Спрайты",
-          "name": "Спрайты → флаг призрак",
-          "purpose": "Где найти действие этого шага."
-        }
-      ],
+      "blocks": [],
       "commands": [
         {
           "code": "    ship.set_flag(SpriteFlag.GHOST, True)",
@@ -181,13 +157,7 @@
         "codeFile": "python/steps/5.py",
         "caption": "Готовая игра с изменениями этого шага"
       },
-      "blocks": [
-        {
-          "category": "Циклы",
-          "name": "Циклы → пауза … мс",
-          "purpose": "Где найти действие этого шага."
-        }
-      ],
+      "blocks": [],
       "commands": [
         {
           "code": "    pause(1000)",
@@ -224,13 +194,7 @@
         "codeFile": "python/steps/6.py",
         "caption": "Готовая игра с изменениями этого шага"
       },
-      "blocks": [
-        {
-          "category": "Спрайты",
-          "name": "Спрайты → флаг призрак",
-          "purpose": "Где найти действие этого шага."
-        }
-      ],
+      "blocks": [],
       "commands": [
         {
           "code": "    ship.set_flag(SpriteFlag.GHOST, False)",
@@ -266,13 +230,7 @@
         "codeFile": "python/steps/7.py",
         "caption": "Готовая игра с изменениями этого шага"
       },
-      "blocks": [
-        {
-          "category": "Симулятор",
-          "name": "Симулятор → перезапуск",
-          "purpose": "Где найти действие этого шага."
-        }
-      ],
+      "blocks": [],
       "commands": [],
       "newLines": [],
       "changedLines": [],

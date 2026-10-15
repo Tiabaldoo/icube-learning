@@ -19,13 +19,7 @@
         "codeFile": "python/steps/1.py",
         "caption": "Готовая игра с изменениями этого шага"
       },
-      "blocks": [
-        {
-          "category": "Мои проекты",
-          "name": "Мои проекты → Метеориты",
-          "purpose": "Где найти действие этого шага."
-        }
-      ],
+      "blocks": [],
       "commands": [],
       "newLines": [],
       "changedLines": [],
@@ -52,13 +46,7 @@
         "codeFile": "python/steps/2.py",
         "caption": "Готовая игра с изменениями этого шага"
       },
-      "blocks": [
-        {
-          "category": "Логика",
-          "name": "Логика → если, сравнение; Информация → счёт",
-          "purpose": "Где найти действие этого шага."
-        }
-      ],
+      "blocks": [],
       "commands": [
         {
           "code": "    if info.score() >= 5:",
@@ -99,13 +87,7 @@
         "codeFile": "python/steps/3.py",
         "caption": "Готовая игра с изменениями этого шага"
       },
-      "blocks": [
-        {
-          "category": "Спрайты",
-          "name": "Спрайты → установить … vy …",
-          "purpose": "Где найти действие этого шага."
-        }
-      ],
+      "blocks": [],
       "commands": [
         {
           "code": "        meteor.vy = 90",
@@ -141,13 +123,7 @@
         "codeFile": "python/steps/4.py",
         "caption": "Готовая игра с изменениями этого шага"
       },
-      "blocks": [
-        {
-          "category": "Симулятор",
-          "name": "Симулятор → перезапуск",
-          "purpose": "Где найти действие этого шага."
-        }
-      ],
+      "blocks": [],
       "commands": [],
       "newLines": [],
       "changedLines": [],
