@@ -1,16 +1,19 @@
 import { chromium } from '@playwright/test';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { captureStory } from './capture-assembly-story.mjs';
 import { capture } from './capture-makecode-blocks/capture.mjs';
 // Capture only missing assembly stages in real Blockly; final lesson code is read-only.
 const allJobs=JSON.parse(await fs.readFile('scripts/instruction-capture-jobs.json','utf8'));
-const previous=JSON.parse(await fs.readFile('.instruction-capture-results.json','utf8').catch(()=> '[]'));
+const cacheFile=process.env.ICUBE_CAPTURE_CACHE || '.instruction-capture-results.json';
+const previous=JSON.parse(await fs.readFile(cacheFile,'utf8').catch(()=> '[]'));
 for(const j of allJobs)if(j.root.includes('maze')){const text=await fs.readFile('lessons/maze-01/steps/map.ts','utf8');j.map=text.slice(text.indexOf('tiles.createTilemap'),text.lastIndexOf(')'));}
 const selected=process.argv.slice(2);
 const jobs=allJobs.filter(j=>!selected.length||selected.includes(j.root+'/'+j.step)).filter(j=>!previous.some(p=>p.root===j.root&&p.step===j.step));
 const browser=await chromium.launch();const results=previous;
 try {
  for(const job of jobs){
+  try {
   const directory=path.resolve(job.root);await fs.mkdir(path.join(directory,'images/ui'),{recursive:true});
   const entry={...job};
   await capture(browser,path.join(directory,job.code),path.join(directory,job.partial),['Игрок','Звезда','Враг','Финиш','Ключ','Дверь','Уровень','ЕстьКлюч'],job.map,{
@@ -30,6 +33,7 @@ try {
    });},
    async prepare(page){
     if(job.final)return;
+    if(job.story){entry.storyImages=await captureStory(page,directory,job);return;}
     if(job.foundation){
       await page.evaluate(job=>{
         const ws=window.E.getEditor().blocksEditor.editor;
@@ -85,6 +89,7 @@ try {
     },{variable,match:job.match,owner:job.owner});
    },
    async captured(page,clip){if(job.category)return;if(job.final)await page.evaluate(()=>{const ws=window.E.getEditor().blocksEditor.editor;const b=ws.getAllBlocks(false).find(b=>/follow/i.test(b.type));if(!b)throw Error('Follow command missing');b.getSvgRoot().id='instruction-command';});const box=await page.locator('#instruction-command').boundingBox();entry.partialFocus=[{x:Math.max(0,(box.x-clip.x)/clip.width*100),y:Math.max(0,(box.y-clip.y)/clip.height*100),width:Math.min(box.width/clip.width*100,100),height:Math.min(box.height/clip.height*100,100)}];}
-  });if(job.category)await fs.unlink(path.join(directory,job.partial));results.push(entry);await fs.writeFile('.instruction-capture-results.json',JSON.stringify(results,null,2));
+  });if(job.category||job.story)await fs.unlink(path.join(directory,job.partial));results.push(entry);await fs.writeFile(cacheFile,JSON.stringify(results,null,2));
+  } catch(error) { if(!job.story)throw error; console.error('STORY_FAILED '+job.root+'/'+job.step+': '+error.message.slice(0,1400)); process.exitCode=1; }
  }
 }finally{await browser.close();}

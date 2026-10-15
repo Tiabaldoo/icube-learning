@@ -1,12 +1,12 @@
 {
-  "version": "1.0.9",
+  "version": "1.0.10",
   "formatVersion": 1,
   "minAppVersion": "0.1.3",
   "files": [
     {
-      "path": "versions/1.0.9/bundle.json",
-      "size": 32735627,
-      "sha256": "f919f27fe7d12c495a862bc8db9cb535e1475071962218c1806dcb0bcfbede2f"
+      "path": "versions/1.0.10/bundle.json",
+      "size": 33491917,
+      "sha256": "8025e67fa4d0765ac33db91731c5e8638d307a31e9e4a788da143d29cccdba26"
     }
   ],
   "games": [

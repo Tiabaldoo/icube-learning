@@ -270,5 +270,689 @@
       "VALUE"
     ],
     "owner": "загрузитьУровень"
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-34-story",
+    "lessonStep": "maze-02-34",
+    "code": "steps/blocks/r33.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-34-story-verification.png",
+    "category": "Логика",
+    "targets": [
+      {
+        "match": "^controls_if$",
+        "owner": "начатьПопытку",
+        "inputs": [
+          "IF0"
+        ],
+        "settings": "В правом поле сравнения напиши 2"
+      }
+    ]
+  },
+  {
+    "root": "lessons/collect-stars-01",
+    "step": "blocks-12-story",
+    "lessonStep": "blocks-12",
+    "code": "steps/blocks-micro/step12.ts",
+    "story": true,
+    "partial": "images/ui/blocks-12-story-verification.png",
+    "category": "Спрайты",
+    "targets": [
+      {
+        "match": "position|setpos",
+        "settings": "У X поставь границы 10–150, у Y — 10–110"
+      }
+    ],
+    "defaults": true
+  },
+  {
+    "root": "lessons/maze-01",
+    "step": "blocks-move-story",
+    "lessonStep": "blocks-move",
+    "code": "steps/blocks/step13.ts",
+    "story": true,
+    "partial": "images/ui/blocks-move-story-verification.png",
+    "category": "Контроллер",
+    "targets": [
+      {
+        "match": "game_control_sprite",
+        "settings": "Обе скорости — 80"
+      }
+    ],
+    "defaults": true
+  },
+  {
+    "root": "lessons/collect-stars-01",
+    "step": "blocks-05-story",
+    "lessonStep": "blocks-05",
+    "code": "steps/blocks-micro/step05.ts",
+    "story": true,
+    "partial": "images/ui/blocks-05-story-verification.png",
+    "category": "Контроллер",
+    "targets": [
+      {
+        "text": "^двигать",
+        "settings": "Обе скорости — 100"
+      }
+    ],
+    "defaults": true
+  },
+  {
+    "root": "lessons/collect-stars-01",
+    "step": "blocks-06-story",
+    "lessonStep": "blocks-06",
+    "code": "steps/blocks-micro/step06.ts",
+    "story": true,
+    "partial": "images/ui/blocks-06-story-verification.png",
+    "category": "Спрайты",
+    "targets": [
+      {
+        "text": "всегда на экране",
+        "settings": "Включи удержание Игрока на экране"
+      }
+    ]
+  },
+  {
+    "root": "lessons/collect-stars-01",
+    "step": "blocks-19-story",
+    "lessonStep": "blocks-19",
+    "code": "steps/blocks-micro/step19.ts",
+    "story": true,
+    "partial": "images/ui/blocks-19-story-verification.png",
+    "category": "Логика",
+    "targets": [
+      {
+        "match": "^controls_if$",
+        "inputs": [
+          "IF0"
+        ],
+        "settings": "Выбери знак ≥ и число 10"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-01",
+    "step": "blocks-place-player-story",
+    "lessonStep": "blocks-place-player",
+    "code": "steps/blocks/step12.ts",
+    "story": true,
+    "partial": "images/ui/blocks-place-player-story-verification.png",
+    "category": "Сцена",
+    "targets": [
+      {
+        "match": "place.*random|place.*tile",
+        "text": "Игрок",
+        "last": false,
+        "settings": "Выбери стартовый голубой знак"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-01",
+    "step": "blocks-place-finish-story",
+    "lessonStep": "blocks-place-finish",
+    "code": "steps/blocks/step20.ts",
+    "story": true,
+    "partial": "images/ui/blocks-place-finish-story-verification.png",
+    "category": "Сцена",
+    "targets": [
+      {
+        "match": "place.*random|place.*tile",
+        "text": "Финиш",
+        "last": false,
+        "settings": "Выбери закрытый сундук"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-01",
+    "step": "blocks-place-enemy-story",
+    "lessonStep": "blocks-place-enemy",
+    "code": "steps/blocks/step28.ts",
+    "story": true,
+    "partial": "images/ui/blocks-place-enemy-story-verification.png",
+    "category": "Сцена",
+    "targets": [
+      {
+        "match": "place.*random|place.*tile",
+        "text": "Враг",
+        "last": false,
+        "settings": "Выбери маркер скелета"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-01",
+    "step": "blocks-return-story",
+    "lessonStep": "blocks-return",
+    "code": "steps/blocks/step32.ts",
+    "story": true,
+    "partial": "images/ui/blocks-return-story-verification.png",
+    "category": "Сцена",
+    "targets": [
+      {
+        "match": "place.*random|place.*tile",
+        "text": "Игрок",
+        "last": true,
+        "settings": "Выбери стартовый голубой знак"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-01",
+    "step": "blocks-camera-story",
+    "lessonStep": "blocks-camera",
+    "code": "steps/blocks/step14.ts",
+    "story": true,
+    "partial": "images/ui/blocks-camera-story-verification.png",
+    "category": "Сцена",
+    "targets": [
+      {
+        "text": "^следовать камерой",
+        "settings": "Камера следует за Игроком"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-01",
+    "step": "blocks-speed-story",
+    "lessonStep": "blocks-speed",
+    "code": "steps/blocks/step29.ts",
+    "story": true,
+    "partial": "images/ui/blocks-speed-story-verification.png",
+    "category": "Спрайты",
+    "targets": [
+      {
+        "text": "^установить.*Враг.*vx|^установить.*Враг.*скорость",
+        "settings": "Горизонтальная скорость — 80"
+      }
+    ],
+    "defaults": true
+  },
+  {
+    "root": "lessons/maze-01",
+    "step": "blocks-bounce-story",
+    "lessonStep": "blocks-bounce",
+    "code": "steps/blocks/step30.ts",
+    "story": true,
+    "partial": "images/ui/blocks-bounce-story-verification.png",
+    "category": "Спрайты",
+    "targets": [
+      {
+        "text": "Враг.*отскакивает",
+        "settings": "Включи отскок Врага от стен"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-5-story",
+    "lessonStep": "maze-02-5",
+    "code": "steps/blocks/r4.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-5-story-verification.png",
+    "category": "Переменные",
+    "targets": [
+      {
+        "match": "^variables_set$",
+        "variable": "ЕстьКлюч",
+        "owner": null,
+        "rootMatch": "pxt-on-start",
+        "settings": "Выбери имя ЕстьКлюч в списке установки"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-35-story",
+    "lessonStep": "maze-02-35",
+    "code": "steps/blocks/r34.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-35-story-verification.png",
+    "category": "Переменные",
+    "targets": [
+      {
+        "match": "^variables_set$",
+        "variable": "ЕстьКлюч",
+        "owner": "начатьПопытку",
+        "settings": "Выбери имя ЕстьКлюч в списке установки"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-46-story",
+    "lessonStep": "maze-02-46",
+    "code": "steps/blocks/r45.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-46-story-verification.png",
+    "category": "Переменные",
+    "targets": [
+      {
+        "match": "^variables_set$",
+        "variable": "ЕстьКлюч",
+        "owner": "ТипКлюча",
+        "settings": "Выбери имя ЕстьКлюч в списке установки"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-22-story",
+    "lessonStep": "maze-02-22",
+    "code": "steps/blocks/r21.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-22-story-verification.png",
+    "category": "Логика",
+    "targets": [
+      {
+        "match": "^controls_if$",
+        "owner": "загрузитьУровень",
+        "inputs": [
+          "IF0"
+        ],
+        "settings": "Справа в сравнении напиши 1"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-49-story",
+    "lessonStep": "maze-02-49",
+    "code": "steps/blocks/r48.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-49-story-verification.png",
+    "category": "Логика",
+    "targets": [
+      {
+        "match": "^controls_if$",
+        "owner": "касается стены",
+        "inputs": [
+          "IF0"
+        ],
+        "settings": "Справа в сравнении напиши 2"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-29-story",
+    "lessonStep": "maze-02-29",
+    "code": "steps/blocks/r28.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-29-story-verification.png",
+    "category": "Спрайты",
+    "targets": [
+      {
+        "text": "^установить.*Ключ.*невидимый",
+        "owner": null,
+        "rootMatch": "pxt-on-start",
+        "settings": "Выбери флаг «невидимый» и ВКЛ"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-30-story",
+    "lessonStep": "maze-02-30",
+    "code": "steps/blocks/r29.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-30-story-verification.png",
+    "category": "Спрайты",
+    "targets": [
+      {
+        "text": "^установить.*Ключ.*призрак",
+        "owner": null,
+        "rootMatch": "pxt-on-start",
+        "settings": "Выбери флаг «призрак» и ВКЛ"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-37-story",
+    "lessonStep": "maze-02-37",
+    "code": "steps/blocks/r36.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-37-story-verification.png",
+    "category": "Спрайты",
+    "targets": [
+      {
+        "text": "^установить.*Ключ.*невидимый",
+        "owner": "начатьПопытку",
+        "rootMatch": null,
+        "settings": "Выбери флаг «невидимый» и ВЫКЛ"
+      },
+      {
+        "text": "^установить.*Ключ.*призрак",
+        "owner": "начатьПопытку",
+        "rootMatch": null,
+        "settings": "Выбери флаг «призрак» и ВЫКЛ"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-41-story",
+    "lessonStep": "maze-02-41",
+    "code": "steps/blocks/r40.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-41-story-verification.png",
+    "category": "Спрайты",
+    "targets": [
+      {
+        "text": "^установить.*Ключ.*невидимый",
+        "owner": "загрузитьУровень",
+        "rootMatch": null,
+        "settings": "Выбери флаг «невидимый» и ВКЛ"
+      },
+      {
+        "text": "^установить.*Ключ.*призрак",
+        "owner": "загрузитьУровень",
+        "rootMatch": null,
+        "settings": "Выбери флаг «призрак» и ВКЛ"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-47-story",
+    "lessonStep": "maze-02-47",
+    "code": "steps/blocks/r46.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-47-story-verification.png",
+    "category": "Спрайты",
+    "targets": [
+      {
+        "text": "^установить.*Ключ.*невидимый",
+        "owner": "ТипКлюча",
+        "rootMatch": null,
+        "settings": "Выбери флаг «невидимый» и ВКЛ"
+      },
+      {
+        "text": "^установить.*Ключ.*призрак",
+        "owner": "ТипКлюча",
+        "rootMatch": null,
+        "settings": "Выбери флаг «призрак» и ВКЛ"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-33-story",
+    "lessonStep": "maze-02-33",
+    "code": "steps/blocks/r32.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-33-story-verification.png",
+    "category": "Сцена",
+    "targets": [
+      {
+        "match": "place.*random|place.*tile",
+        "text": "Игрок",
+        "owner": "начатьПопытку",
+        "settings": "В квадрате плитки выбери стартовый знак"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-36-story",
+    "lessonStep": "maze-02-36",
+    "code": "steps/blocks/r35.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-36-story-verification.png",
+    "category": "Сцена",
+    "targets": [
+      {
+        "match": "place.*random|place.*tile",
+        "text": "Ключ",
+        "owner": "начатьПопытку",
+        "settings": "В квадрате плитки выбери светлый маркер ключа"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-42-story",
+    "lessonStep": "maze-02-42",
+    "code": "steps/blocks/r41.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-42-story-verification.png",
+    "category": "Сцена",
+    "targets": [
+      {
+        "match": "place.*random|place.*tile",
+        "text": "Враг",
+        "owner": "загрузитьУровень",
+        "settings": "В квадрате плитки выбери маркер скелета"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-43-story",
+    "lessonStep": "maze-02-43",
+    "code": "steps/blocks/r42.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-43-story-verification.png",
+    "category": "Сцена",
+    "targets": [
+      {
+        "match": "place.*random|place.*tile",
+        "text": "Финиш",
+        "owner": "загрузитьУровень",
+        "settings": "В квадрате плитки выбери закрытый сундук"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-38-story",
+    "lessonStep": "maze-02-38",
+    "code": "steps/blocks/r37.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-38-story-verification.png",
+    "category": "Сцена",
+    "targets": [
+      {
+        "text": "^поместить.*Дверь",
+        "settings": "Выбери закрытую дверь",
+        "owner": "начатьПопытку"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-39-story",
+    "lessonStep": "maze-02-39",
+    "code": "steps/blocks/r38.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-39-story-verification.png",
+    "category": "Сцена",
+    "targets": [
+      {
+        "text": "^поместить стену|^установить стену",
+        "settings": "Для Дверь включи стену",
+        "owner": "начатьПопытку"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-40-story",
+    "lessonStep": "maze-02-40",
+    "code": "steps/blocks/r39.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-40-story-verification.png",
+    "category": "Переменные",
+    "targets": [
+      {
+        "match": "^variables_set$",
+        "variable": "Дверь",
+        "owner": "загрузитьУровень",
+        "settings": "Выбери закрытую дверь; индекс первого места — 0"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-50-story",
+    "lessonStep": "maze-02-50",
+    "code": "steps/blocks/r49.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-50-story-verification.png",
+    "category": "Логика",
+    "targets": [
+      {
+        "match": "^controls_if$",
+        "owner": "касается стены",
+        "inputs": [
+          "IF0"
+        ],
+        "existing": [
+          "IF0/A"
+        ],
+        "resetNumbers": false,
+        "settings": "Слева оставь Уровень = 2, справа — ЕстьКлюч"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-51-story",
+    "lessonStep": "maze-02-51",
+    "code": "steps/blocks/r50.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-51-story-verification.png",
+    "category": "Логика",
+    "targets": [
+      {
+        "match": "^controls_if$",
+        "owner": "касается стены",
+        "inputs": [
+          "IF0"
+        ],
+        "existing": [
+          "IF0/A"
+        ],
+        "resetNumbers": false,
+        "settings": "Третья проверка: плитка в location равна закрытой двери"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-52-story",
+    "lessonStep": "maze-02-52",
+    "code": "steps/blocks/r51.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-52-story-verification.png",
+    "category": "Сцена",
+    "targets": [
+      {
+        "text": "^поместить стену|^установить стену",
+        "settings": "Выбери ВЫКЛ у стены в location",
+        "owner": "касается стены"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-53-story",
+    "lessonStep": "maze-02-53",
+    "code": "steps/blocks/r52.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-53-story-verification.png",
+    "category": "Сцена",
+    "targets": [
+      {
+        "text": "^поместить.*плитк|^поместить.*location",
+        "settings": "Выбери светлый пол",
+        "owner": "касается стены"
+      }
+    ]
+  },
+  {
+    "root": "lessons/maze-02",
+    "step": "maze-02-54-story",
+    "lessonStep": "maze-02-54",
+    "code": "steps/blocks/r53.ts",
+    "story": true,
+    "partial": "images/ui/maze-02-54-story-verification.png",
+    "category": "Логика",
+    "targets": [
+      {
+        "match": "^controls_if$",
+        "owner": "ТипФиниша",
+        "inputs": [
+          "IF0"
+        ],
+        "settings": "Проверь Уровень = 1; победа находится в «иначе»",
+        "baseCaption": "Поставь «если», добавь «иначе» кнопкой + и перенеси победу в «иначе»"
+      }
+    ]
+  },
+  {
+    "root": "extras/enemy",
+    "step": "enemy-5-story",
+    "lessonStep": "enemy-5",
+    "code": "blocks/steps/position.ts",
+    "story": true,
+    "partial": "images/ui/enemy-5-story-verification.png",
+    "category": "Спрайты",
+    "targets": [
+      {
+        "text": "^установить.*Враг.*позицию",
+        "settings": "Задай x = 130, y = 30"
+      }
+    ]
+  },
+  {
+    "root": "extras/enemy",
+    "step": "enemy-6-story",
+    "lessonStep": "enemy-6",
+    "code": "blocks/steps/speed.ts",
+    "story": true,
+    "partial": "images/ui/enemy-6-story-verification.png",
+    "category": "Спрайты",
+    "targets": [
+      {
+        "text": "^установить.*скорость.*Враг",
+        "settings": "Задай vx = 35, vy = 0"
+      }
+    ],
+    "defaults": true
+  },
+  {
+    "root": "extras/enemy",
+    "step": "enemy-7-story",
+    "lessonStep": "enemy-7",
+    "code": "blocks/steps/bounce.ts",
+    "story": true,
+    "partial": "images/ui/enemy-7-story-verification.png",
+    "category": "Спрайты",
+    "targets": [
+      {
+        "text": "Враг.*отскакивает",
+        "settings": "Выбери ВКЛ"
+      }
+    ]
+  },
+  {
+    "root": "extras/maze-chase",
+    "step": "maze-chase-2-story",
+    "lessonStep": "maze-chase-2",
+    "code": "blocks/steps/follow.ts",
+    "story": true,
+    "partial": "images/ui/maze-chase-2-story-verification.png",
+    "category": "Спрайты",
+    "targets": [
+      {
+        "text": "^следовать.*Враг",
+        "settings": "Враг следует за Игроком со скоростью 45"
+      }
+    ],
+    "defaults": true
   }
 ]
