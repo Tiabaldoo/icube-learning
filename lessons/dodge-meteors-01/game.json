@@ -1,0 +1,28 @@
+{
+  "id": "dodge-meteors-01",
+  "title": "Увернись от метеоритов",
+  "description": "Управляй космическим кораблём, уворачивайся от падающих метеоритов и набери 10 очков!",
+  "difficulty": 1,
+  "cover": {
+    "hero": "🚀",
+    "collectible": "☄️"
+  },
+  "learns": [
+    "Спрайты",
+    "Движение по X",
+    "Случайные числа",
+    "Интервал",
+    "Счёт и события"
+  ],
+  "modes": {
+    "blocks": {
+      "available": true
+    },
+    "javascript": {
+      "available": true
+    },
+    "python": {
+      "available": true
+    }
+  }
+}

@@ -75,5 +75,38 @@
       "javascript": true,
       "python": true
     }
+  },
+  {
+    "id": "meteors-music",
+    "title": "Добавь музыку",
+    "description": "Мелодия звучит во время уклонения.",
+    "icon": "🎵",
+    "modes": {
+      "blocks": true,
+      "javascript": true,
+      "python": true
+    }
+  },
+  {
+    "id": "meteors-lives",
+    "title": "Добавь три жизни",
+    "description": "Три жизни и секунда защиты после касания.",
+    "icon": "♥",
+    "modes": {
+      "blocks": true,
+      "javascript": true,
+      "python": true
+    }
+  },
+  {
+    "id": "meteors-speed",
+    "title": "Метеориты ускоряются",
+    "description": "После пяти очков новые метеориты падают быстрее.",
+    "icon": "☄️",
+    "modes": {
+      "blocks": true,
+      "javascript": true,
+      "python": true
+    }
   }
 ]

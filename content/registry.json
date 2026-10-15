@@ -1,5 +1,5 @@
 {
-  "version": "1.0.11",
+  "version": "1.0.12",
   "games": [
     {
       "id": "collect-stars-01",
@@ -33,6 +33,19 @@
       },
       "improvements": [
         "maze-chase"
+      ]
+    },
+    {
+      "id": "dodge-meteors-01",
+      "lessons": {
+        "blocks": "blocks/lesson.json",
+        "javascript": "javascript/lesson.json",
+        "python": "python/lesson.json"
+      },
+      "improvements": [
+        "meteors-music",
+        "meteors-lives",
+        "meteors-speed"
       ]
     }
   ]

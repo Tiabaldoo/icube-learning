@@ -1,12 +1,12 @@
 {
-  "version": "1.0.11",
+  "version": "1.0.12",
   "formatVersion": 1,
   "minAppVersion": "0.1.3",
   "files": [
     {
-      "path": "versions/1.0.11/bundle.json",
-      "size": 32238040,
-      "sha256": "350972b13b6ab3b2fe74e0f00bac83e4f10ed44255faafd2e0d611a6fb628ee6"
+      "path": "versions/1.0.12/bundle.json",
+      "size": 37203428,
+      "sha256": "dfd42be759fac4e1cc3cf20a7b9e9db7a73685f3c9886cef55ac3a7309fc2815"
     }
   ],
   "games": [
@@ -21,6 +21,10 @@
     {
       "id": "maze-02",
       "title": "Лабиринт: продолжение"
+    },
+    {
+      "id": "dodge-meteors-01",
+      "title": "Увернись от метеоритов"
     }
   ]
 }

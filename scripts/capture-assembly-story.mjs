@@ -82,6 +82,7 @@ export async function captureStory(page, directory, job) {
    const ws=window.E.getEditor().blocksEditor.editor,fly=ws.getFlyout().getWorkspace();
    let block=fly.getAllBlocks(false).find(b=>b.type===info.type&&!b.getParent()&&(!/function.*call|procedure.*call/i.test(info.type)||b.toString()===info.text));
    if(!block)block=fly.getAllBlocks(false).find(b=>b.type===info.type);
+   if(!block&&info.type==='gameOver')block=fly.getAllBlocks(false).find(b=>b.type==='gameOver2');
    if(!block)throw Error('Toolbox block absent '+info.type+'; '+fly.getAllBlocks(false).map(b=>b.type).join(','));
    if(info.main&&info.dropdownJob){for(const p of window.lessonStory.parts[info.index].filter(p=>p.dropdown))if(block.getInput(p.input.name)?.connection?.targetBlock()?.type!=='variables_get')throw Error('Toolbox has no variable dropdown in '+p.input.name);}
    if(info.main&&info.copyTile){const real=window.lessonStory.targets[info.index];for(const input of block.inputList){const proto=input.connection?.targetBlock(),current=real.getInput(input.name)?.connection?.targetBlock();if(proto?.type==='tileset_tile_picker'&&current?.type===proto.type)for(const row of proto.inputList)for(const f of row.fieldRow)if(f.name){const target=current.getField(f.name);if(target){window.lessonStory.numbers.push({field:target,value:target.getValue()});target.setValue(f.getValue());}}}real.workspace.render();}

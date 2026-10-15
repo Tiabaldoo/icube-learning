@@ -59,6 +59,7 @@ export async function capture(browser, file, outputFile, variableNames = [], til
         // closeTour handles the first-run teaching bubble even if it is still mounting.
         await page.waitForFunction(() => typeof window.E?.getEditor()?.closeTour === 'function');
         await page.evaluate(() => window.E.getEditor().closeTour());
+        if (instructionParts?.created) await instructionParts.created(page);
         await page.locator('.javascript-menuitem:visible').first().click();
         await page.waitForFunction(() => !!window.monaco?.editor.getModels().find(model => model.uri.path.endsWith('/main.ts')));
         await page.waitForFunction(() => !window.E.getEditor().updatingEditorFile);
