@@ -1,5 +1,4 @@
 namespace SpriteKind {
-    export const ТипВрага = SpriteKind.create()
     export const ТипФиниша = SpriteKind.create()
 }
 

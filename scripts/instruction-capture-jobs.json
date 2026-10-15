@@ -304,7 +304,9 @@
         "settings": "У X поставь границы 10–150, у Y — 10–110"
       }
     ],
-    "defaults": true
+    "defaults": true,
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-01",
@@ -320,7 +322,9 @@
         "settings": "Обе скорости — 80"
       }
     ],
-    "defaults": true
+    "defaults": true,
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/collect-stars-01",
@@ -336,7 +340,9 @@
         "settings": "Обе скорости — 100"
       }
     ],
-    "defaults": true
+    "defaults": true,
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/collect-stars-01",
@@ -351,7 +357,9 @@
         "text": "всегда на экране",
         "settings": "Включи удержание Игрока на экране"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/collect-stars-01",
@@ -386,7 +394,9 @@
         "last": false,
         "settings": "Выбери стартовый голубой знак"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-01",
@@ -403,7 +413,9 @@
         "last": false,
         "settings": "Выбери закрытый сундук"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-01",
@@ -420,7 +432,9 @@
         "last": false,
         "settings": "Выбери маркер скелета"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-01",
@@ -434,10 +448,13 @@
       {
         "match": "place.*random|place.*tile",
         "text": "Игрок",
-        "last": true,
-        "settings": "Выбери стартовый голубой знак"
+        "settings": "Выбери стартовый голубой знак",
+        "owner": "ТипВрага",
+        "rootMatch": "spritesoverlap"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-01",
@@ -452,7 +469,9 @@
         "text": "^следовать камерой",
         "settings": "Камера следует за Игроком"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-01",
@@ -468,7 +487,9 @@
         "settings": "Горизонтальная скорость — 80"
       }
     ],
-    "defaults": true
+    "defaults": true,
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-01",
@@ -483,7 +504,9 @@
         "text": "Враг.*отскакивает",
         "settings": "Включи отскок Врага от стен"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-02",
@@ -590,7 +613,9 @@
         "rootMatch": "pxt-on-start",
         "settings": "Выбери флаг «невидимый» и ВКЛ"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-02",
@@ -607,7 +632,9 @@
         "rootMatch": "pxt-on-start",
         "settings": "Выбери флаг «призрак» и ВКЛ"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-02",
@@ -630,7 +657,9 @@
         "rootMatch": null,
         "settings": "Выбери флаг «призрак» и ВЫКЛ"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-02",
@@ -653,7 +682,9 @@
         "rootMatch": null,
         "settings": "Выбери флаг «призрак» и ВКЛ"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-02",
@@ -676,7 +707,9 @@
         "rootMatch": null,
         "settings": "Выбери флаг «призрак» и ВКЛ"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-02",
@@ -693,7 +726,9 @@
         "owner": "начатьПопытку",
         "settings": "В квадрате плитки выбери стартовый знак"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-02",
@@ -710,7 +745,9 @@
         "owner": "начатьПопытку",
         "settings": "В квадрате плитки выбери светлый маркер ключа"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-02",
@@ -727,7 +764,9 @@
         "owner": "загрузитьУровень",
         "settings": "В квадрате плитки выбери маркер скелета"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-02",
@@ -744,7 +783,9 @@
         "owner": "загрузитьУровень",
         "settings": "В квадрате плитки выбери закрытый сундук"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "lessons/maze-02",
@@ -867,11 +908,13 @@
     "category": "Сцена",
     "targets": [
       {
-        "text": "^поместить.*плитк|^поместить.*location",
         "settings": "Выбери светлый пол",
-        "owner": "касается стены"
+        "owner": "касается стены",
+        "match": "^mapsettileat$"
       }
-    ]
+    ],
+    "crop": true,
+    "deferTile": true
   },
   {
     "root": "lessons/maze-02",
@@ -906,7 +949,9 @@
         "text": "^установить.*Враг.*позицию",
         "settings": "Задай x = 130, y = 30"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "extras/enemy",
@@ -922,7 +967,9 @@
         "settings": "Задай vx = 35, vy = 0"
       }
     ],
-    "defaults": true
+    "defaults": true,
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "extras/enemy",
@@ -937,7 +984,9 @@
         "text": "Враг.*отскакивает",
         "settings": "Выбери ВКЛ"
       }
-    ]
+    ],
+    "dropdownVariables": true,
+    "crop": true
   },
   {
     "root": "extras/maze-chase",
@@ -953,6 +1002,8 @@
         "settings": "Враг следует за Игроком со скоростью 45"
       }
     ],
-    "defaults": true
+    "defaults": true,
+    "dropdownVariables": true,
+    "crop": true
   }
 ]

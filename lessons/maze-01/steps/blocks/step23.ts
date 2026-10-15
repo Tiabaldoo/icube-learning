@@ -31,3 +31,4 @@ let Финиш = sprites.create(img`
     . b b . . . . . . . . . . b b .
     `, SpriteKind.ТипФиниша)
 tiles.placeOnRandomTile(Финиш, sprites.dungeon.chestClosed)
+let Враг = sprites.create(img``, SpriteKind.ТипВрага)

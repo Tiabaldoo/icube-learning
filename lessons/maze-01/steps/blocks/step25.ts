@@ -1,5 +1,4 @@
 namespace SpriteKind {
-    export const ТипВрага = SpriteKind.create()
     export const ТипФиниша = SpriteKind.create()
 }
 
@@ -31,4 +30,4 @@ let Финиш = sprites.create(img`
     . b b . . . . . . . . . . b b .
     `, SpriteKind.ТипФиниша)
 tiles.placeOnRandomTile(Финиш, sprites.dungeon.chestClosed)
-let Враг = sprites.create(img``, SpriteKind.ТипВрага)
+let Враг = sprites.create(img``, SpriteKind.Player)
